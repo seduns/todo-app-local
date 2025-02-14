@@ -1,0 +1,35 @@
+<!-- <h2>Todo App</h2> -->
+
+<button (click)="addTask()">Add Task</button>
+
+
+<div *ngIf="isAddTask">
+  <div class="card-overlay">
+    <div class="card">
+      <input type="text" placeholder="title" [(ngModel)]="title">
+      <input type="text" placeholder="description" [(ngModel)]="description">
+      <button (click)="submit()">Submit</button>
+    </div>
+  </div>
+</div>
+
+<ul >
+  <li *ngFor="let todo of todos; let i = index;" (click)="openTodos(todo, i)">
+    {{ todo.title }}<!-- Display title and description -->
+    <button (click)="delete(i, $event)">Delete</button>
+  </li>
+</ul>
+
+
+<div *ngIf="showTodo">
+  <div class="card-overlay">
+    <div class="card">
+      <button (click)="closeTodos()">close</button>
+      <input type="text" [(ngModel)]="selectedTitle" [disabled]="!isEditTodo">
+      <input type="text" [(ngModel)]="selectedDescription" [disabled]="!isEditTodo">
+      <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>
+      <button *ngIf="isEditTodo" (click)="editTodo()">cancel</button>
+      <button (click)="saveEdit()">save</button>
+    </div>
+  </div>
+</div>
