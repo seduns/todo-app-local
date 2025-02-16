@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { TodoAppComponent } from '../todo-app/todo-app.component'; // Import your component
+import { TodoAppComponent } from './todo-app/todo-app.component'; // Import your component
 
 export const routes: Routes = [
   { path: 'todo', component: TodoAppComponent }, // Define your route

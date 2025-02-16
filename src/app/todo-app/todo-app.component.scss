@@ -76,8 +76,8 @@ button:hover {
 .del-btn { 
     cursor: pointer;
     background-color: red; /* Default color */
-    -webkit-mask-image: url(../asset/trash.svg);
-    mask-image: url(../asset/trash.svg);
+    -webkit-mask-image: url(../../asset/trash.svg);
+    mask-image: url(../../asset/trash.svg);
     mask-size: cover;
     width: 20px; /* Adjust the size as needed */
     height: 20px;
