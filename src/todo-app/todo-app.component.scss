@@ -1,5 +1,34 @@
+.add-task-con {
+    border: 1px solid black;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-ul {
+button {
+    background-color: rgba(43, 0, 255, 0.155);
+    color: rgba(104, 104, 255, 0.504);
+    padding: 10px;
+    border-radius: 5px;
+    border: none;
+    transition: 0.3s;
+}
+
+button:hover { 
+    background-color: rgba(43, 0, 255, 0.318);
+    color: rgb(248, 248, 255);
+}
+
+.todo-list-background {
+    padding: 10vh;
+    // border: 1px solid rgba(0, 0, 0, 0.424);
+    margin: 10px;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.594);
+}
+
+.todo-card {
     list-style: none;
     padding: 0;
     display: flex;
@@ -9,28 +38,101 @@ ul {
     width: 100%;
 }
 
-li {
+
+.todo-title {
+    // border: 2px solid rgba(62, 0, 207, 0.329);
+    background-color: rgb(202, 228, 245);
+    width: 100%;
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+    border-radius: 10px;
+    margin-bottom: 5px;
+}
+
+.todo-item {
     background: #f4f4f4;
     margin: 5px;
     padding: 20px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-radius: 5px;
+    border-radius: 10px;
     box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.482);
     max-width: 150px; /* Prevents items from stretching too much */
     width: 100%;  /* Ensures the li takes the full available width */
     word-break: break-word;  /* Breaks long words */
     overflow-wrap: break-word;  /* Allows wrapping for overflow text */
-    cursor: pointer;
+    // cursor: pointer;
     transition: 0.4s;
-
-
 }
 
-ul :hover{
+.todo-item:hover {
     background-color: yellow;
+    transform: scale(1.1);
 }
+
+.del-btn { 
+    cursor: pointer;
+    background-color: red; /* Default color */
+    -webkit-mask-image: url(../asset/trash.svg);
+    mask-image: url(../asset/trash.svg);
+    mask-size: cover;
+    width: 20px; /* Adjust the size as needed */
+    height: 20px;
+}
+
+.del-btn:hover {
+    background-color: rgb(99, 0, 0); /* Default color */
+}
+
+.custom-radio { 
+    cursor: pointer;
+}
+
+/* Hide the default radio button */
+.custom-radio input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Custom Square "Radio" Button */
+.custom-radio .checkmark {
+    width: 20px;
+    height: 20px;
+    border-radius: 4px; /* Make it a square */
+    border: 2px solid #333;
+    background-color: yellow; /* Yellow background */
+    display: inline-block;
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Add checkmark effect when selected */
+.custom-radio input:checked + .checkmark {
+    background-color: green; /* Green when selected */
+    border-color: green;
+}
+
+/* Inner checkmark when selected */
+.custom-radio input:checked + .checkmark::after {
+    content: "✔";
+    font-size: 14px;
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+}
+
+
+
+
+
+
 
 .card-overlay {
     position: fixed; /* Stays in place */
