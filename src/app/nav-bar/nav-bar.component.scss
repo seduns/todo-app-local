@@ -30,6 +30,11 @@
         cursor: pointer;
     }
 
+    .side-nav-toggle {
+        display: none;
+       
+    }
+
     @media (max-width: 768px) {
         .nav-links {
             display: none;
@@ -48,5 +53,16 @@
         .menu-toggle {
             display: block;
         }
+        .side-nav-toggle {
+            display: block; /* Initially hidden */
+            position: absolute; /* Position relative to nearest positioned ancestor */
+            top: 45px; /* Adjust based on the height of your navbar */
+            left: 10px; /* Align it with the menu-toggle */
+            background-color: white;
+            border: 1px solid black;
+            padding: 10px;
+            z-index: 1000; /* Ensure it appears above other elements */
+        }
+    
     }
 }

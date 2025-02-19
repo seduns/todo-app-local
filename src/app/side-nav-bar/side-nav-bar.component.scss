@@ -25,9 +25,15 @@
     }
 }   
 
+
+
+
 @media (max-width: 768px) {
    .side-nav-bar {
     position: absolute;
     z-index: 10;
+    display: none;
    }
+
+   
 }

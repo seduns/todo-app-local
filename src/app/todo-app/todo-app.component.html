@@ -6,29 +6,29 @@
     <app-side-nav-bar></app-side-nav-bar>
     <div class="todo-content">
         <div class="add-task-con">
-            <button (click)="addTask()">Add Task+</button>
-
-            <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()"></div>
-
+            <!-- <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()"></div> -->
             <div *ngIf="isAddTask">
                 <div class="card-overlay">
                     <div class="card">
                         <button (click)="closeAddTask()">close</button>
                         <input type="text" placeholder="title" [(ngModel)]="title">
-                            <textarea type="text" placeholder="description" [(ngModel)]="description"></textarea>
-                            <select
-                                name=""
-                                id=""
-                                [(ngModel)]="selectState"
-                                (ngModelChange)="onStateChange()">
-                                <option value="new">New</option>
-                            </select>
-                            <button (click)="submit()">Submit</button>
-                        </div>
-                    </div>
+                        <textarea type="text" placeholder="description" [(ngModel)]="description"></textarea>
+                        <select
+                        name=""
+                        id=""
+                        [(ngModel)]="selectState"
+                        (ngModelChange)="onStateChange()">
+                        <option value="new">New</option>
+                    </select>
+                    <button (click)="submit()">Submit</button>
                 </div>
+            </div>
+        </div>
+        </div>
+        
+        <button class="add-task-btn" (click)="addTask()">Add Task+</button>
 
-                <div class="todo-list-background">
+        <div class="todo-list-background">
                     <div class="todo-card">
                         <div
                             class="todo-item"

@@ -3,7 +3,14 @@
         <!-- <a href="">Logo</a> -->
         <ul class="nav-links">
         </ul>
-        <button class="menu-toggle">☰</button>
+        <button class="menu-toggle" (click)="toggleNav()">☰</button>
 
+        <div *ngIf="isToggleNav" class="side-nav-toggle">
+            <ul >
+                <li><a href="/home">Home</a></li>
+                <li><a href="/todo">Todo</a></li>
+                <li><a href="/board">Board</a></li>
+            </ul>
+        </div>
     </div>
 </nav>
