@@ -1,54 +1,64 @@
 <!-- <h2>Todo App</h2> -->
 
+<app-nav-bar></app-nav-bar>
 
-<div class="add-task-con">
-  <button (click)="addTask()">Add Task+</button>
-  
-  <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()">
-</div>
+<div class="main-content">
+    <app-side-nav-bar></app-side-nav-bar>
+    <div class="todo-content">
+        <div class="add-task-con">
+            <button (click)="addTask()">Add Task+</button>
 
-<div *ngIf="isAddTask">
-  <div class="card-overlay">
-    <div class="card">
-      <button (click)="closeAddTask()">close</button>
-      <input type="text" placeholder="title" [(ngModel)]="title">
-      <textarea type="text" placeholder="description" [(ngModel)]="description"></textarea>
-      <button (click)="submit()">Submit</button>
-    </div>
-  </div>
-</div>
+            <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()"></div>
 
-<div class="todo-list-background">
-  <div class="todo-card" >
-    <div class="todo-item" *ngFor="let todo of todos; let i = index;" (click)="openTodos(todo, i, $event)">
-      <div class="todo-title"> {{ todo.title }}
+            <div *ngIf="isAddTask">
+                <div class="card-overlay">
+                    <div class="card">
+                        <button (click)="closeAddTask()">close</button>
+                        <input type="text" placeholder="title" [(ngModel)]="title">
+                            <textarea type="text" placeholder="description" [(ngModel)]="description"></textarea>
+                            <button (click)="submit()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="todo-list-background">
+                    <div class="todo-card">
+                        <div
+                            class="todo-item"   
+                            *ngFor="let todo of todos; let i = index;"
+                            (click)="openTodos(todo, i, $event)">
+                            <div class="todo-title" [ngClass]="{'complete-task' : todo.isComplete}">
+                                {{ todo.title }}
+                                <label class="custom-radio" (click)="$event.stopPropagation()">
+                                    <input
+                                        class="check-btn"
+                                        type="radio"
+                                        [checked]="todo.isComplete"
+                                        (click)="setComplete(i, $event); $event.stopPropagation()">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                </div>
+                                <button class="del-btn" (click)="delete(i, $event)"></button>
+                            </div>
+                        </div>
+                    </div>
 
-        <label class="custom-radio" (click)="$event.stopPropagation()">
-          <input class="check-btn" type="radio" [checked]="todo.isComplete" (click)="setComplete(i, $event); $event.stopPropagation()">
-          <span class="checkmark"></span>
-        </label>
-        
-        
+                    
 
-          <!-- <button  class="not-compl-btn" *ngIf="todo.isComplete === false" (click)="setComplete(i, $event)"></button>
-          <button class="compl-btn" *ngIf="todo.isComplete === true" (click)="setComplete(i, $event)"></button> -->
-      </div>
-      <button class="del-btn" (click)="delete(i, $event)"></button>
-    </div>
-  </div>
-</div>
-
-
-<div *ngIf="showTodo">
-  <div class="card-overlay">  
-    <div class="card">
-      <button (click)="closeTodos()">close</button>
-      <input type="text" [(ngModel)]="selectedTitle" [disabled]="!isEditTodo">
-      <textarea type="text" [(ngModel)]="selectedDescription" [disabled]="!isEditTodo"></textarea>  
-      <input type="text" [(ngModel)]="selectedDateSubmission" disabled>
-      <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>
-      <button *ngIf="isEditTodo" (click)="editTodo()">cancel</button>
-      <button (click)="saveEdit()">save</button>
-    </div>
-  </div>
-</div>
+                    <div *ngIf="showTodo">
+                        <div class="card-overlay">
+                            <div class="card">
+                                <button (click)="closeTodos()">close</button>
+                                <input type="text" [(ngModel)]="selectedTitle" [disabled]="!isEditTodo">
+                                    <textarea
+                                        type="text"
+                                        [(ngModel)]="selectedDescription"
+                                        [disabled]="!isEditTodo"></textarea>
+                                    <input type="text" [(ngModel)]="selectedDateSubmission" disabled="disabled">
+                                        <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>
+                                        <button *ngIf="isEditTodo" (click)="editTodo()">cancel</button>
+                                        <button (click)="saveEdit()">save</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>

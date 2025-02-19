@@ -1,162 +1,212 @@
-.add-task-con {
+.main-content { 
+    display: flex;
+    height: 100%;
+    max-height: 80vh; //hegiht for main content;
+}
+
+
+.todo-content { 
     border: 1px solid black;
-    padding: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+
+    .add-task-con {
+        // border: 1px solid black;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.479);
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    button {
+        background-color: rgba(247, 246, 250, 0.527);
+        color: rgba(2, 2, 235, 0.504);
+        padding: 10px;
+        border-radius: 5px;
+        border: none;   
+        transition: 0.3s;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background-color: rgba(43, 0, 255, 0.318);
+        color: rgb(248, 248, 255);
+    }
+    
+    .todo-list-background {
+        padding: 5vh;
+        border: 1px solid rgba(0, 0, 0, 0.424);
+        width: 100%;
+        max-width: 90vh;
+        // margin: 10px;
+        border-radius: 10px;
+        background-color: rgba(255, 255, 255, 0.336);   
+    }
+    
+    .todo-card {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        /* Allows items to wrap when max width is reached */
+        gap: 10px;
+        /* Adds spacing between items */
+        justify-content: center;
+        /* Centers items */
+        width: 100%;
+    }
+    
+    
+    
+    .todo-title {
+        // border: 2px solid rgba(62, 0, 207, 0.329);
+        background-color: rgb(202, 228, 245);
+        width: 100%;
+        padding: 10px;
+        display: flex;
+        justify-content: space-around;
+        border-radius: 10px;
+        margin-bottom: 5px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+    
+    .complete-task {
+        color: rgba(0, 0, 0, 0.224);
+        // text-decoration: line-through;
+        
+    }
+    
+    .todo-item {
+        background: #f4f4f4;
+        margin: 5px;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        border-radius: 10px;
+        max-width: 150px;
+        /* Prevents items from stretching too much */
+        width: 100%;
+        /* Ensures the li takes the full available width */
+        word-break: break-word;
+        /* Breaks long words */
+        overflow-wrap: break-word;
+        /* Allows wrapping for overflow text */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.171);
+        // cursor: pointer;
+        transition: 0.4s;
+    }
+    
+    .todo-item:hover {
+        background-color: rgba(164, 183, 235, 0.445);
+        transform: scale(1.1);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.482);
+    }
+    
+    .del-btn {
+        cursor: pointer;
+        background-color: red;
+        /* Default color */
+        -webkit-mask-image: url("../../asset/trash.svg");
+        mask-image: url("../../asset/trash.svg");
+        mask-size: cover;
+        width: 20px;
+        /* Adjust the size as needed */
+        height: 20px;
+    }
+    
+    .del-btn:hover {
+        background-color: rgb(99, 0, 0);
+        /* Default color */
+    }
+    
+    .custom-radio {
+        cursor: pointer;
+    }
+    
+    /* Hide the default radio button */
+    .custom-radio input {
+        position: absolute;
+        opacity: 0;
+        cursor: pointer;
+    }
+    
+    /* Custom Square "Radio" Button */
+    .custom-radio .checkmark {
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        /* Make it a square */
+        border: 2px solid #33333375;
+        background-color: rgb(255, 255, 255);
+        /* Yellow background */
+        display: inline-block;
+        position: relative;
+        transition: all 0.3s ease;
+    }
+    
+    /* Add checkmark effect when selected */
+    .custom-radio input:checked + .checkmark {
+        background-color: green;
+        /* Green when selected */
+        border-color: green;
+    }
+    
+    /* Inner checkmark when selected */
+    .custom-radio input:checked + .checkmark::after {
+        content: "✔";
+        font-size: 14px;
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-weight: bold;
+    }
+    
+    .card-overlay {
+        position: fixed;
+        /* Stays in place */
+        top: 0;
+        left: 0;
+        width: 100vw;
+        /* Full width of the viewport */
+        height: 100vh;
+        /* Full height of the viewport */
+        background-color: rgba(0, 0, 0, 0.5);
+        /* Transparent black overlay */
+        display: flex;
+        justify-content: center;
+        /* Center horizontally */
+        align-items: center;
+        /* Center vertically */
+        z-index: 999;
+        /* On top of other elements */
+    }
+    
+    .card {
+        background-color: rgba(255, 255, 255, 0.812);
+        /* The actual box */
+        padding: 20px;
+        backdrop-filter: blur(10px);
+        /* Blur the background */
+        -webkit-backdrop-filter: blur(10px);
+        /* Safari support */
+        border-radius: 8px;
+        /* Rounded corners for aesthetics */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        /* Shadow for depth */
+        width: 50%;
+        /* Set a width for the content box */
+        max-width: 1000px;
+        /* Prevent it from getting too wide */
+        min-height: 200px;
+        /* Ensure it has some height */
+        text-align: center;
+        /* Center text */
+        overflow-y: auto;
+    }
 }
 
-button {
-    background-color: rgba(43, 0, 255, 0.155);
-    color: rgba(104, 104, 255, 0.504);
-    padding: 10px;
-    border-radius: 5px;
-    border: none;
-    transition: 0.3s;
-}
 
-button:hover { 
-    background-color: rgba(43, 0, 255, 0.318);
-    color: rgb(248, 248, 255);
-}
-
-.todo-list-background {
-    padding: 10vh;
-    // border: 1px solid rgba(0, 0, 0, 0.424);
-    margin: 10px;
-    border-radius: 10px;
-    background-color: rgba(255, 255, 255, 0.594);
-}
-
-.todo-card {
-    list-style: none;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;  /* Allows items to wrap when max width is reached */  
-    gap: 10px;        /* Adds spacing between items */
-    justify-content: center; /* Centers items */
-    width: 100%;
-}
-
-
-.todo-title {
-    // border: 2px solid rgba(62, 0, 207, 0.329);
-    background-color: rgb(202, 228, 245);
-    width: 100%;
-    padding: 10px;
-    display: flex;
-    justify-content: space-around;
-    border-radius: 10px;
-    margin-bottom: 5px;
-}
-
-.todo-item {
-    background: #f4f4f4;
-    margin: 5px;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.482);
-    max-width: 150px; /* Prevents items from stretching too much */
-    width: 100%;  /* Ensures the li takes the full available width */
-    word-break: break-word;  /* Breaks long words */
-    overflow-wrap: break-word;  /* Allows wrapping for overflow text */
-    // cursor: pointer;
-    transition: 0.4s;
-}
-
-.todo-item:hover {
-    background-color: yellow;
-    transform: scale(1.1);
-}
-
-.del-btn { 
-    cursor: pointer;
-    background-color: red; /* Default color */
-    -webkit-mask-image: url(../../asset/trash.svg);
-    mask-image: url(../../asset/trash.svg);
-    mask-size: cover;
-    width: 20px; /* Adjust the size as needed */
-    height: 20px;
-}
-
-.del-btn:hover {
-    background-color: rgb(99, 0, 0); /* Default color */
-}
-
-.custom-radio { 
-    cursor: pointer;
-}
-
-/* Hide the default radio button */
-.custom-radio input {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-}
-
-/* Custom Square "Radio" Button */
-.custom-radio .checkmark {
-    width: 20px;
-    height: 20px;
-    border-radius: 4px; /* Make it a square */
-    border: 2px solid #333;
-    background-color: yellow; /* Yellow background */
-    display: inline-block;
-    position: relative;
-    transition: all 0.3s ease;
-}
-
-/* Add checkmark effect when selected */
-.custom-radio input:checked + .checkmark {
-    background-color: green; /* Green when selected */
-    border-color: green;
-}
-
-/* Inner checkmark when selected */
-.custom-radio input:checked + .checkmark::after {
-    content: "✔";
-    font-size: 14px;
-    color: white;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    font-weight: bold;
-}
-
-
-
-
-
-
-
-.card-overlay {
-    position: fixed; /* Stays in place */
-    top: 0;
-    left: 0;
-    width: 100vw; /* Full width of the viewport */
-    height: 100vh; /* Full height of the viewport */
-    background-color: rgba(0, 0, 0, 0.5); /* Transparent black overlay */
-    display: flex;
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    z-index: 999; /* On top of other elements */
-}
-
-.card{ 
-    background-color: rgba(255, 255, 255, 0.812); /* The actual box */
-    padding: 20px;
-    backdrop-filter: blur(10px);          /* Blur the background */
-    -webkit-backdrop-filter: blur(10px); /* Safari support */
-    border-radius: 8px; /* Rounded corners for aesthetics */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Shadow for depth */
-    width: 50%; /* Set a width for the content box */
-    max-width: 1000px; /* Prevent it from getting too wide */
-    min-height: 200px; /* Ensure it has some height */
-    text-align: center; /* Center text */
-    overflow-y: auto;
-}

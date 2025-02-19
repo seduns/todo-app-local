@@ -1,0 +1,33 @@
+.side-nav-bar {
+    background-color: rgb(67, 71, 94);
+    padding: 2px;
+    width: 250px;
+    padding: 10px;
+    height: 100vh; //height for side-bar
+    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.483);
+
+    .con-side-nav-bar {
+        display: flex;
+        flex-direction: column;
+        max-width: 200px;
+        margin: auto;
+
+    }
+    .nav-links { 
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        li a {
+            color: white;   
+        }
+    }
+}   
+
+@media (max-width: 768px) {
+   .side-nav-bar {
+    position: absolute;
+    z-index: 10;
+   }
+}
