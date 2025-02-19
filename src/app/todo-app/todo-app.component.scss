@@ -56,24 +56,28 @@
         width: 100%;
     }
     
-    
-    
     .todo-title {
-        // border: 2px solid rgba(62, 0, 207, 0.329);
-        background-color: rgb(202, 228, 245);
         width: 100%;
-        padding: 10px;
         display: flex;
-        justify-content: space-around;
+        justify-content: space-between;
         border-radius: 10px;
         margin-bottom: 5px;
-        font-family: Arial, Helvetica, sans-serif;
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.732);
+    }
+
+    .todo-description {
+        width: 100%;
+        display: flex;
+        justify-content: start;
+        margin-top: 10px;
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.396);
     }
     
     .complete-task {
         color: rgba(0, 0, 0, 0.224);
         // text-decoration: line-through;
-        
     }
     
     .todo-item {
@@ -208,5 +212,32 @@
         overflow-y: auto;
     }
 }
+
+table {
+    width: 100%; /* Ensure the table takes full width */
+    table-layout: fixed;
+    padding: 10px;
+    // min-width: 800px; /* Set a minimum width for the table */
+}
+
+th {
+    background-color: #343de3;
+    text-align: left;
+    color: white;
+    text-align: center;
+    width: 150px;
+    }
+
+th, td {
+    border: 2px solid #0000005c;
+    border-left: none;
+    border-right: none;
+    padding: 8px;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    }
+
 
 

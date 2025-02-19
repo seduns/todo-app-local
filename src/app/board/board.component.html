@@ -1,0 +1,68 @@
+
+<app-nav-bar></app-nav-bar>
+
+<div class="main-content">
+<app-side-nav-bar></app-side-nav-bar>
+
+    <div class="content">
+        <div class="con-todo">
+            <table>
+                <thead>
+                    <tr>
+                        <th>New</th>
+                        <th>Progress</th>
+                        <th>Done</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <div *ngFor="let todo of getTodoByState('new'), let i=index">
+                                <div
+                                    class="todo-item"
+                                    (click)="openTodos(todo, i, $event)">
+                                    <div class="todo-title">
+                                        {{ todo.title }}
+                                    </div>
+                                    <div class="todo-description">
+                                        {{todo.description}}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div *ngFor="let todo of getTodoByState('progress'), let i=index">
+                                <div
+                                class="todo-item"
+                                (click)="openTodos(todo, i, $event)">
+                                <div class="todo-title">
+                                    {{ todo.title }}
+                                </div>
+                                <div class="todo-description">
+                                    {{todo.description}}
+                                </div>
+                            </div>  
+                            </div>
+                        </td>
+                        <td>
+                            <div *ngFor="let todo of getTodoByState('done'), let i=index">
+                                <div
+                                    class="todo-item"
+                                    (click)="openTodos(todo, i, $event)">
+                                    <div class="todo-title">
+                                        {{ todo.title }}
+                                    </div>
+                                    <div class="todo-description">
+                                        {{todo.description}}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            </div>
+        </div>
+    </div>  

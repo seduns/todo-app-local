@@ -57,9 +57,6 @@ export class HomepageComponent implements OnInit {
     this.selectedDateSubmission = todo.submissionDate;
     this.showTodo = true;
     
-    this.router.navigate(['/todo', index]); 
-    console.log('Router: ' + this.router);
-
     }
 
   setComplete(index: number, event: Event): void {

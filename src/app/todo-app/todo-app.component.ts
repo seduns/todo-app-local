@@ -6,6 +6,9 @@ import { TypeModifier } from '@angular/compiler';
 import { filter } from 'rxjs';
 import { NavBarComponent } from "../nav-bar/nav-bar.component";
 import { SideNavBarComponent } from "../side-nav-bar/side-nav-bar.component";
+import { secureHeapUsed } from 'crypto';
+import { state } from '@angular/animations';
+import { getSymbolIterator } from 'rxjs/internal/symbol/iterator';
 
 @Component({
   selector: 'app-todo-app',
@@ -16,18 +19,22 @@ import { SideNavBarComponent } from "../side-nav-bar/side-nav-bar.component";
 })
 export class TodoAppComponent implements OnInit {
 
-  constructor() {}
+  constructor() {
+   
+  }
 
   title: string = '';
   description: string = '';
+  selectState: string = 'new';
   isComplete: boolean = false;
   submissionDate: string | null = null;
 
-  todos: { title: string, description: string, isComplete: boolean, submissionDate: string}[] = [];
-  allTodos: { title: string, description: string, isComplete: boolean, submissionDate: string}[] = [];
+  todos: { title: string, description: string, isComplete: boolean, submissionDate: string, state: string | null}[] = [];
+  allTodos: { title: string, description: string, isComplete: boolean, submissionDate: string, state: string | null}[] = [];
 
   ngOnInit(): void {
     this.loadTodo();
+
   }
 
   loadTodo(): void { 
@@ -51,6 +58,11 @@ export class TodoAppComponent implements OnInit {
     this.filteredTodo();
   }
 
+  onStateChange(): void { 
+    this.selectState = this.selectState;
+    console.log('State: ', this.selectState);
+  }
+
   filteredTodo(): void {
     if (!this.selectedDate) {
       this.todos = [...this.allTodos]; // Reset to all todos
@@ -67,12 +79,14 @@ export class TodoAppComponent implements OnInit {
   
     console.log(this.todos);
   }
-  
-  
+
+  getTodoByState(state: string) {
+    return this.todos.filter(todo => todo.state === state);
+  }
   
   submit(): void {
-    if (this.title && this.description ) {
-      this.todos.push({ title: this.title, description: this.description, isComplete: this.isComplete, submissionDate: new Date().toLocaleString() });  // Add the todo as an object.
+    if (this.title && this.description && this.selectState) {
+      this.todos.push({ title: this.title, description: this.description, isComplete: this.isComplete, submissionDate: new Date().toLocaleString(), state:  this.selectState });  // Add the todo as an object.
       if (typeof window !== 'undefined') {  // Ensure localStorage is available.
         localStorage.setItem('todos', JSON.stringify(this.todos));  // Save the updated list to localStorage.
       }
@@ -81,6 +95,7 @@ export class TodoAppComponent implements OnInit {
       this.loadTodo();
       this.title = '';  // Clear the input field after submission.
       this.description = '';  // Clear the description field.
+      this.selectState = 'new';
       this.isAddTask = false;
     } 
     else {
@@ -115,30 +130,31 @@ export class TodoAppComponent implements OnInit {
   selectedIndex: number | null = null;
   selectedTitle: string | null = null;
   selectedDescription: string | null = null;
+  selectedStateNew: string | null = null;
   selectedDateSubmission: string | null = null;
   selectedDate: string | null = null;
 
   openTodos(todo: any, index: number, event?: Event): void {
     if (event && event.target instanceof HTMLInputElement) {
         return;  // Do nothing if a radio button was clicked
-    }
+    } 
     
     this.selectedIndex = index;
     this.selectedTitle = todo.title;
     this.selectedDescription = todo.description;
     this.selectedDateSubmission = todo.submissionDate;
+    this.selectedStateNew = todo.state;
     this.showTodo = true;
   }
 
 
   saveEdit(): void { 
-    
-    if ( this.selectedIndex !== null && this.selectedTitle && this.selectedDescription ){
-      
+    if ( this.selectedIndex !== null && this.selectedTitle && this.selectedDescription && this.selectedStateNew ){
       this.todos[this.selectedIndex] = {
         title: this.selectedTitle,
         description: this.selectedDescription,
         isComplete: this.todos[this.selectedIndex].isComplete,
+        state: this.selectedStateNew,
         submissionDate: new Date().toLocaleString()
       };
       alert('Update Success');
@@ -148,6 +164,10 @@ export class TodoAppComponent implements OnInit {
 
     } else {
       alert('Complete all the fields');
+      console.log('New title: ' + this.selectedTitle);
+      console.log('New description:  ' + this.selectedDescription);
+      console.log('New state: ' + this.selectedStateNew);
+      
     }
   }
 

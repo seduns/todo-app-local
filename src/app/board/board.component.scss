@@ -1,0 +1,96 @@
+.main-content { 
+    // border: 1px solid yellow;
+    display: flex;
+    height: 100vh;
+}
+
+.content { 
+    // border: 2px solid rgb(120, 216, 1);
+    width: 100%;
+    height: 100%;
+    max-height: 80vh;
+
+
+    .con-todo {
+        display: flex;
+        // height: 100%;
+        max-height: 80vh;
+        border: 1px solid black;
+        justify-content: end;
+        margin-left: auto;
+    }
+    
+    .todo-title {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        border-radius: 10px;
+        margin-bottom: 5px;
+        font-size: 18px;
+        color: rgba(0, 0, 0, 0.732);
+    }
+
+    .todo-description {
+        width: 100%;
+        display: flex;
+        justify-content: start;
+        margin-top: 10px;
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.396);
+    }
+
+    .todo-item {
+            background: #f4f4f4;
+            margin: 5px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            max-width: 150px;
+            /* Prevents items from stretching too much */
+            width: 100%;
+            /* Ensures the li takes the full available width */
+            word-break: break-word;
+            /* Breaks long words */
+            overflow-wrap: break-word;
+            /* Allows wrapping for overflow text */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.171);
+            // cursor: pointer;
+            transition: 0.4s;
+        }
+        .todo-item:hover {
+            background-color: rgba(164, 183, 235, 0.445);
+            transform: scale(1.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.482);
+        }
+}
+
+table {
+    width: 100%; /* Ensure the table takes full width */
+    table-layout: fixed;
+    padding: 10px;
+    // min-width: 800px; /* Set a minimum width for the table */
+}
+
+th {
+    background-color: #343de3;
+    text-align: left;
+    color: white;
+    text-align: center;
+    width: 150px;
+    }
+
+th, td {
+    border: 2px solid #0000005c;
+    border-left: none;
+    border-right: none;
+    padding: 8px;
+    text-align: center;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    }
+
+    

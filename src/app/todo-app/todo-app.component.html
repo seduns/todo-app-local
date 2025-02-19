@@ -16,14 +16,22 @@
                         <button (click)="closeAddTask()">close</button>
                         <input type="text" placeholder="title" [(ngModel)]="title">
                             <textarea type="text" placeholder="description" [(ngModel)]="description"></textarea>
+                            <select
+                                name=""
+                                id=""
+                                [(ngModel)]="selectState"
+                                (ngModelChange)="onStateChange()">
+                                <option value="new">New</option>
+                            </select>
                             <button (click)="submit()">Submit</button>
                         </div>
                     </div>
                 </div>
+
                 <div class="todo-list-background">
                     <div class="todo-card">
                         <div
-                            class="todo-item"   
+                            class="todo-item"
                             *ngFor="let todo of todos; let i = index;"
                             (click)="openTodos(todo, i, $event)">
                             <div class="todo-title" [ngClass]="{'complete-task' : todo.isComplete}">
@@ -42,8 +50,6 @@
                         </div>
                     </div>
 
-                    
-
                     <div *ngIf="showTodo">
                         <div class="card-overlay">
                             <div class="card">
@@ -53,6 +59,14 @@
                                         type="text"
                                         [(ngModel)]="selectedDescription"
                                         [disabled]="!isEditTodo"></textarea>
+
+                                    <select name="" id="" [(ngModel)]="selectedStateNew" [disabled]="!isEditTodo">
+                                        <option disabled="disabled" selected="selected">Select a state</option>
+                                        <option value="new">New</option>.
+                                        <option value="progress">Progress</option>
+                                        <option value="done">Done</option>
+
+                                    </select>
                                     <input type="text" [(ngModel)]="selectedDateSubmission" disabled="disabled">
                                         <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>
                                         <button *ngIf="isEditTodo" (click)="editTodo()">cancel</button>
