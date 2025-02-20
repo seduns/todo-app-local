@@ -33,7 +33,7 @@
                         <div
                             class="todo-item"
                             *ngFor="let todo of todos; let i = index;"
-                            (click)="openTodos(todo, i, $event)">
+                            (click)="openTodos(todo, i)">
                             <div class="todo-title" [ngClass]="{'complete-task' : todo.isComplete}">
                                 {{ todo.title }}
                                 <label class="custom-radio" (click)="$event.stopPropagation()">
@@ -71,8 +71,8 @@
                                         <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>
                                         <button *ngIf="isEditTodo" (click)="editTodo()">cancel</button>
                                         <button (click)="saveEdit()">save</button>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
+
+                    <!-- Update submit todo, open todo and save -->

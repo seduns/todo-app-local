@@ -1,26 +1,26 @@
-
 <app-nav-bar></app-nav-bar>
 
 <div class="main-content">
-<app-side-nav-bar></app-side-nav-bar>
-
+    <app-side-nav-bar></app-side-nav-bar>
     <div class="content">
         <div class="con-todo">
-            <table>
-                <thead>
-                    <tr>
-                        <th>New</th>
-                        <th>Progress</th>
-                        <th>Done</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <div *ngFor="let todo of getTodoByState('new'), let i=index">
+            <div class="table-container">
+
+                <table>
+                    <thead >
+                        <tr>
+                            <th>New</th>
+                            <th>Progress</th>
+                            <th>Done</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr >
+                            <td>
                                 <div
-                                    class="todo-item"
-                                    (click)="openTodos(todo, i, $event)">
+                                class="table-con-todo-item"
+                                *ngFor="let todo of getTodoByState('new'), let i=index">
+                                <div class="todo-item" (click)="openTodos(todo, i)">
                                     <div class="todo-title">
                                         {{ todo.title }}
                                     </div>
@@ -30,25 +30,11 @@
                                 </div>
                             </div>
                         </td>
-                        <td>
-                            <div *ngFor="let todo of getTodoByState('progress'), let i=index">
+                            <td>
                                 <div
-                                class="todo-item"
-                                (click)="openTodos(todo, i, $event)">
-                                <div class="todo-title">
-                                    {{ todo.title }}
-                                </div>
-                                <div class="todo-description">
-                                    {{todo.description}}
-                                </div>
-                            </div>  
-                            </div>
-                        </td>
-                        <td>
-                            <div *ngFor="let todo of getTodoByState('done'), let i=index">
-                                <div
-                                    class="todo-item"
-                                    (click)="openTodos(todo, i, $event)">
+                                class="table-con-todo-item"
+                                *ngFor="let todo of getTodoByState('progress'), let i=index">
+                                <div class="todo-item" (click)="openTodos(todo, i)">
                                     <div class="todo-title">
                                         {{ todo.title }}
                                     </div>
@@ -58,11 +44,47 @@
                                 </div>
                             </div>
                         </td>
-                    </tr>
-                </tbody>
-            </table>
+                            <td>
+                                <div
+                                class="table-con-todo-item"
+                                *ngFor="let todo of getTodoByState('done'), let i=index">
+                                <div class="todo-item" (click)="openTodos(todo, i)">
+                                    <div class="todo-title">
+                                        {{ todo.title }}
+                                    </div>
+                                    <div class="todo-description">
+                                        {{todo.description}}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+        </div>
+    </div>
+</div>
 
-
+<div *ngIf="showTodo">
+    <div class="card-overlay">
+        <div class="card">
+            <button (click)="closeTodos()">close</button>
+            <input type="text" [(ngModel)]="selectedTitle" [disabled]="!isEditTodo">
+                <textarea
+                    type="text"
+                    [(ngModel)]="selectedDescription"
+                    [disabled]="!isEditTodo"></textarea>
+                <select name="" id="" [(ngModel)]="selectedStateNew" [disabled]="!isEditTodo">
+                    <option disabled="disabled" selected="selected">Select a state</option>
+                    <option value="new">New</option>.
+                    <option value="progress">Progress</option>
+                    <option value="done">Done</option>
+                </select>
+                <input type="text" [(ngModel)]="selectedDateSubmission" disabled="disabled">
+                    <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>
+                    <button *ngIf="isEditTodo" (click)="editTodo()">cancel</button>
+                    <button (click)="saveEdit()">save</button>
+                </div>
             </div>
         </div>
-    </div>  

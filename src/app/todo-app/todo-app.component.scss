@@ -20,7 +20,6 @@
         display: flex;
         justify-content: center;
         align-items: center;
-
     }
     
     .add-task-btn { 
@@ -105,15 +104,10 @@
         align-items: center;
         border-radius: 10px;
         max-width: 150px;
-        /* Prevents items from stretching too much */
         width: 100%;
-        /* Ensures the li takes the full available width */
         word-break: break-word;
-        /* Breaks long words */
         overflow-wrap: break-word;
-        /* Allows wrapping for overflow text */
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.171);
-        // cursor: pointer;
         transition: 0.4s;
     }
     
@@ -186,44 +180,28 @@
     
     .card-overlay {
         position: fixed;
-        /* Stays in place */
         top: 0;
         left: 0;
         width: 100vw;
-        /* Full width of the viewport */
         height: 100vh;
-        /* Full height of the viewport */
         background-color: rgba(0, 0, 0, 0.5);
-        /* Transparent black overlay */
         display: flex;
         justify-content: center;
-        /* Center horizontally */
         align-items: center;
-        /* Center vertically */
         z-index: 999;
-        /* On top of other elements */
     }
     
     .card {
         background-color: rgba(255, 255, 255, 0.812);
-        /* The actual box */
         padding: 20px;
         backdrop-filter: blur(10px);
-        /* Blur the background */
         -webkit-backdrop-filter: blur(10px);
-        /* Safari support */
         border-radius: 8px;
-        /* Rounded corners for aesthetics */
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-        /* Shadow for depth */
         width: 50%;
-        /* Set a width for the content box */
         max-width: 1000px;
-        /* Prevent it from getting too wide */
         min-height: 200px;
-        /* Ensure it has some height */
         text-align: center;
-        /* Center text */
         overflow-y: auto;
     }
 }

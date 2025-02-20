@@ -1,22 +1,22 @@
 .main-content { 
-    // border: 1px solid yellow;
     display: flex;
-    height: 100vh;
+    height: 100vw;
+    // border: 1px solid yellow;
 }
 
 .content { 
-    // border: 2px solid rgb(120, 216, 1);
-    width: 100%;
+    // border: 2px solid rgb(0, 47, 255);
     height: 100%;
-    max-height: 80vh;
+    max-height: 100vh;
+    width: 100%;
 
 
     .con-todo {
         display: flex;
-        // height: 100%;
-        max-height: 80vh;
+        height: 100%;
+        max-height: 70vh;
         border: 1px solid black;
-        justify-content: end;
+        // overflow: scroll;
         margin-left: auto;
     }
     
@@ -38,6 +38,10 @@
         font-size: 14px;
         color: rgba(0, 0, 0, 0.396);
     }
+    .table-con-todo-item {
+        display: flex;
+        justify-content: center;
+    }
 
     .todo-item {
             background: #f4f4f4;
@@ -49,16 +53,12 @@
             align-items: center;
             border-radius: 10px;
             max-width: 150px;
-            /* Prevents items from stretching too much */
             width: 100%;
-            /* Ensures the li takes the full available width */
             word-break: break-word;
-            /* Breaks long words */
             overflow-wrap: break-word;
-            /* Allows wrapping for overflow text */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.171);
-            // cursor: pointer;
             transition: 0.4s;
+            height: 100%;
         }
         .todo-item:hover {
             background-color: rgba(164, 183, 235, 0.445);
@@ -67,30 +67,78 @@
         }
 }
 
-table {
-    width: 100%; /* Ensure the table takes full width */
-    table-layout: fixed;
-    padding: 10px;
-    // min-width: 800px; /* Set a minimum width for the table */
+.card-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
 }
 
-th {
-    background-color: #343de3;
-    text-align: left;
-    color: white;
+.card {
+    background-color: rgba(255, 255, 255, 0.812);
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: 50%;
+    max-width: 1000px;
+    min-height: 200px;
     text-align: center;
-    width: 150px;
-    }
+    overflow-y: auto;
+}
+
+.table-container {
+    height: 100%;
+    position: relative;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
 
 th, td {
-    border: 2px solid #0000005c;
-    border-left: none;
-    border-right: none;
     padding: 8px;
-    text-align: center;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    }
+    border: 1px solid #ddd;
+    text-align: left;
+    background: white;
+}
+
+thead th {
+    position: sticky;
+    top: 0;
+    background: #f1f1f1; /* Add background to avoid transparency while scrolling */
+    z-index: 2; /* Ensure header is above scrollable content */
+
+}
+
+tbody {
+    display: block;
+    overflow-y: auto;
+    overflow-x:hidden;
+    height: 100%;
+    max-height: 300px; 
+}
+
+tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed; /* Maintain column widths */
+}
+
+    @media (max-width: 768px) {
+        th, td { 
+            padding: 2px;
+        }
+     
+        
+     }
 
     

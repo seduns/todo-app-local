@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { BlobOptions } from 'buffer';
 import { TypeModifier } from '@angular/compiler';
-import { filter } from 'rxjs';
+import { filter, retry } from 'rxjs';
 import { NavBarComponent } from "../nav-bar/nav-bar.component";
 import { SideNavBarComponent } from "../side-nav-bar/side-nav-bar.component";
 import { secureHeapUsed } from 'crypto';
@@ -19,21 +19,30 @@ import { getSymbolIterator } from 'rxjs/internal/symbol/iterator';
 })
 export class TodoAppComponent implements OnInit {
 
-  constructor() {
-   
-  }
+  constructor() {}
 
+  todoId: number = 0;
   title: string = '';
   description: string = '';
   selectState: string = 'new';
   isComplete: boolean = false;
   submissionDate: string | null = null;
 
-  todos: { title: string, description: string, isComplete: boolean, submissionDate: string, state: string | null}[] = [];
-  allTodos: { title: string, description: string, isComplete: boolean, submissionDate: string, state: string | null}[] = [];
+  todos: { todoId: number, title: string, description: string, isComplete: boolean, submissionDate: string, state: string | null}[] = [];
+  allTodos: { todoId: number, title: string, description: string, isComplete: boolean, submissionDate: string, state: string | null}[] = [];
 
   ngOnInit(): void {
     this.loadTodo();
+    this.getLatestTodoId();
+
+    this.todos.forEach(todo => { 
+      if (todo.state === "done") {
+        todo.isComplete = true;
+      } else { 
+        todo.isComplete = false;
+      }
+
+    })
 
   }
 
@@ -83,13 +92,35 @@ export class TodoAppComponent implements OnInit {
   getTodoByState(state: string) {
     return this.todos.filter(todo => todo.state === state);
   }
+
+  storeLatestTodo: number = 0 ; 
+
+  getLatestTodoId(): number { 
+    if (this.allTodos.length === 0) { 
+        console.log('No item');
+        this.storeLatestTodo = 0; // Initialize to 0 if no items exist
+        return 0;
+    }
+
+    const latestTodoId = Math.max(...this.allTodos.map(todo => todo.todoId));
+    this.storeLatestTodo = latestTodoId;
+
+    console.log('Latest Todo ID: ' + this.storeLatestTodo);
+    return latestTodoId;
+}
+
   
   submit(): void {
     if (this.title && this.description && this.selectState) {
-      this.todos.push({ title: this.title, description: this.description, isComplete: this.isComplete, submissionDate: new Date().toLocaleString(), state:  this.selectState });  // Add the todo as an object.
-      if (typeof window !== 'undefined') {  // Ensure localStorage is available.
-        localStorage.setItem('todos', JSON.stringify(this.todos));  // Save the updated list to localStorage.
+
+      this.todoId = this.getLatestTodoId() + 1;
+
+      this.todos.push({ todoId: this.todoId, title: this.title, description: this.description, isComplete: this.isComplete, submissionDate: new Date().toLocaleString(), state:  this.selectState });  // Add the todo as an object.
+
+      if (typeof window !== 'undefined') {  // Ensure localStorage available.
+        localStorage.setItem('todos', JSON.stringify(this.todos));  // submit new to localStorage.
       }
+
       console.log('New todo added: ', this.title);
       alert('New todo added');
       this.loadTodo();
@@ -97,6 +128,7 @@ export class TodoAppComponent implements OnInit {
       this.description = '';  // Clear the description field.
       this.selectState = 'new';
       this.isAddTask = false;
+      this.getLatestTodoId();
     } 
     else {
       alert('Complete all the form!');
@@ -108,6 +140,8 @@ export class TodoAppComponent implements OnInit {
   
     // Directly toggle the isComplete property for the clicked todo
     this.todos[index].isComplete = !this.todos[index].isComplete;
+
+    this.todos[index].state = this.todos[index].isComplete ? "done" : "new";
 
      // Save the updated todos to localStorage
     localStorage.setItem('todos', JSON.stringify(this.todos));
@@ -126,19 +160,21 @@ export class TodoAppComponent implements OnInit {
   }
 
   showTodo: boolean = false;
-
   selectedIndex: number | null = null;
+  selectedId: number | null = null;
   selectedTitle: string | null = null;
   selectedDescription: string | null = null;
   selectedStateNew: string | null = null;
   selectedDateSubmission: string | null = null;
   selectedDate: string | null = null;
 
-  openTodos(todo: any, index: number, event?: Event): void {
+  openTodos(todo: { todoId: number, title: string, description: string, isComplete: boolean, submissionDate: string, state: string | null}, index: number): void  {
     if (event && event.target instanceof HTMLInputElement) {
         return;  // Do nothing if a radio button was clicked
     } 
-    
+
+    console.log('Selected todo id: ' + todo.todoId);
+    this.selectedId = todo.todoId;
     this.selectedIndex = index;
     this.selectedTitle = todo.title;
     this.selectedDescription = todo.description;
@@ -147,13 +183,13 @@ export class TodoAppComponent implements OnInit {
     this.showTodo = true;
   }
 
-
   saveEdit(): void { 
     if ( this.selectedIndex !== null && this.selectedTitle && this.selectedDescription && this.selectedStateNew ){
       this.todos[this.selectedIndex] = {
+        todoId: this.selectedId ?? 0,
         title: this.selectedTitle,
         description: this.selectedDescription,
-        isComplete: this.todos[this.selectedIndex].isComplete,
+        isComplete: this.selectedStateNew === "done" ? true : false,
         state: this.selectedStateNew,
         submissionDate: new Date().toLocaleString()
       };
@@ -164,7 +200,9 @@ export class TodoAppComponent implements OnInit {
 
     } else {
       alert('Complete all the fields');
+      console.log('todoId : ' + this.selectedId);
       console.log('New title: ' + this.selectedTitle);
+      console.log('Complete: ' + this.isComplete);
       console.log('New description:  ' + this.selectedDescription);
       console.log('New state: ' + this.selectedStateNew);
       
