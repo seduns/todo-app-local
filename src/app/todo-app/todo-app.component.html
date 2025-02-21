@@ -6,7 +6,7 @@
     <app-side-nav-bar></app-side-nav-bar>
     <div class="todo-content">
         <div class="add-task-con">
-            <!-- <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()"></div> -->
+            <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()">
             <div *ngIf="isAddTask">
                 <div class="card-overlay">
                     <div class="card">
@@ -14,11 +14,20 @@
                         <input type="text" placeholder="title" [(ngModel)]="title">
                         <textarea type="text" placeholder="description" [(ngModel)]="description"></textarea>
                         <select
-                        name=""
+                        name="state"
                         id=""
                         [(ngModel)]="selectState"
                         (ngModelChange)="onStateChange()">
                         <option value="new">New</option>
+                    </select>
+                        <select
+                        name="level"
+                        id=""
+                        [(ngModel)]="selectLevel"
+                        (ngModelChange)="onLevelChange()">
+                        <option value="high">High</option>
+                        <option value="medium">Medium</option>
+                        <option value="low">Low</option>
                     </select>
                     <button (click)="submit()">Submit</button>
                 </div>
@@ -35,12 +44,13 @@
                             *ngFor="let todo of todos; let i = index;"
                             (click)="openTodos(todo, i)">
                             <div class="todo-title" [ngClass]="{'complete-task' : todo.isComplete}">
+                                <div class="level-con" [ngClass]="{'high-level' : todo.level === 'high', 'medium-level' : todo.level === 'medium', 'low-level' : todo.level === 'low'}">{{todo.level}}</div>
                                 {{ todo.title }}
                                 <label class="custom-radio" (click)="$event.stopPropagation()">
                                     <input
                                         class="check-btn"
                                         type="radio"
-                                        [checked]="todo.isComplete"
+                                        [checked]="todo.isComplete" 
                                         (click)="setComplete(i, $event); $event.stopPropagation()">
                                         <span class="checkmark"></span>
                                     </label>
@@ -60,12 +70,17 @@
                                         [(ngModel)]="selectedDescription"
                                         [disabled]="!isEditTodo"></textarea>
 
-                                    <select name="" id="" [(ngModel)]="selectedStateNew" [disabled]="!isEditTodo">
+                                    <select name="state" id="" [(ngModel)]="selectedStateNew" (ngModelChange)="onNewStateChange()" [disabled]="!isEditTodo">
                                         <option disabled="disabled" selected="selected">Select a state</option>
                                         <option value="new">New</option>.
                                         <option value="progress">Progress</option>
                                         <option value="done">Done</option>
-
+                                    </select>
+                                    <select name="level" id="" [(ngModel)]="selectedLevelNew" (ngModelChange)="onNewLevelChange()" [disabled]="!isEditTodo">
+                                        <option disabled="disabled" selected="selected">Select a level</option>
+                                        <option value="high">High</option>.
+                                        <option value="medium">Medium</option>
+                                        <option value="low">Low</option>
                                     </select>
                                     <input type="text" [(ngModel)]="selectedDateSubmission" disabled="disabled">
                                         <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>

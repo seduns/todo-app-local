@@ -12,11 +12,13 @@
                     <div
                     class="todo-item"   
                     *ngFor="let todo of todos; let i = index;"
-                    (click)="openTodos(todo, i, $event)">
+                    (click)="openTodos(todo, i, $event)"
+                    >
                     <div class="todo-title" >
                         {{ todo.title }}
                     </div>
                     <div class="todo-description">
+                        
                         {{ limitWords(todo.description, 50)}}
                     </div>
                 </div>

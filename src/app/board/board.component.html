@@ -25,7 +25,7 @@
                                         {{ todo.title }}
                                     </div>
                                     <div class="todo-description">
-                                        {{todo.description}}
+                                        {{limitWords(todo.description, 50)}}
                                     </div>
                                 </div>
                             </div>
@@ -39,7 +39,7 @@
                                         {{ todo.title }}
                                     </div>
                                     <div class="todo-description">
-                                        {{todo.description}}
+                                        {{limitWords(todo.description, 50)}}
                                     </div>
                                 </div>
                             </div>
@@ -53,7 +53,7 @@
                                         {{ todo.title }}
                                     </div>
                                     <div class="todo-description">
-                                        {{todo.description}}
+                                        {{limitWords(todo.description, 50)}}
                                     </div>
                                 </div>
                             </div>
@@ -75,11 +75,17 @@
                     type="text"
                     [(ngModel)]="selectedDescription"
                     [disabled]="!isEditTodo"></textarea>
-                <select name="" id="" [(ngModel)]="selectedStateNew" [disabled]="!isEditTodo">
+                <select name="state" id="" [(ngModel)]="selectedStateNew" [disabled]="!isEditTodo">
                     <option disabled="disabled" selected="selected">Select a state</option>
                     <option value="new">New</option>.
                     <option value="progress">Progress</option>
                     <option value="done">Done</option>
+                </select>
+                <select name="level" id="" [(ngModel)]="selectedLevelNew" [disabled]="!isEditTodo">
+                    <option disabled="disabled" selected="selected">Select a level</option>
+                    <option value="high">High</option>.
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
                 </select>
                 <input type="text" [(ngModel)]="selectedDateSubmission" disabled="disabled">
                     <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>

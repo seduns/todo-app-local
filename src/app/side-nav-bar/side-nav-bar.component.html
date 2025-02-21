@@ -1,10 +1,15 @@
-<nav class="side-nav-bar">
+<nav class="side-nav-bar"  [ngClass]="{'minimize-nav' : isMinimizeNav}">
     <div class="con-side-nav-bar">
         <ul class="nav-links">
-            <li><a href="/home">Home</a></li>
-            <li><a href="/todo">Todo</a></li>
-            <li><a href="/board">Board</a></li>
-            <li><a href=""></a>Link</li>
+            <li *ngIf="!isMinimizeNav" ><a href="/home"> <fa-icon [icon]="faHome"></fa-icon> Home</a></li>
+            <li *ngIf="!isMinimizeNav" ><a href="/todo"><fa-icon [icon]="faListCheck"></fa-icon> Todo</a></li>
+            <li *ngIf="!isMinimizeNav" ><a href="/board"><fa-icon [icon]="faTableList"></fa-icon> Board</a></li>
+            <li *ngIf="isMinimizeNav" ><a href="/home"><fa-icon [icon]="faHome"></fa-icon></a></li>
+            <li *ngIf="isMinimizeNav" ><a href="/todo"><fa-icon [icon]="faListCheck"></fa-icon></a></li>
+            <li *ngIf="isMinimizeNav" ><a href="/board"><fa-icon [icon]="faTableList"></fa-icon></a></li>
+            <li><button class="nav-minimize" *ngIf="!isMinimizeNav"  (click)="minimizeNav()" > << </button></li>
+            <li><button *ngIf="isMinimizeNav" class="nav-minimize" (click)="minimizeNav()" > >> </button></li>
         </ul>
+        
     </div>
 </nav>      

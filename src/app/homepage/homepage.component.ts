@@ -4,6 +4,7 @@ import { NavBarComponent } from "../nav-bar/nav-bar.component";
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { Todo } from '../model/todo.mode';
 
 @Component({
   selector: 'app-homepage',
@@ -14,13 +15,12 @@ import { Router } from '@angular/router';
 })
 export class HomepageComponent implements OnInit {
 
-  todos: { title: string, description: string, isComplete: boolean, submissionDate: string}[] = [];
-  allTodos: { title: string, description: string, isComplete: boolean, submissionDate: string}[] = [];
-
+  todos:Todo[] =[] ;
+  allTodos: Todo[] =[];
   constructor(private router : Router) {}
 
-  ngOnInit(): void {
-      this.loadTodo();
+    ngOnInit(): void {
+        this.loadTodo();
   } 
 
   showTodo: boolean = false;
@@ -41,7 +41,6 @@ export class HomepageComponent implements OnInit {
         this.todos.forEach(todo => {
             // console.log("Stored Date:", todo.submissionDate);
         });
-
       }
     }
   }
@@ -56,6 +55,8 @@ export class HomepageComponent implements OnInit {
     this.selectedDescription = todo.description;
     this.selectedDateSubmission = todo.submissionDate;
     this.showTodo = true;
+
+    this.router.navigate(['todo']);
     
     }
 

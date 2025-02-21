@@ -72,7 +72,6 @@
         
         .complete-task {
             color: rgba(0, 0, 0, 0.224);
-            // text-decoration: line-through;
         }
         
         .todo-item {
@@ -90,6 +89,7 @@
             overflow-wrap: break-word;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.171);
             transition: 0.4s;
+            cursor: pointer;
         }
         
         .todo-item:hover {

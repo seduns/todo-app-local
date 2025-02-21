@@ -3,6 +3,7 @@ import { SideNavBarComponent } from "../side-nav-bar/side-nav-bar.component";
 import { NavBarComponent } from "../nav-bar/nav-bar.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Todo } from '../model/todo.mode';
 
 @Component({
   selector: 'app-board',
@@ -17,8 +18,8 @@ export class BoardComponent implements OnInit {
     this.loadTodo();
   } 
 
-  todos: { todoId: number, title: string, description: string, isComplete: boolean, submissionDate: string, state: string | null}[] = [];
-  allTodos: { todoId: number, title: string, description: string, isComplete: boolean, submissionDate: string, state: string | null}[] = [];
+   todos:Todo[] =[] ;
+   allTodos: Todo[] =[];
 
   getTodoByState(state: string) {
     return this.todos.filter(todo => todo.state === state);
@@ -35,7 +36,6 @@ export class BoardComponent implements OnInit {
         this.todos.forEach(todo => {
             console.log("Stored Date:", todo.submissionDate);
         });
-
       }
     }
   }
@@ -46,25 +46,28 @@ export class BoardComponent implements OnInit {
   selectedTitle: string | null = null;
   selectedDescription: string | null = null;
   selectedStateNew: string | null = null;
+  selectedLevelNew: string | null = null;
+  selectedLevel: string | null = null;
   selectedDateSubmission: string | null = null;
   selectedDate: string | null = null;
 
-  openTodos(todo: { todoId: number, title: string, description: string, isComplete: boolean, submissionDate: string, state: string | null}, index: number): void {
+  openTodos(todo: Todo, index: number): void {
     if (event && event.target instanceof HTMLInputElement) {
         return;  // Do nothing if a radio button was clicked
     } 
     console.log('Selected todo id: ' + todo.todoId);
-    this.selectedId = todo.todoId;
+    this.selectedId = todo.todoId;  
     this.selectedIndex = index;
     this.selectedTitle = todo.title;
     this.selectedDescription = todo.description;
     this.selectedDateSubmission = todo.submissionDate;
     this.selectedStateNew = todo.state;
+    this.selectedLevelNew = todo.level;
     this.showTodo = true;
   }
 
   saveEdit(): void { 
-    if ( this.selectedId !== null && this.selectedTitle && this.selectedDescription && this.selectedStateNew ){
+    if ( this.selectedId !== null && this.selectedTitle && this.selectedDescription && this.selectedStateNew && this.selectedLevelNew ){
       
       const todoIndex = this.todos.findIndex(todo => todo.todoId === this.selectedId);
 
@@ -75,10 +78,11 @@ export class BoardComponent implements OnInit {
           description: this.selectedDescription,
           isComplete: this.todos[todoIndex].isComplete,
           state: this.selectedStateNew,
+          level: this.selectedLevelNew,
           submissionDate: new Date().toLocaleString()
         };
         alert('Update Success');
-        localStorage.setItem('todos', JSON.stringify(this.todos));
+        localStorage.setItem('todos', JSON.stringify(this.todos));  
         this.loadTodo();
         this.selectedDateSubmission = new Date().toLocaleString(); 
         
@@ -93,10 +97,14 @@ export class BoardComponent implements OnInit {
       console.log('New description:  ' + this.selectedDescription);
       console.log('New state: ' + this.selectedStateNew);
       
-    }
+    } 
   }
 
-  
+  limitWords(description: string, limit: number = 10): string {
+    if (!description) return '';
+    const words = description.split(' '); 
+    return words.length > limit ? words.slice(0, limit).join(' ') + '...' : description;
+  }
 
   isEditTodo: boolean = false;
 

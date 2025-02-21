@@ -37,6 +37,12 @@
         margin-top: 10px;
         font-size: 14px;
         color: rgba(0, 0, 0, 0.396);
+
+        text-wrap: nowrap;
+        overflow: hidden;
+        display: block;
+        text-overflow:ellipsis;
+
     }
     .table-con-todo-item {
         display: flex;
