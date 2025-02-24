@@ -1,20 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-import { BlobOptions } from 'buffer';
-import { TypeModifier } from '@angular/compiler';
-import { filter, retry } from 'rxjs';
-import { NavBarComponent } from "../nav-bar/nav-bar.component";
-import { SideNavBarComponent } from "../side-nav-bar/side-nav-bar.component";
-import { secureHeapUsed } from 'crypto';
-import { state } from '@angular/animations';
-import { getSymbolIterator } from 'rxjs/internal/symbol/iterator';
 import { Todo } from '../model/todo.mode';
 
 @Component({
   selector: 'app-todo-app',
   standalone: true,
-  imports: [CommonModule, FormsModule, NavBarComponent, SideNavBarComponent],
+  imports: [CommonModule, FormsModule],
   templateUrl: './todo-app.component.html',
   styleUrls: ['./todo-app.component.scss']
 })

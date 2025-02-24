@@ -1,0 +1,34 @@
+.app-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.content-wrapper {
+    display: flex;
+    flex-grow: 1;
+    overflow: hidden;
+    transition: width 0.3s;
+}
+
+
+.side-nav {
+    flex-shrink: 0;
+    transition: width 0.3s;
+}
+
+.main-content { 
+    flex-grow: 1;
+    padding: 1rem;
+    overflow: auto;
+    transition: width 0.3s;
+}
+
+.minimize-nav .side-nav {
+    width: 60px; /* Minimized width */
+}
+
+.minimize-nav .main-content {
+    width: calc(100% - 60px);
+}

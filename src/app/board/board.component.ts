@@ -8,7 +8,7 @@ import { Todo } from '../model/todo.mode';
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [SideNavBarComponent, NavBarComponent, CommonModule, FormsModule],
+  imports: [ CommonModule, FormsModule],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss'
 })
@@ -75,7 +75,7 @@ export class BoardComponent implements OnInit {
         this.todos[todoIndex] = {
           todoId: this.selectedId,
           title: this.selectedTitle,
-          description: this.selectedDescription,
+          description: this.selectedDescription,  
           isComplete: this.todos[todoIndex].isComplete,
           state: this.selectedStateNew,
           level: this.selectedLevelNew,

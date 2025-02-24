@@ -1,15 +1,17 @@
-<nav class="side-nav-bar"  [ngClass]="{'minimize-nav' : isMinimizeNav}">
+<nav class="side-nav-bar" [ngClass]="{'minimize-nav' : isMinimizeNav}">
     <div class="con-side-nav-bar">
         <ul class="nav-links">
-            <li *ngIf="!isMinimizeNav" ><a href="/home"> <fa-icon [icon]="faHome"></fa-icon> Home</a></li>
-            <li *ngIf="!isMinimizeNav" ><a href="/todo"><fa-icon [icon]="faListCheck"></fa-icon> Todo</a></li>
-            <li *ngIf="!isMinimizeNav" ><a href="/board"><fa-icon [icon]="faTableList"></fa-icon> Board</a></li>
-            <li *ngIf="isMinimizeNav" ><a href="/home"><fa-icon [icon]="faHome"></fa-icon></a></li>
-            <li *ngIf="isMinimizeNav" ><a href="/todo"><fa-icon [icon]="faListCheck"></fa-icon></a></li>
-            <li *ngIf="isMinimizeNav" ><a href="/board"><fa-icon [icon]="faTableList"></fa-icon></a></li>
-            <li><button class="nav-minimize" *ngIf="!isMinimizeNav"  (click)="minimizeNav()" > << </button></li>
-            <li><button *ngIf="isMinimizeNav" class="nav-minimize" (click)="minimizeNav()" > >> </button></li>
+            <li *ngIf="!isMinimizeNav"><a routerLink="/home"><fa-icon [icon]="faHome"></fa-icon> Home</a></li>
+            <li *ngIf="!isMinimizeNav"><a routerLink="/todo"><fa-icon [icon]="faListCheck"></fa-icon> Todo</a></li>
+            <li *ngIf="!isMinimizeNav"><a routerLink="/board"><fa-icon [icon]="faTableList"></fa-icon> Board</a></li>
+            <li *ngIf="isMinimizeNav"><a routerLink="/home"><fa-icon [icon]="faHome"></fa-icon></a></li>
+            <li *ngIf="isMinimizeNav"><a routerLink="/todo"><fa-icon [icon]="faListCheck"></fa-icon></a></li>
+            <li *ngIf="isMinimizeNav"><a routerLink="/board"><fa-icon [icon]="faTableList"></fa-icon></a></li>
         </ul>
-        
+        <!-- Minimize button container -->
+        <div class="nav-minimize-container" [ngClass]="{'nav-minimize-on' : isMinimizeNav}">
+            <button class="nav-minimize" *ngIf="!isMinimizeNav" (click)="minimizeNav()"> << </button>
+            <button *ngIf="isMinimizeNav" class="nav-minimize"  [ngClass]="{'nav-minimize-on-btn' : isMinimizeNav}" (click)="minimizeNav()"> >> </button>
+        </div>
     </div>
-</nav>      
+</nav>

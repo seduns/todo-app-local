@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { SideNavBarComponent } from "../side-nav-bar/side-nav-bar.component";
-import { NavBarComponent } from "../nav-bar/nav-bar.component";
-import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Todo } from '../model/todo.mode';
@@ -9,7 +6,7 @@ import { Todo } from '../model/todo.mode';
 @Component({
   selector: 'app-homepage',
   standalone: true,
-  imports: [SideNavBarComponent, NavBarComponent, CommonModule],
+  imports: [CommonModule],
   templateUrl: './homepage.component.html',
   styleUrl: './homepage.component.scss'
 })
