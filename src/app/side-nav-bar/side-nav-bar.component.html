@@ -10,8 +10,8 @@
         </ul>
         <!-- Minimize button container -->
         <div class="nav-minimize-container" [ngClass]="{'nav-minimize-on' : isMinimizeNav}">
-            <button class="nav-minimize" *ngIf="!isMinimizeNav" (click)="minimizeNav()"> << </button>
-            <button *ngIf="isMinimizeNav" class="nav-minimize"  [ngClass]="{'nav-minimize-on-btn' : isMinimizeNav}" (click)="minimizeNav()"> >> </button>
+            <button class="nav-minimize" *ngIf="!isMinimizeNav" (click)="minimizeNav()"> <fa-icon [icon]="faAngleLeft"></fa-icon> </button>
+            <button *ngIf="isMinimizeNav" class="nav-minimize"  [ngClass]="{'nav-minimize-on-btn' : isMinimizeNav}" (click)="minimizeNav()"> <fa-icon [icon]="faAngleRight"></fa-icon> </button>
         </div>
     </div>
 </nav>

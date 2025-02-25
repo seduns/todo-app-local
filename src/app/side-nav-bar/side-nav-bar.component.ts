@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faCoffee, faHome, faListCheck, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesLeft, faAnglesRight, faArrowRight, faCoffee, faHome, faListCheck, faTableList } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-side-nav-bar',
@@ -18,6 +18,10 @@ export class SideNavBarComponent implements OnInit {
   faHome = faHome;
   faTableList = faTableList;
   faListCheck = faListCheck;
+  faAngleLeft = faAnglesLeft;
+  faAngleRight = faAnglesRight;
+
+
   isMinimizeNav: boolean = false;
   
   ngOnInit(): void {
