@@ -7,5 +7,6 @@ export interface Todo {
     submissionDate: string;
     state: string;
     level: string;
+    categories: string;
 
 }

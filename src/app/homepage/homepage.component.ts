@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { Todo } from '../model/todo.mode';
+import { stringify } from 'node:querystring';
+import { consumerAfterComputation } from '@angular/core/primitives/signals';
 
 @Component({
   selector: 'app-homepage',
@@ -18,6 +20,7 @@ export class HomepageComponent implements OnInit {
 
     ngOnInit(): void {
         this.loadTodo();
+        this.totalCategoriesSubmit();
   } 
 
   showTodo: boolean = false;
@@ -26,6 +29,9 @@ export class HomepageComponent implements OnInit {
   selectedDescription: string | null = null;
   selectedDateSubmission: string | null = null;
   selectedDate: string | null = null;
+
+  totalTask : number = 0;
+  totalCategorisSubmit : number = 0;
 
   loadTodo(): void { 
     if (typeof window != 'undefined') { 
@@ -41,6 +47,29 @@ export class HomepageComponent implements OnInit {
       }
     }
   }
+
+  getTodoByCategories(categories: string) {
+    return this.todos.filter(todo => todo.categories === categories);
+  }
+
+  categoryCounts: { [key: string]: number } = {};
+
+  totalCategoriesSubmit(): void {
+      this.categoryCounts = {};
+
+      this.todos.forEach((todo) => { 
+          const category = todo.categories;
+          if (category) { 
+              this.categoryCounts[category] = (this.categoryCounts[category] || 0) + 1;
+          }
+      });
+
+      console.log('Total submit by categories:', this.categoryCounts);
+  }
+
+
+
+
 
   openTodos(todo: any, index: number, event?: Event): void {
     if (event && event.target instanceof HTMLInputElement) {

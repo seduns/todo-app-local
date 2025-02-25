@@ -19,6 +19,7 @@ export class TodoAppComponent implements OnInit {
   description: string = '';
   selectState: string = 'new';
   selectLevel: string = 'medium';
+  selectCategories: string | null = null;
   isComplete: boolean = false;
   submissionDate: string | null = null;
   storeLatestTodo: number = 0 ; 
@@ -48,7 +49,7 @@ export class TodoAppComponent implements OnInit {
   
         console.log("Stored Todos:", this.todos);
         this.todos.forEach(todo => {
-            console.log("Stored Date:", todo.submissionDate);
+            // console.log("Stored Date:", todo.submissionDate);
         });
       }
     }
@@ -56,7 +57,7 @@ export class TodoAppComponent implements OnInit {
 
   onDateChange(): void {
     console.log('Selected Date: ', this.selectedDate);
-    this.filteredTodo();
+    this.filteredTodos();
   }
 
   onStateChange(): void { 
@@ -69,34 +70,83 @@ export class TodoAppComponent implements OnInit {
   }
 
   onLevelChange(): void { 
-    console.log('State: ', this.selectLevel);
+    console.log('Level: ', this.selectLevel);
   }
   
   onNewLevelChange(): void { 
-    console.log('State: ', this.selectedLevelNew);
-
+    console.log('Level: ', this.selectedLevelNew);
+  }
+  
+  onCategoriesChange(): void { 
+    console.log('Categories: ', this.selectCategories);
   }
 
-  filteredTodo(): void {
-    if (!this.selectedDate) {
-      this.todos = [...this.allTodos]; // Reset to all todos
-      return;
+  onNewCategoriesChange(): void { 
+    console.log('Categories: ', this.selectedCategoriesNew);
+  }
+
+  filteredTodos(): void {
+    // Start with all todos as the base
+    this.todos = [...this.allTodos];
+
+    if (this.selectedLevelOption) { 
+      const selectLevel = this.selectedLevelOption;
+      this.todos = this.allTodos.filter((todo) => {
+        return todo.level === selectLevel;
+      }) 
     }
-  
-    const selectedDateString = new Date(this.selectedDate).toLocaleDateString(); // Convert selected date to local format
-  
-    this.todos = this.allTodos.filter((todo) => {
-      const filterDate = new Date(todo.submissionDate).toLocaleDateString(); // Convert stored date to local format
-      console.log(`Comparing: ${filterDate} === ${selectedDateString}`); // Log comparison
-      return filterDate === selectedDateString; // Compare both formatted dates
-    });
-  
-    console.log(this.todos);
-  }
 
-  getTodoByState(state: string) {
-    return this.todos.filter(todo => todo.state === state);
-  }
+    // Apply date filter if a date is selected
+    if (this.selectedDate) {
+        const selectedDateString = new Date(this.selectedDate).toLocaleDateString();
+        this.todos = this.todos.filter((todo) => {
+            const todoDateString = new Date(todo.submissionDate).toLocaleDateString();
+            console.log(`Comparing dates: ${todoDateString} === ${selectedDateString}`);
+            return todoDateString === selectedDateString;
+        });
+    }
+
+    console.log('Filtered Todos:', this.todos);
+}
+
+
+//   filteredTodoState(): void {
+//     if (!this.selectedStateOption) { 
+//         this.todos = [...this.allTodos]; 
+//         console.log('No state selected, displaying all todos:', this.todos);
+//         return; 
+//     }
+
+//     const selectedState = this.selectedStateOption;
+
+//     this.todos = this.allTodos.filter((todo) => {
+//         console.log(`Checking todo: ${todo.state} against selected state: ${selectedState}`);
+//         return todo.state === selectedState;
+//     });
+
+//     console.log('Filtered Todos:', this.todos);
+// }
+
+//   filteredTodo(): void {
+//     if (!this.selectedDate) {
+//       this.todos = [...this.allTodos]; // Reset to all todos
+//       return;
+//     }
+  
+//     const selectedDateString = new Date(this.selectedDate).toLocaleDateString(); // Convert selected date to local format
+  
+//     this.todos = this.allTodos.filter((todo) => {
+//       const filterDate = new Date(todo.submissionDate).toLocaleDateString(); // Convert stored date to local format
+//       console.log(`Comparing: ${filterDate} === ${selectedDateString}`); // Log comparison
+//       return filterDate === selectedDateString; // Compare both formatted dates
+//     });
+  
+//     console.log(this.todos);
+//   }
+
+//   getTodoByState(state: string) {
+//     return this.todos.filter(todo => todo.state === state);
+//   }
 
 
   getLatestTodoId(): number { 
@@ -115,11 +165,11 @@ export class TodoAppComponent implements OnInit {
 
   
   submit(): void {
-    if (this.title && this.description && this.selectState) {
+    if (this.title && this.description && this.selectState && this.selectCategories) {
 
       this.todoId = this.getLatestTodoId() + 1;
 
-      this.todos.push({ todoId: this.todoId, title: this.title, description: this.description, isComplete: this.isComplete, submissionDate: new Date().toLocaleString(), state:  this.selectState, level: this.selectLevel});  // Add the todo as an object.
+      this.todos.push({ todoId: this.todoId, title: this.title, description: this.description, isComplete: this.isComplete, submissionDate: new Date().toLocaleString(), state:  this.selectState, level: this.selectLevel, categories: this.selectCategories});  // Add the todo as an object.
 
       if (typeof window !== 'undefined') {  // Ensure localStorage available.
         localStorage.setItem('todos', JSON.stringify(this.todos));  // submit new to localStorage.
@@ -170,8 +220,19 @@ export class TodoAppComponent implements OnInit {
   selectedDescription: string | null = null;
   selectedStateNew: string | null = null;
   selectedLevelNew: string | null = null;
+  selectedCategoriesNew: string | null = null;
   selectedDateSubmission: string | null = null;
   selectedDate: string | null = null;
+
+
+  selectedLevelOption: string | null = null;
+
+
+  onSelectedStateChange(): void { 
+    console.log('Selected Filtered State: ' + this.selectedLevelOption);
+    this.filteredTodos();
+  }
+
 
   openTodos(todo: Todo, index: number): void  {
     if (event && event.target instanceof HTMLInputElement) {
@@ -186,11 +247,12 @@ export class TodoAppComponent implements OnInit {
     this.selectedDateSubmission = todo.submissionDate;
     this.selectedStateNew = todo.state;
     this.selectedLevelNew = todo.level;
+    this.selectedCategoriesNew = todo.categories;
     this.showTodo = true;
   }
 
   saveEdit(): void { 
-    if ( this.selectedIndex !== null && this.selectedTitle && this.selectedDescription && this.selectedStateNew && this.selectedLevelNew){
+    if ( this.selectedIndex !== null && this.selectedTitle && this.selectedDescription && this.selectedStateNew && this.selectedLevelNew && this.selectedCategoriesNew){
       this.todos[this.selectedIndex] = {
         todoId: this.selectedId ?? 0,
         title: this.selectedTitle,
@@ -198,6 +260,7 @@ export class TodoAppComponent implements OnInit {
         isComplete: this.selectedStateNew === "done" ? true : false,
         state: this.selectedStateNew,
         level: this.selectedLevelNew,
+        categories: this.selectedCategoriesNew ?? "null",
         submissionDate: new Date().toLocaleString()
       };
       alert('Update Success');

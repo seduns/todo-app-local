@@ -8,6 +8,16 @@
 
     <div class="todo-content">
         <div class="add-task-con">
+
+            <select name="stateOption" id="" [(ngModel)]="selectedLevelOption" (ngModelChange)="onSelectedStateChange()">
+                <option value=""  disabled selected>State</option>
+                <option value="high">high</option>
+                <option value="medium">medium</option>
+                <option value="low">low</option>
+            </select>
+
+
+
             <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()">
             <div *ngIf="isAddTask">
                 <div class="card-overlay">
@@ -15,6 +25,8 @@
                         <button (click)="closeAddTask()">close</button>
                         <input type="text" placeholder="title" [(ngModel)]="title">
                         <textarea type="text" placeholder="description" [(ngModel)]="description"></textarea>
+
+                        <label for="">state </label>
                         <select
                         name="state"
                         id=""
@@ -22,6 +34,8 @@
                         (ngModelChange)="onStateChange()">
                         <option value="new">New</option>
                     </select>
+
+                    <label for="">level </label>
                         <select
                         name="level"
                         id=""
@@ -30,6 +44,16 @@
                         <option value="high">High</option>
                         <option value="medium">Medium</option>
                         <option value="low">Low</option>
+                    </select>
+                        <label for="">categories </label>
+                        <select
+                        name="categories"
+                        id=""
+                        [(ngModel)]="selectCategories"
+                        (ngModelChange)="onCategoriesChange()">
+                        <option value="work">Work</option>
+                        <option value="personal">Personal</option>
+                        <option value="other">Other</option>
                     </select>
                     <button (click)="submit()">Submit</button>
                 </div>
@@ -83,6 +107,12 @@
                                         <option value="high">High</option>.
                                         <option value="medium">Medium</option>
                                         <option value="low">Low</option>
+                                    </select>
+                                    <select name="categories" id="" [(ngModel)]="selectedCategoriesNew" (ngModelChange)="onNewCategoriesChange()" [disabled]="!isEditTodo">
+                                        <option disabled="disabled" selected="selected">Select a level</option>
+                                        <option value="work">Work</option>.
+                                        <option value="personal">Personal</option>
+                                        <option value="other">Other</option>
                                     </select>
                                     <input type="text" [(ngModel)]="selectedDateSubmission" disabled="disabled">
                                         <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>

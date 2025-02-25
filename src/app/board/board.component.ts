@@ -48,6 +48,7 @@ export class BoardComponent implements OnInit {
   selectedStateNew: string | null = null;
   selectedLevelNew: string | null = null;
   selectedLevel: string | null = null;
+  selectedCategoriesNew: string | null = null;
   selectedDateSubmission: string | null = null;
   selectedDate: string | null = null;
 
@@ -63,6 +64,8 @@ export class BoardComponent implements OnInit {
     this.selectedDateSubmission = todo.submissionDate;
     this.selectedStateNew = todo.state;
     this.selectedLevelNew = todo.level;
+    this.selectedCategoriesNew = todo.categories;
+    
     this.showTodo = true;
   }
 
@@ -79,6 +82,8 @@ export class BoardComponent implements OnInit {
           isComplete: this.todos[todoIndex].isComplete,
           state: this.selectedStateNew,
           level: this.selectedLevelNew,
+          categories: this.selectedCategoriesNew ?? "null",
+
           submissionDate: new Date().toLocaleString()
         };
         alert('Update Success');
