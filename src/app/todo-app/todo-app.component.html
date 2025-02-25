@@ -9,79 +9,131 @@
     <div class="todo-content">
         <div class="add-task-con">
 
-            <select name="stateOption" id="" [(ngModel)]="selectedLevelOption" (ngModelChange)="onSelectedStateChange()">
-                <option value=""  disabled selected>State</option>
+            <select
+                name="stateOption"
+                id=""
+                [(ngModel)]="selectedLevelOption"
+                (ngModelChange)="onSelectedStateChange()">
+                <option value="" disabled="disabled" selected="selected">State</option>
                 <option value="high">high</option>
                 <option value="medium">medium</option>
                 <option value="low">low</option>
             </select>
 
-
-
             <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()">
-            <div *ngIf="isAddTask">
-                <div class="card-overlay">
-                    <div class="card">
-                        <button (click)="closeAddTask()">close</button>
-                        <input type="text" placeholder="title" [(ngModel)]="title">
-                        <textarea type="text" placeholder="description" [(ngModel)]="description"></textarea>
+                <div *ngIf="isAddTask">
+                    <div class="card-overlay">
+                        <div class="card">
+                            <button class="close-btn" (click)="closeAddTask()">
+                                <fa-icon [icon]="faClose"></fa-icon>
+                            </button>
 
-                        <label for="">state </label>
-                        <select
-                        name="state"
-                        id=""
-                        [(ngModel)]="selectState"
-                        (ngModelChange)="onStateChange()">
-                        <option value="new">New</option>
-                    </select>
+                            <div class="form-controller">
 
-                    <label for="">level </label>
-                        <select
-                        name="level"
-                        id=""
-                        [(ngModel)]="selectLevel"
-                        (ngModelChange)="onLevelChange()">
-                        <option value="high">High</option>
-                        <option value="medium">Medium</option>
-                        <option value="low">Low</option>
-                    </select>
-                        <label for="">categories </label>
-                        <select
-                        name="categories"
-                        id=""
-                        [(ngModel)]="selectCategories"
-                        (ngModelChange)="onCategoriesChange()">
-                        <option value="work">Work</option>
-                        <option value="personal">Personal</option>
-                        <option value="other">Other</option>
-                    </select>
-                    <button (click)="submit()">Submit</button>
+                                <div class="con-title-1">
+                                    <label class="label-title">Title</label>
+                                    <div class="con-title">
+                                        <input type="text" placeholder="Add your title here..." [(ngModel)]="title"></div>
+                                    </div>
+
+                                    <div class="con-select">
+                                        <div class="con-state-select">
+                                            <label for="">State
+                                            </label>
+                                            <select
+                                                name="state"
+                                                id=""
+                                                [(ngModel)]="selectState"
+                                                (ngModelChange)="onStateChange()">
+                                                <option value="new">New</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="con-level-select">
+                                            <label for="">Priority Level
+                                            </label>
+                                            <select
+                                                name="level"
+                                                id=""
+                                                [(ngModel)]="selectLevel"
+                                                (ngModelChange)="onLevelChange()">
+                                                <option value="high">High</option>
+                                                <option value="medium">Medium</option>
+                                                <option value="low">Low</option>
+                                            </select>
+                                        </div>
+
+                                        <div class="con-cate-select">
+
+                                            <label for="">Category
+                                            </label>
+                                            <select
+                                                name="categories"
+                                                id=""
+                                                [(ngModel)]="selectCategories"
+                                                (ngModelChange)="onCategoriesChange()">
+                                                <option value="work">Work</option>
+                                                <option value="personal">Personal</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                        </div>
+
+                                    </div>
+
+                                    <!-- Description -->
+                                    <div class="con-desc">
+                                        <label>Description</label>
+                                        <textarea type="text" placeholder="description" [(ngModel)]="description" placeholder="Add your description..."></textarea>
+                                    </div>
+
+                                    <div class="con-btn">
+                                        <button (click)="submit()">Add</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        </div>
-        
-        <button class="add-task-btn" (click)="addTask()">Add Task+</button>
 
-        <div class="todo-list-background">
+                <button class="add-task-btn" (click)="addTask()">
+                    <fa-icon [icon]="faPlus"></fa-icon>Add Task</button>
+
+                <div class="todo-list-background">
                     <div class="todo-card">
                         <div
                             class="todo-item"
                             *ngFor="let todo of todos; let i = index;"
                             (click)="openTodos(todo, i)">
                             <div class="todo-title" [ngClass]="{'complete-task' : todo.isComplete}">
-                                <div class="level-con" [ngClass]="{'high-level' : todo.level === 'high', 'medium-level' : todo.level === 'medium', 'low-level' : todo.level === 'low'}">{{todo.level}}</div>
-                                {{ todo.title }}
-                                <label class="custom-radio" (click)="$event.stopPropagation()">
+                                
+                                <span class="con-title-item">{{limitWords(todo.title, 10)}}</span>
+                                
+                                <!-- <label class="custom-radio" (click)="$event.stopPropagation()">
                                     <input
-                                        class="check-btn"
-                                        type="radio"
-                                        [checked]="todo.isComplete" 
-                                        (click)="setComplete(i, $event); $event.stopPropagation()">
-                                        <span class="checkmark"></span>
-                                    </label>
+                                    class="check-btn"
+                                    type="radio"
+                                    [checked]="todo.isComplete"
+                                    (click)="setComplete(i, $event); $event.stopPropagation()">
+                                    <span class="checkmark"></span>
+                                </label> -->
+
+                                <button class="drop-btn" (click)="toggleNav($event, i)"><fa-icon [icon]="faBar"></fa-icon></button>
+
+                                <div *ngIf="selectedNavIndex === i" class="con-nav-1">
+                                    <ul >
+                                        <li *ngIf="!todo.isComplete"><button class="complete-btn" (click)="setComplete(i, $event)">Mark as done</button></li>
+                                        <li *ngIf="todo.isComplete"><button class="complete-btn" (click)="setComplete(i, $event)">Mark as undone</button></li>
+                                        <li><button class="del-btn" (click)="delete(i, $event)">Delete</button></li>
+                                    </ul>
                                 </div>
-                                <button class="del-btn" (click)="delete(i, $event)"></button>
+
+                                <div class="con-state">{{todo.state}}</div>
+
+                                <div class="con-category">{{todo.categories}}</div>
+
+                                <div class="level-con" [ngClass]="{'high-level' : todo.level === 'high', 'medium-level' : todo.level === 'medium', 'low-level' : todo.level === 'low'}">{{todo.level}}</div>
+                            </div>
+                                <!-- <button class="del-btn" (click)="delete(i, $event)"><fa-icon [icon]="faTrash"></fa-icon></button> -->
                             </div>
                         </div>
                     </div>
@@ -89,37 +141,83 @@
                     <div *ngIf="showTodo">
                         <div class="card-overlay">
                             <div class="card">
-                                <button (click)="closeTodos()">close</button>
-                                <input type="text" [(ngModel)]="selectedTitle" [disabled]="!isEditTodo">
-                                    <textarea
-                                        type="text"
-                                        [(ngModel)]="selectedDescription"
-                                        [disabled]="!isEditTodo"></textarea>
+                                <button class="close-btn" (click)="closeTodos()">
+                                    <fa-icon [icon]="faClose"></fa-icon>
+                                </button>
 
-                                    <select name="state" id="" [(ngModel)]="selectedStateNew" (ngModelChange)="onNewStateChange()" [disabled]="!isEditTodo">
-                                        <option disabled="disabled" selected="selected">Select a state</option>
-                                        <option value="new">New</option>.
-                                        <option value="progress">Progress</option>
-                                        <option value="done">Done</option>
-                                    </select>
-                                    <select name="level" id="" [(ngModel)]="selectedLevelNew" (ngModelChange)="onNewLevelChange()" [disabled]="!isEditTodo">
-                                        <option disabled="disabled" selected="selected">Select a level</option>
-                                        <option value="high">High</option>.
-                                        <option value="medium">Medium</option>
-                                        <option value="low">Low</option>
-                                    </select>
-                                    <select name="categories" id="" [(ngModel)]="selectedCategoriesNew" (ngModelChange)="onNewCategoriesChange()" [disabled]="!isEditTodo">
-                                        <option disabled="disabled" selected="selected">Select a level</option>
-                                        <option value="work">Work</option>.
-                                        <option value="personal">Personal</option>
-                                        <option value="other">Other</option>
-                                    </select>
-                                    <input type="text" [(ngModel)]="selectedDateSubmission" disabled="disabled">
-                                        <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>
-                                        <button *ngIf="isEditTodo" (click)="editTodo()">cancel</button>
-                                        <button (click)="saveEdit()">save</button>
+                                <div class="form-controller">
+
+                                    <div class="con-title-1">
+                                        <label class="label-title">Title</label>
+                                        <div class="con-title">
+                                            <input type="text" placeholder="title" [(ngModel)]="selectedTitle" [disabled]="!isEditTodo"></div>
+                                        </div>
+    
+                                        <div class="con-select">
+                                            <div class="con-state-select">
+                                                <label for="">State
+                                                </label>
+                                                <select
+                                                name="state"
+                                                id=""
+                                                [(ngModel)]="selectedStateNew"
+                                                (ngModelChange)="onNewStateChange()"
+                                                [disabled]="!isEditTodo">
+                                                <option disabled="disabled" selected="selected">Select a state</option>
+                                                <option value="new">New</option>.
+                                                <option value="progress">Progress</option>
+                                                <option value="done">Done</option>
+                                            </select>
+                                            </div>
+    
+                                            <div class="con-level-select">
+                                                <label for="">Priority Level
+                                                </label>
+                                                <select
+                                                name="level"
+                                                id=""
+                                                [(ngModel)]="selectedLevelNew"
+                                                (ngModelChange)="onNewLevelChange()"
+                                                [disabled]="!isEditTodo">
+                                                <option disabled="disabled" selected="selected">Select a level</option>
+                                                <option value="high">High</option>.
+                                                <option value="medium">Medium</option>
+                                                <option value="low">Low</option>
+                                            </select>
+                                            </div>
+    
+                                            <div class="con-cate-select">
+    
+                                                <label for="">Category
+                                                </label>
+                                                <select
+                                                name="categories"
+                                                id=""
+                                                [(ngModel)]="selectedCategoriesNew"
+                                                (ngModelChange)="onNewCategoriesChange()"
+                                                [disabled]="!isEditTodo">
+                                                <option disabled="disabled" selected="selected">Select a level</option>
+                                                <option value="work">Work</option>.
+                                                <option value="personal">Personal</option>
+                                                <option value="other">Other</option>
+                                            </select>
+                                            </div>
+    
+                                        </div>
+    
+                                        <!-- Description -->
+                                        <div class="con-desc">
+                                            <label>Description</label>
+                                            <textarea type="text" placeholder="description" [(ngModel)]="selectedDescription" placeholder="Add your description..." [disabled]="!isEditTodo"></textarea>
+                                        </div>
+    
+                                        <div class="con-btn">
+                                            <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>
+                                            <button *ngIf="isEditTodo" (click)="editTodo()">cancel</button>
+                                            <button (click)="saveEdit()">save</button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
 
-                    <!-- Update submit todo, open todo and save -->
+                            <!-- Update submit todo, open todo and save -->

@@ -1,3 +1,6 @@
+
+
+
 .main-content { 
     display: flex;
 }
@@ -23,13 +26,14 @@
         background-color: rgb(141, 111, 232);
         display: flex;
         align-items: center;
-        width: 20vh;
+        gap: 5px;
+        max-width: 100px;
         margin-left: 10px;
     }
     
     button {
-        background-color: rgba(247, 246, 250, 0.527);
-        color: rgba(2, 2, 235, 0.504);
+        background-color: rgba(113, 79, 215, 0.527);
+        color: rgba(255, 255, 255, 0.604);
         padding: 10px;
         border-radius: 5px;
         border: none;   
@@ -68,38 +72,105 @@
     .todo-title {
         width: 100%;
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
         border-radius: 10px;
         margin-bottom: 5px;
         font-size: 18px;
         color: rgba(0, 0, 0, 0.732);
-        position: relative;
+        // position: relative;
+        
 
         .level-con { 
-            position: absolute; /* Enable positioning within the parent */
-            margin-top: -20px;
-            margin-left: -20px;
-            background-color: blue;
+            // position: absolute; /* Enable positioning within the parent */
+            // margin-top: 45%;
+            // margin-left: -5%;
             color: white;
-            border-top-left-radius: 10px;
-            padding: 5px 10px; /* Adds padding for better visibility */
             display: flex;
             justify-content: center;
-            align-items: center;
-            z-index: 10; /* Keep it on top of other elements */
+            padding: 5px 0px 5px 0px;
+            // z-index: 10; /* Keep it on top of other elements */
             font-size: 12px;
+            border-radius: 5px;
+            width: 100%;
+            text-transform: capitalize;
+            
+        }
+
+
+        .con-state, 
+        .drop-btn,
+        .con-category {
+            font-size: 12px;
+            border-radius: 5px;
+            padding: 5px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.168);
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Center content vertically */
+            width: 60px; /* Set a fixed width */
+            text-align: center; /* Center text inside */
+            margin-left: auto;
+            box-sizing: border-box; /* Ensure padding doesn't affect width */
+            margin-bottom: 5px;
+            color: rgba(0, 0, 0, 0.542);
+        }
+
+        .drop-btn {
+            background-color: rgba(255, 255, 0, 0);
+            width: 10px;
+            color: rgba(0, 0, 0, 0.234);
+            margin-bottom: 0;
+            font-size: 12px;
+            position: absolute;
+            right: 0;
+            margin-right: 15px;
+            
+            &:hover { 
+                color: rgba(255, 255, 255, 0.726);
+                
+            }
+        }
+
+        .con-nav-1 {
+            padding: 5px;  
+            width: fit-content; /* Automatically adjusts to content width */
+            height: fit-content; /* Automatically adjusts to content height */
+            
+            text-wrap: nowrap;
+            position: absolute;
+            margin-top: 20px;
+            margin-left: 70px;
+            border-radius: 5px;
+            display: flex;
+            
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.26);
+            background-color: white;
+            z-index: 10; /* To ensure it appears above other elements if needed */
+        }
+        
+
+        
+
+        
+        .con-title-item { 
+            text-wrap: nowrap;
+            overflow: hidden;
+            display: block;
+            text-overflow:ellipsis;
+
         }
 
         .high-level {
-            background-color: #f94141; /* Soft red */
+            background-color: #d20000; /* Soft red */
         }
         
         .medium-level {
-            background-color: #ffd52d; /* Warm yellow */
+            background-color: #d4ab04; /* Warm yellow */
         }
         
         .low-level {
-            background-color: #43cc55; /* Fresh green */
+            background-color: #62ea74; /* Fresh green */
         }
     }
 
@@ -120,46 +191,80 @@
     .todo-item {
         background: #f4f4f4;
         margin: 5px;
-        padding: 20px;
+        padding: 10px;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
         border-radius: 10px;
-        max-width: 150px;
+        max-width: 200px;
         width: 100%;
-        word-break: break-word;
-        overflow-wrap: break-word;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.171);
         transition: 0.4s;
         position: relative;
+        
     }
     
     .todo-item:hover {
-        background-color: rgba(164, 183, 235, 0.445);
+        background-color: rgb(0, 23, 141);
         transform: scale(1.1);
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.482);
     }
+
+    .todo-item:hover .con-title-item  { 
+        color: white;
+    }
+
+    .todo-item:hover .con-state { 
+        color: white;
+    }
+
+    .todo-item:hover .con-category { 
+        color: white;
+    }
+
+    .todo-item:hover .complete-task .con-title-item { 
+        color: rgba(255, 255, 255, 0.679);
+    }
     
     .del-btn {
+        display: flex;
         cursor: pointer;
-        background-color: red;
-        /* Default color */
-        -webkit-mask-image: url("../../asset/trash.svg");
-        mask-image: url("../../asset/trash.svg");
-        mask-size: cover;
-        width: 20px;
-        /* Adjust the size as needed */
-        height: 20px;
+        background-color: transparent;
+        background-size: cover;
+        color: rgba(255, 0, 0, 0.567);
+        font-size: 14px;
+        flex: 1;
+
+        &:hover {
+            background-color: transparent;
+            color: rgb(136, 0, 0);
+
+        }
+    }
+
+    .complete-btn { 
+        display: flex;
+        cursor: pointer;
+        background-color: transparent;
+        background-size: cover;
+        color: green;
+        font-size: 14px;
+        flex: 1;
+        
+        &:hover {
+            background-color: transparent;
+            color: rgb(0, 75, 0);
+        }
     }
     
-    .del-btn:hover {
-        background-color: rgb(99, 0, 0);
-        /* Default color */
-    }
     
     .custom-radio {
         cursor: pointer;
+        display: flex;
+        margin-left: auto;
+        position: absolute;
+        margin-bottom: 5px;
     }
     
     /* Hide the default radio button */
@@ -227,7 +332,112 @@
         min-height: 200px;
         text-align: center;
         overflow-y: auto;
+
+        .close-btn { 
+            display: flex;
+        
+        }
     }
+
+    .form-controller { 
+        // border: 1px solid black;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 10px;
+        margin-top: 10px;
+        color: #1E3A5F ;
+        font-weight: bold;
+
+        .con-btn {
+            // border: 1px solid black;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+
+            button { 
+                width: 100px;
+            }
+        }
+        
+        .label-title { 
+            display: flex;
+            padding: 5px;
+        }
+
+            .con-title { 
+                // border: 1px solid black;
+                display: flex;
+                
+                input { 
+                    width: 100%;
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                    font-size: 14px;
+                    border: 1px solid rgba(0, 0, 0, 0.246);
+                }
+            }
+
+            .con-select { 
+                // border: 1px solid rgb(0, 49, 122);
+                display: flex;
+                align-items: center;
+                align-content: center;
+                width: 80%;
+                justify-content: space-between;
+                gap: 10px;
+
+                .con-state-select {
+                    display: flex;
+                    flex-direction: column;
+                    
+                }
+                
+                .con-level-select { 
+                    display: flex;
+                    flex-direction: column;
+                }
+                
+                .con-cate-select {
+                    display: flex;
+                    flex-direction: column;
+                }
+
+                select { 
+                    padding: 5px 50px;
+                    border-radius: 5px;
+                    margin-left: 0px;
+                    border: 1px solid rgba(0, 0, 0, 0.246);
+
+                }
+
+                label { 
+                    display: flex;
+                    padding: 5px;
+                }
+            }
+
+            .con-desc { 
+                display: flex;
+                flex-direction: column;
+                // border: 1px solid black;
+
+                label {
+                    display: flex;
+                    padding: 5px;
+                }
+
+                textarea { 
+                    padding: 10px;
+                    font-size: 13px;
+                    resize: none;
+                    height: 100px;
+                    border-radius: 5px;
+                    border: 1px solid rgba(0, 0, 0, 0.246);
+
+                }
+            }
+        }
 }
 
 table {
@@ -255,6 +465,44 @@ th, td {
     overflow: hidden;
     white-space: nowrap;
     }
+
+    ul { 
+        display: flex;
+        flex-direction: column;
+        // border: 1px solid rgb(255, 255, 255);    
+        width: 100%;
+        padding: 0;
+        margin: 5px;
+    }
+
+    ul li {
+        list-style: none;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: 0.3s;
+        // border: 1px solid yellow;
+        border-radius: 5px;
+        font-size: 10px;
+        
+
+        &:hover { 
+           background-color: rgba(58, 8, 8, 0.182);
+        }
+    }
+
+    ul li a {
+        flex: 1;
+        list-style: none;
+        text-decoration: none;
+        padding: 10px;
+        text-align: center;
+        color: rgb(0, 0, 0);
+        display: flex;
+       
+     }
+
 
     @media (max-width: 768px) {
         .todo-content .todo-list-background {

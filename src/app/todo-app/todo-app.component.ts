@@ -1,16 +1,25 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Todo } from '../model/todo.mode';
+import { faBars, faCheck, faClose, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { eventNames } from 'node:process';
 
 @Component({
   selector: 'app-todo-app',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FontAwesomeModule ],
   templateUrl: './todo-app.component.html',
   styleUrls: ['./todo-app.component.scss']
 })
 export class TodoAppComponent implements OnInit {
+
+  faPlus = faPlus;
+  faClose = faClose;
+  faTrash = faTrash;
+  faBar = faBars;
+  faCheck = faCheck;
 
   constructor() {}
 
@@ -109,44 +118,21 @@ export class TodoAppComponent implements OnInit {
     console.log('Filtered Todos:', this.todos);
 }
 
+selectedNavIndex: number | null = null;
 
-//   filteredTodoState(): void {
-//     if (!this.selectedStateOption) { 
-//         this.todos = [...this.allTodos]; 
-//         console.log('No state selected, displaying all todos:', this.todos);
-//         return; 
-//     }
+toggleNav(event: Event, index: number): void {
+  event.stopPropagation(); 
 
-//     const selectedState = this.selectedStateOption;
+  // Toggle the selected index or close if the same index is clicked
+  this.selectedNavIndex = this.selectedNavIndex === index ? null : index;
+  console.log(this.selectedNavIndex); 
+}
 
-//     this.todos = this.allTodos.filter((todo) => {
-//         console.log(`Checking todo: ${todo.state} against selected state: ${selectedState}`);
-//         return todo.state === selectedState;
-//     });
+@HostListener('document:click', ['$event'])
+onDocumentClick(event: Event): void {
+  this.selectedNavIndex = null;
+}
 
-//     console.log('Filtered Todos:', this.todos);
-// }
-
-//   filteredTodo(): void {
-//     if (!this.selectedDate) {
-//       this.todos = [...this.allTodos]; // Reset to all todos
-//       return;
-//     }
-  
-//     const selectedDateString = new Date(this.selectedDate).toLocaleDateString(); // Convert selected date to local format
-  
-//     this.todos = this.allTodos.filter((todo) => {
-//       const filterDate = new Date(todo.submissionDate).toLocaleDateString(); // Convert stored date to local format
-//       console.log(`Comparing: ${filterDate} === ${selectedDateString}`); // Log comparison
-//       return filterDate === selectedDateString; // Compare both formatted dates
-//     });
-  
-//     console.log(this.todos);
-//   }
-
-//   getTodoByState(state: string) {
-//     return this.todos.filter(todo => todo.state === state);
-//   }
 
 
   getLatestTodoId(): number { 
@@ -279,6 +265,12 @@ export class TodoAppComponent implements OnInit {
       console.log('New level: ' + this.selectedLevelNew);
       
     }
+  }
+
+  limitWords(title: string, limit: number = 10): string {
+    if (!title) return '';
+    const words = title.split(' '); 
+    return words.length > limit ? words.slice(0, limit).join(' ') + '...' : title;
   }
 
   isEditTodo: boolean = false;
