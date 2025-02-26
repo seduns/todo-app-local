@@ -5,6 +5,21 @@
     // border: 1px solid yellow;
 }
 
+button {
+    background-color: #2e39b8;
+    color: rgba(255, 255, 255, 0.604);
+    padding: 10px;
+    border-radius: 5px;
+    border: none;   
+    transition: 0.3s;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #1A237E;
+    color: rgb(248, 248, 255);
+}
+
 .content { 
     // border: 2px solid rgb(0, 47, 255);
     height: 100%;
@@ -24,11 +39,165 @@
     .todo-title {
         width: 100%;
         display: flex;
-        justify-content: space-between;
+        flex-direction: column;
         border-radius: 10px;
         margin-bottom: 5px;
-        font-size: 18px;
-        color: rgba(0, 0, 0, 0.732);
+        font-size: 20px;
+        color: rgba(0, 0, 0, 0.693);
+        // position: relative;
+        
+
+        .level-con { 
+            // position: absolute; /* Enable positioning within the parent */
+            // margin-top: 45%;
+            // margin-left: -5%;
+            color: white;
+            display: flex;
+            justify-content: center;
+            padding: 5px 0px 5px 0px;
+            // z-index: 10; /* Keep it on top of other elements */
+            font-size: 12px;
+            border-radius: 5px;
+            width: 100%;
+            text-transform: capitalize;
+            
+        }
+
+
+        .con-state, 
+        .drop-btn,
+        .con-category {
+            font-size: 12px;
+            border-radius: 5px;
+            padding: 5px;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.168);
+            display: flex;
+            justify-content: center;
+            align-items: center; /* Center content vertically */
+            width: 60px; /* Set a fixed width */
+            text-align: center; /* Center text inside */
+            margin-left: auto;
+            box-sizing: border-box; /* Ensure padding doesn't affect width */
+            margin-bottom: 5px;
+            color: rgb(255, 255, 255);
+        }
+
+        .con-state { 
+            background-color: transparent;
+        }
+
+        // .new-task {
+        //     background-color: #4CAF50;
+        // }
+        // .progress-task {
+        //     background-color: #2196F3;
+        // }
+        // .done-task {
+        //     background-color: #9C27B0;
+        // }
+
+        .drop-btn {
+            background-color: rgba(255, 255, 0, 0);
+            width: 10px;
+            // border: 1px solid black;
+            color: rgba(0, 0, 0, 0.234);
+            margin-top: -10px;
+            font-size: 12px;
+            
+            &:hover { 
+                color: rgba(252, 246, 246, 0.726);
+                
+            }
+        }
+
+        .con-nav-1 {
+            padding: 5px;
+            width: 120px;
+            height: fit-content;
+            
+            /* Use relative positioning to allow free placement */
+            position: relative; 
+            margin: 0px 30px -80px;
+        
+            border-radius: 5px;
+            display: flex;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.26);
+            background-color: white;
+            z-index: 10;
+        }
+        
+        .con-title-item { 
+            width: 120px;
+            text-wrap: nowrap;
+            overflow: hidden;
+            display: block;
+            text-overflow:ellipsis;
+            
+        }
+
+        .con-desc-item {
+            // position: absolute;
+            font-size: 12px;
+            width: 80px; /* Fixed width for consistent truncation */
+            // border: 1px solid black;
+            margin: 10px 0px -50px;
+
+            /* Enable multi-line truncation */
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* Set max number of lines before truncating */
+            -webkit-box-orient: vertical;
+        
+            /* Important: These properties help with text wrapping */
+            white-space: normal; 
+            line-height: 1.2; /* Adjust line height if needed */
+            max-height: calc(1.2em * 3); /* line-height * max lines */
+        }
+        
+        
+        
+        .high-level {
+            background-color: #d20000; /* Soft red */
+        }
+        
+        .medium-level {
+            background-color: #d4ab04; /* Warm yellow */
+        }
+        
+        .low-level {
+            background-color: #62ea74; /* Fresh green */
+        }
+
+        .complete-btn,
+    .del-btn {
+        display: flex;
+        cursor: pointer;
+        background-color: transparent;
+        background-size: cover;
+        color: rgba(255, 0, 0, 0.567);
+        font-size: 12px;
+        flex: 1;
+
+        &:hover {
+            background-color: transparent;
+            color: rgb(136, 0, 0);
+            transform: translateX(5px);
+
+        }
+    }
+
+    .complete-btn { 
+        background-color: transparent;
+        background-size: cover;
+        color: green;
+        
+        &:hover {
+            background-color: transparent;
+            color: rgb(0, 75, 0);
+            transform: translateX(5px);
+        }
+    }
     }
 
     .todo-description {
@@ -68,9 +237,35 @@
             height: 100%;
         }
         .todo-item:hover {
-            background-color: rgba(164, 183, 235, 0.445);
+            background-color: rgb(0, 23, 141);
             transform: scale(1.1);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.482);
+        }
+        
+        .todo-item:hover {
+            background-color: rgb(0, 23, 141);
+            transform:scale(1.05);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.482);
+        }
+    
+        .todo-item:hover .con-title-item  { 
+            color: white;
+        }
+    
+        .todo-item:hover .con-state { 
+            color: transparent;
+        }
+    
+        .todo-item:hover .con-category { 
+            color: white;
+        }
+    
+        .todo-item:hover .con-desc-item { 
+            color: rgba(255, 255, 255, 0.745);
+        }
+    
+        .todo-item:hover .complete-task .con-title-item { 
+            color: rgba(255, 255, 255, 0.679);
         }
 }
 
@@ -99,6 +294,11 @@
     min-height: 200px;
     text-align: center;
     overflow-y: auto;
+
+    .close-btn { 
+        display: flex;
+    
+    }
 }
 
 .table-container {
@@ -115,7 +315,7 @@ th, td {
     padding: 8px;
     border: 1px solid #ddd;
     text-align: left;
-    background: white;
+    background: rgb(161, 102, 102);
 }
 
 thead th {
@@ -131,7 +331,7 @@ tbody {
     overflow-y: auto;
     overflow-x:hidden;
     height: 100%;
-    max-height: 300px; 
+    max-height: 500px; 
 }
 
 tr {
@@ -140,10 +340,146 @@ tr {
     table-layout: fixed; /* Maintain column widths */
 }
 
+.form-controller { 
+    // border: 1px solid black;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 10px;
+    margin-top: 10px;
+    color: #1E3A5F ;
+    font-weight: bold;
+
+    .con-btn {
+        // border: 1px solid black;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+
+        button { 
+            width: 100px;
+        }
+    }
+    
+    .label-title { 
+        display: flex;
+        padding: 5px;
+    }
+
+        .con-title { 
+            // border: 1px solid black;
+            display: flex;
+            
+            input { 
+                width: 100%;
+                padding: 5px 10px;
+                border-radius: 5px;
+                font-size: 14px;
+                border: 1px solid rgba(0, 0, 0, 0.246);
+            }
+        }
+
+        .con-select { 
+            // border: 1px solid rgb(0, 49, 122);
+            display: flex;
+            align-items: start;
+            align-content: start;
+            justify-content: start;
+            gap: 10px;
+
+            .con-state-select, .con-level-select, .con-cate-select {
+                display: flex;
+                flex-direction: column;
+                
+            }
+
+            select { 
+                padding: 5px 50px;
+                border-radius: 5px;
+                margin-left: 0px;
+                border: 1px solid rgba(0, 0, 0, 0.246);
+                width: 100%;
+                
+            }
+
+            label { 
+                display: flex;
+                padding: 5px;
+            }
+        }
+
+        .con-desc { 
+            display: flex;
+            flex-direction: column;
+            // border: 1px solid black;
+
+            label {
+                display: flex;
+                padding: 5px;
+            }
+
+            textarea { 
+                padding: 10px;
+                font-size: 13px;
+                resize: none;
+                height: 100px;
+                border-radius: 5px;
+                border: 1px solid rgba(0, 0, 0, 0.246);
+
+            }
+        }
+    }
+
+    ul { 
+        display: flex;
+        flex-direction: column;
+        // border: 1px solid rgb(255, 255, 255);    
+        width: 100%;
+        padding: 0;
+        margin: 5px;
+    }
+
+    ul li {
+        list-style: none;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: 0.3s;
+        // border: 1px solid yellow;
+        border-radius: 5px;
+        font-size: 10px;
+        
+
+        &:hover { 
+           background-color: rgba(58, 8, 8, 0.182);
+        }
+    }
+
+    ul li a {
+        flex: 1;
+        list-style: none;
+        text-decoration: none;
+        padding: 10px;
+        text-align: center;
+        color: rgb(0, 0, 0);
+        display: flex;
+       
+     }
+
     @media (max-width: 768px) {
         th, td { 
             padding: 2px;
         }
+        .con-select {
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+        }
+        .card { 
+            width: 60%;
+            max-height: 500px;
+        }
+
      
         
      }

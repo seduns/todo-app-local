@@ -19,9 +19,39 @@ export class HomepageComponent implements OnInit {
   constructor(private router : Router) {}
 
     ngOnInit(): void {
+        this.checkLocalStorageUsage();
         this.loadTodo();
         this.totalCategoriesSubmit();
   } 
+
+  checkLocalStorageUsage(): void {
+    if (typeof window != 'undefined') { 
+    try {
+      // Calculate the approximate size of localStorage usage in bytes
+      const usedBytes = new TextEncoder().encode(JSON.stringify(localStorage)).length;
+      const maxBytes = 5 * 1024 * 1024; // Approx. 5MB limit
+
+      console.log(`localStorage usage: ${usedBytes} bytes`);
+      
+      if (usedBytes >= maxBytes * 0.9) { // Warn at 90% capacity
+        console.warn('localStorage is almost full!');
+      }
+
+    } catch (e) {
+      console.error('Error checking localStorage usage:', e);
+    }
+  }
+  }
+
+  // Clear all localStorage data
+  clearLocalStorage(): void {
+    if (confirm('Are you sure you want to clear all saved data? This action cannot be undone.')) {
+      localStorage.clear();
+      this.todos = []; // Clear the local todos array as well
+      console.log('All localStorage data cleared.');
+    }
+  }
+
 
   showTodo: boolean = false;
   selectedIndex: number | null = null;

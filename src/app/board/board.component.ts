@@ -1,18 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { SideNavBarComponent } from "../side-nav-bar/side-nav-bar.component";
 import { NavBarComponent } from "../nav-bar/nav-bar.component";
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Todo } from '../model/todo.mode';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faBars, faClose } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-board',
   standalone: true,
-  imports: [ CommonModule, FormsModule],
+  imports: [ CommonModule, FormsModule, FontAwesomeModule],
   templateUrl: './board.component.html',
   styleUrl: './board.component.scss'
 })
 export class BoardComponent implements OnInit {
+
+ faClose = faClose;
+ faBar = faBars;
+
+onNewStateChange(): void { 
+  console.log('State: ', this.selectedStateNew);
+}
+
+onNewLevelChange(): void { 
+  console.log('Level: ', this.selectedLevelNew);
+}
+
+onNewCategoriesChange(): void { 
+  console.log('Categories: ', this.selectedCategoriesNew);
+}
 
   ngOnInit(): void {
     this.loadTodo();
@@ -50,6 +67,8 @@ export class BoardComponent implements OnInit {
   selectedLevel: string | null = null;
   selectedCategoriesNew: string | null = null;
   selectedDateSubmission: string | null = null;
+  selectedUpdateDate: string | null = null;
+
   selectedDate: string | null = null;
 
   openTodos(todo: Todo, index: number): void {
@@ -62,6 +81,7 @@ export class BoardComponent implements OnInit {
     this.selectedTitle = todo.title;
     this.selectedDescription = todo.description;
     this.selectedDateSubmission = todo.submissionDate;
+    this.selectedUpdateDate = todo.updateDate;
     this.selectedStateNew = todo.state;
     this.selectedLevelNew = todo.level;
     this.selectedCategoriesNew = todo.categories;
@@ -83,13 +103,16 @@ export class BoardComponent implements OnInit {
           state: this.selectedStateNew,
           level: this.selectedLevelNew,
           categories: this.selectedCategoriesNew ?? "null",
+          submissionDate: this.selectedDateSubmission ?? "null",
+          updateDate: new Date().toLocaleString()
 
-          submissionDate: new Date().toLocaleString()
         };
         alert('Update Success');
         localStorage.setItem('todos', JSON.stringify(this.todos));  
         this.loadTodo();
         this.selectedDateSubmission = new Date().toLocaleString(); 
+        this.showTodo = false;
+        this.isEditTodo = false;
         
       } else {
         console.error('Todo with ID ' + this.selectedId + ' not found.');
@@ -104,6 +127,69 @@ export class BoardComponent implements OnInit {
       
     } 
   }
+
+  selectedNavIndex: string | null = null;
+
+  toggleNav(event: Event, index: string): void {
+      event.stopPropagation(); 
+      // Toggle the dropdown only for the clicked card
+      this.selectedNavIndex = this.selectedNavIndex === index ? null : index;
+      console.log('Selected Index:', this.selectedNavIndex);
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    this.selectedNavIndex = null;
+  }
+
+
+
+
+  setComplete(state: string, index: number, event: Event): void {
+    event.stopPropagation();
+
+    // Find the correct todo based on state and index
+    const todos = this.getTodoByState(state);
+    const todo = todos[index];
+    
+    if (todo) {
+        // Toggle completion status and update state
+        todo.isComplete = !todo.isComplete;
+        todo.state = todo.isComplete ? 'done' : 'new';
+
+        // Update the main todo list and localStorage
+        this.todos = this.todos.map(t => t === todo ? { ...todo } : t);
+        localStorage.setItem('todos', JSON.stringify(this.todos));
+        
+        // Reload the todos and close the dropdown
+        this.loadTodo();
+        this.selectedNavIndex = null;
+        console.log('Update', this.todos);
+    }
+}
+
+  
+delete(state: string, index: number, event: Event): void {
+  event.stopPropagation();
+
+  // Find the todo to delete using the state and index
+  const todos = this.getTodoByState(state);
+  const todoToDelete = todos[index];
+
+  if (todoToDelete) {
+      // Remove the todo from the main list
+      this.todos = this.todos.filter(todo => todo !== todoToDelete);
+      
+      // Update localStorage
+      localStorage.setItem('todos', JSON.stringify(this.todos));
+      
+      // Reload todos and reset selected dropdown
+      this.loadTodo();
+      this.selectedNavIndex = null;
+      console.log('Todo deleted', this.todos);
+  }
+}
+
 
   limitWords(description: string, limit: number = 10): string {
     if (!description) return '';

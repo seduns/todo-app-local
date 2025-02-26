@@ -9,6 +9,13 @@
     <div class="todo-content">
         <div class="add-task-con">
 
+            <label class="usage-label" for="">Total usage: {{usage}}bytes</label>
+            <button (click)="clearLocalStorage()" class="clean-up-btn">
+                Clear All Data
+            </button>
+
+
+
             <select
                 name="stateOption"
                 id=""
@@ -100,10 +107,7 @@
 
                 <div class="todo-list-background">
                     <div class="todo-card">
-                        <div
-                            class="todo-item"
-                            *ngFor="let todo of todos; let i = index;"
-                            (click)="openTodos(todo, i)">
+                        <div class="todo-item" *ngFor="let todo of todos; let i = index;" (click)="openTodos(todo, i)">
                             <div class="todo-title" [ngClass]="{'complete-task' : todo.isComplete}">
                                 
                                 <span class="con-title-item">{{limitWords(todo.title, 5)}}</span>
@@ -126,7 +130,6 @@
 
                                 <div class="level-con" [ngClass]="{'high-level' : todo.level === 'high', 'medium-level' : todo.level === 'medium', 'low-level' : todo.level === 'low'}">{{todo.level}}</div>
                             </div>
-                                <!-- <button class="del-btn" (click)="delete(i, $event)"><fa-icon [icon]="faTrash"></fa-icon></button> -->
                             </div>
                         </div>
                     </div>
@@ -203,7 +206,20 @@
                                             <label>Description</label>
                                             <textarea type="text" placeholder="description" [(ngModel)]="selectedDescription" placeholder="Add your description..." [disabled]="!isEditTodo"></textarea>
                                         </div>
-    
+
+                                        <label for="selectedDateSubmission">Date Creation:</label>
+                                        <input type="text" [(ngModel)]="selectedDateSubmission" disabled="true" 
+                                        [ngModel]="selectedDateSubmission === 'null' || !selectedDateSubmission ? 'Not Updated' : selectedDateSubmission | date: 'dd/MM/yyyy h:mm a'" 
+                                        >
+
+                                        <label for="selectedDateSubmission">Latest Date Update:</label>
+                                        <input 
+                                        type="text" 
+                                        [(ngModel)]="selectedUpdateDate " 
+                                        [ngModel]="selectedUpdateDate === 'null' || !selectedUpdateDate ? 'Not Updated' : selectedUpdateDate | date: 'dd/MM/yyyy h:mm a'" 
+                                        disabled="true" />
+
+                                        
                                         <div class="con-btn">
                                             <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>
                                             <button *ngIf="isEditTodo" (click)="editTodo()">cancel</button>

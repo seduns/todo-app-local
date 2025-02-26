@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { CheckboxControlValueAccessor, FormsModule } from '@angular/forms';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Todo } from '../model/todo.mode';
-import { faBars, faCheck, faClose, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faCheck, faClose, faL, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { eventNames } from 'node:process';
 
@@ -37,6 +37,7 @@ export class TodoAppComponent implements OnInit {
   allTodos: Todo[] =[];
 
   ngOnInit(): void {
+    this.checkLocalStorageUsage();
     this.loadTodo();
     this.getLatestTodoId();
 
@@ -47,6 +48,44 @@ export class TodoAppComponent implements OnInit {
         todo.isComplete = false;
       }
     })
+  }
+
+  usage: string | null = null;
+
+  checkLocalStorageUsage(): void {
+    if (typeof window != 'undefined') { 
+
+    try {
+      // Calculate the approximate size of localStorage usage in bytes
+      const usedBytes = new TextEncoder().encode(JSON.stringify(localStorage)).length;
+      const maxBytes = 5 * 1024 * 1024; // Approx. 5MB limit
+
+      this.usage = usedBytes.toString();
+
+      console.log(`localStorage usage: ${usedBytes} bytes`);
+      
+      if (usedBytes >= maxBytes) { 
+        console.log('localStorage is full');
+      } else if (usedBytes >= maxBytes * 0.9) { 
+          console.log('localStorage is almost full!');
+      }
+
+
+    } catch (e) {
+      console.error('Error checking localStorage usage:', e);
+    }
+  }
+  }
+
+  // Clear all localStorage data
+  clearLocalStorage(): void {
+    if (confirm('Are you sure you want to clear all saved data? This action cannot be undone.')) {
+      localStorage.clear();
+      this.todos = []; // Clear the local todos array as well
+      console.log('All localStorage data cleared.');
+      this.loadTodo();
+      this.checkLocalStorageUsage();
+    }
   }
 
   loadTodo(): void { 
@@ -126,6 +165,8 @@ toggleNav(event: Event, index: number): void {
   // Toggle the selected index or close if the same index is clicked
   this.selectedNavIndex = this.selectedNavIndex === index ? null : index;
   console.log(this.selectedNavIndex); 
+
+
 }
 
 @HostListener('document:click', ['$event'])
@@ -155,7 +196,7 @@ onDocumentClick(event: Event): void {
 
       this.todoId = this.getLatestTodoId() + 1;
 
-      this.todos.push({ todoId: this.todoId, title: this.title, description: this.description, isComplete: this.isComplete, submissionDate: new Date().toLocaleString(), state:  this.selectState, level: this.selectLevel, categories: this.selectCategories});  // Add the todo as an object.
+      this.todos.push({ todoId: this.todoId, title: this.title, description: this.description, isComplete: this.isComplete, submissionDate: new Date().toLocaleString(), state:  this.selectState, level: this.selectLevel, categories: this.selectCategories, updateDate: "null"});  // Add the todo as an object.
 
       if (typeof window !== 'undefined') {  // Ensure localStorage available.
         localStorage.setItem('todos', JSON.stringify(this.todos));  // submit new to localStorage.
@@ -164,6 +205,7 @@ onDocumentClick(event: Event): void {
       console.log('New todo added: ', this.title);
       alert('New todo added');
       this.loadTodo();
+      this.checkLocalStorageUsage();
       this.title = '';  // Clear the input field after submission.
       this.description = '';  // Clear the description field.
       this.selectState = 'new';
@@ -187,7 +229,10 @@ onDocumentClick(event: Event): void {
     localStorage.setItem('todos', JSON.stringify(this.todos));
   
     this.loadTodo();
+    this.checkLocalStorageUsage();
     console.log('Update', this.todos);
+
+    this.selectedNavIndex = null;
   }
   
   delete(index: number, event: Event): void {
@@ -197,6 +242,10 @@ onDocumentClick(event: Event): void {
       localStorage.setItem('todos', JSON.stringify(this.todos));  // Update localStorage.
     }
     console.log('Todo deleted');
+    this.checkLocalStorageUsage();
+
+    this.selectedNavIndex = null;
+
   }
 
   showTodo: boolean = false;
@@ -208,8 +257,8 @@ onDocumentClick(event: Event): void {
   selectedLevelNew: string | null = null;
   selectedCategoriesNew: string | null = null;
   selectedDateSubmission: string | null = null;
+  selectedUpdateDate: string | null = null;
   selectedDate: string | null = null;
-
 
   selectedLevelOption: string | null = null;
 
@@ -231,6 +280,7 @@ onDocumentClick(event: Event): void {
     this.selectedTitle = todo.title;
     this.selectedDescription = todo.description;
     this.selectedDateSubmission = todo.submissionDate;
+    this.selectedUpdateDate = todo.updateDate;
     this.selectedStateNew = todo.state;
     this.selectedLevelNew = todo.level;
     this.selectedCategoriesNew = todo.categories;
@@ -238,7 +288,7 @@ onDocumentClick(event: Event): void {
   }
 
   saveEdit(): void { 
-    if ( this.selectedIndex !== null && this.selectedTitle && this.selectedDescription && this.selectedStateNew && this.selectedLevelNew && this.selectedCategoriesNew){
+    if ( this.selectedIndex !== null && this.selectedTitle && this.selectedDescription && this.selectedStateNew && this.selectedLevelNew && this.selectedCategoriesNew && this.selectedUpdateDate){
       this.todos[this.selectedIndex] = {
         todoId: this.selectedId ?? 0,
         title: this.selectedTitle,
@@ -247,12 +297,17 @@ onDocumentClick(event: Event): void {
         state: this.selectedStateNew,
         level: this.selectedLevelNew,
         categories: this.selectedCategoriesNew ?? "null",
-        submissionDate: new Date().toLocaleString()
+        submissionDate: this.selectedDateSubmission ?? "null",
+        updateDate: new Date().toLocaleString()
       };
       alert('Update Success');
       localStorage.setItem('todos', JSON.stringify(this.todos));
       this.loadTodo();
+      this.checkLocalStorageUsage();
       this.selectedDateSubmission = new Date().toLocaleString(); 
+      this.showTodo = false;
+      this.isEditTodo = false;
+
 
     } else {
       alert('Complete all the fields');
@@ -279,7 +334,7 @@ onDocumentClick(event: Event): void {
     this.isEditTodo = !this.isEditTodo;
     // alert('edit todo');
   }
- 
+
   closeTodos(): void {
     this.showTodo = false;
     this.isEditTodo = false;
