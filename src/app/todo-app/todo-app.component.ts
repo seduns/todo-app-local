@@ -267,7 +267,7 @@ onDocumentClick(event: Event): void {
     }
   }
 
-  limitWords(title: string, limit: number = 10): string {
+  limitWords(title: string, limit: number = 5): string {
     if (!title) return '';
     const words = title.split(' '); 
     return words.length > limit ? words.slice(0, limit).join(' ') + '...' : title;

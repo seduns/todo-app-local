@@ -76,7 +76,7 @@
         border-radius: 10px;
         margin-bottom: 5px;
         font-size: 18px;
-        color: rgba(0, 0, 0, 0.732);
+        color: rgba(0, 0, 0, 0.693);
         // position: relative;
         
 
@@ -113,7 +113,17 @@
             margin-left: auto;
             box-sizing: border-box; /* Ensure padding doesn't affect width */
             margin-bottom: 5px;
-            color: rgba(0, 0, 0, 0.542);
+            color: rgb(255, 255, 255);
+        }
+
+        .new-task {
+            background-color: #4CAF50;
+        }
+        .progress-task {
+            background-color: #2196F3;
+        }
+        .done-task {
+            background-color: #9C27B0;
         }
 
         .drop-btn {
@@ -134,7 +144,7 @@
 
         .con-nav-1 {
             padding: 5px;  
-            width: fit-content; /* Automatically adjusts to content width */
+            width: 120px; /* Automatically adjusts to content width */
             height: fit-content; /* Automatically adjusts to content height */
             
             text-wrap: nowrap;
@@ -154,13 +164,33 @@
 
         
         .con-title-item { 
+            width: 100px;
             text-wrap: nowrap;
             overflow: hidden;
             display: block;
             text-overflow:ellipsis;
-
         }
 
+        .con-desc-item {
+            position: absolute;
+            font-size: 10px;
+            margin-top: 30px;
+            width: 100px; /* Fixed width for consistent truncation */
+        
+            /* Enable multi-line truncation */
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3; /* Set max number of lines before truncating */
+            -webkit-box-orient: vertical;
+        
+            /* Important: These properties help with text wrapping */
+            white-space: normal; 
+            line-height: 1.2; /* Adjust line height if needed */
+            max-height: calc(1.2em * 3); /* line-height * max lines */
+        }
+        
+        
+        
         .high-level {
             background-color: #d20000; /* Soft red */
         }
@@ -207,7 +237,7 @@
     
     .todo-item:hover {
         background-color: rgb(0, 23, 141);
-        transform: scale(1.1);
+        transform:scale(1.05);
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.482);
     }
 
@@ -223,38 +253,41 @@
         color: white;
     }
 
+    .todo-item:hover .con-desc-item { 
+        color: rgba(255, 255, 255, 0.745);
+    }
+
     .todo-item:hover .complete-task .con-title-item { 
         color: rgba(255, 255, 255, 0.679);
     }
     
+    .complete-btn,
     .del-btn {
         display: flex;
         cursor: pointer;
         background-color: transparent;
         background-size: cover;
         color: rgba(255, 0, 0, 0.567);
-        font-size: 14px;
+        font-size: 12px;
         flex: 1;
 
         &:hover {
             background-color: transparent;
             color: rgb(136, 0, 0);
+            transform: translateX(5px);
 
         }
     }
 
     .complete-btn { 
-        display: flex;
-        cursor: pointer;
         background-color: transparent;
         background-size: cover;
         color: green;
-        font-size: 14px;
-        flex: 1;
         
         &:hover {
             background-color: transparent;
             color: rgb(0, 75, 0);
+            transform: translateX(5px);
         }
     }
     
@@ -381,26 +414,15 @@
             .con-select { 
                 // border: 1px solid rgb(0, 49, 122);
                 display: flex;
-                align-items: center;
-                align-content: center;
-                width: 80%;
-                justify-content: space-between;
+                align-items: start;
+                align-content: start;
+                justify-content: start;
                 gap: 10px;
 
-                .con-state-select {
+                .con-state-select, .con-level-select, .con-cate-select {
                     display: flex;
                     flex-direction: column;
                     
-                }
-                
-                .con-level-select { 
-                    display: flex;
-                    flex-direction: column;
-                }
-                
-                .con-cate-select {
-                    display: flex;
-                    flex-direction: column;
                 }
 
                 select { 
@@ -408,7 +430,8 @@
                     border-radius: 5px;
                     margin-left: 0px;
                     border: 1px solid rgba(0, 0, 0, 0.246);
-
+                    width: 100%;
+                    
                 }
 
                 label { 
@@ -513,6 +536,11 @@ th, td {
             // border: 1px solid black;
             height: 130vw;
         }
+        .con-select {
+            display: flex;
+            flex-direction: column; /* Stack items vertically */
+        }
+        
     }
     
 
