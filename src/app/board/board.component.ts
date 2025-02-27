@@ -142,9 +142,6 @@ onNewCategoriesChange(): void {
     this.selectedNavIndex = null;
   }
 
-
-
-
   setComplete(state: string, index: number, event: Event): void {
     event.stopPropagation();
 
@@ -167,7 +164,6 @@ onNewCategoriesChange(): void {
         console.log('Update', this.todos);
     }
 }
-
   
 delete(state: string, index: number, event: Event): void {
   event.stopPropagation();
@@ -189,7 +185,6 @@ delete(state: string, index: number, event: Event): void {
       console.log('Todo deleted', this.todos);
   }
 }
-
 
   limitWords(description: string, limit: number = 10): string {
     if (!description) return '';
