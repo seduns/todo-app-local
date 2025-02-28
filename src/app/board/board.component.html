@@ -25,7 +25,7 @@
                                         <div class="todo-title" [ngClass]="{'complete-task': todo.isComplete}">
                         
                                             <span class="con-title-item">{{limitWords(todo.title, 5)}}</span>
-                                            <span class="con-desc-item">{{limitWords(todo.description, 10)}}</span>
+                                            <span class="con-desc-item">{{limitWords(todo.description, 10) || "Description not provided"}}</span>
                         
                                             <!-- Generate a unique index for the dropdown -->
                                             <button class="drop-btn" (click)="toggleNav($event, stateIndex + '-' + i)">

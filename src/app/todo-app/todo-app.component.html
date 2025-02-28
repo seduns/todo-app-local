@@ -36,7 +36,6 @@
                             </button>
 
                             <div class="form-controller">
-
                                 <div class="con-title-1">
                                     <label class="label-title">Title</label>
                                     <div class="con-title">
@@ -84,7 +83,7 @@
                                                 <option value="other">Other</option>
                                             </select>
                                         </div>
-
+                                        
                                     </div>
 
                                     <!-- Description -->
@@ -112,7 +111,7 @@
                                 
                                 <span class="con-title-item">{{limitWords(todo.title, 5)}}</span>
 
-                                <span class="con-desc-item">{{limitWords(todo.description, 10)}}</span>
+                                <span class="con-desc-item">{{limitWords(todo.description, 10) || "Description not provided"}}</span>
                                 
                                 <button class="drop-btn" (click)="toggleNav($event, i)"><fa-icon [icon]="faBar"></fa-icon></button>
 

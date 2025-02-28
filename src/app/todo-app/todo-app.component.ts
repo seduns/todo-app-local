@@ -28,7 +28,7 @@ export class TodoAppComponent implements OnInit {
   description: string = '';
   selectState: string = 'new';
   selectLevel: string = 'medium';
-  selectCategories: string | null = null;
+  selectCategories: string = 'other';
   isComplete: boolean = false;
   submissionDate: string | null = null;
   storeLatestTodo: number = 0 ; 
@@ -192,7 +192,7 @@ onDocumentClick(event: Event): void {
 
   
   submit(): void {
-    if (this.title && this.description && this.selectState && this.selectCategories) {
+    if (this.title && this.selectState && this.selectCategories) {
 
       this.todoId = this.getLatestTodoId() + 1;
 
@@ -202,8 +202,8 @@ onDocumentClick(event: Event): void {
         localStorage.setItem('todos', JSON.stringify(this.todos));  // submit new to localStorage.
       }
 
-      console.log('New todo added: ', this.title);
-      alert('New todo added');
+      console.log('New task added: ', this.title);
+      alert('New task added');
       this.loadTodo();
       this.checkLocalStorageUsage();
       this.title = '';  // Clear the input field after submission.
@@ -227,13 +227,15 @@ onDocumentClick(event: Event): void {
 
      // Save the updated todos to localStorage
     localStorage.setItem('todos', JSON.stringify(this.todos));
-  
+    
     this.loadTodo();
     this.checkLocalStorageUsage();
     console.log('Update', this.todos);
-
+    
     this.selectedNavIndex = null;
   }
+  
+ 
   
   delete(index: number, event: Event): void {
     event.stopPropagation();
@@ -288,11 +290,11 @@ onDocumentClick(event: Event): void {
   }
 
   saveEdit(): void { 
-    if ( this.selectedIndex !== null && this.selectedTitle && this.selectedDescription && this.selectedStateNew && this.selectedLevelNew && this.selectedCategoriesNew && this.selectedUpdateDate){
+    if ( this.selectedIndex !== null && this.selectedTitle && this.selectedStateNew && this.selectedLevelNew && this.selectedCategoriesNew && this.selectedUpdateDate){
       this.todos[this.selectedIndex] = {
         todoId: this.selectedId ?? 0,
         title: this.selectedTitle,
-        description: this.selectedDescription,
+        description: this.selectedDescription ?? "null",
         isComplete: this.selectedStateNew === "done" ? true : false,
         state: this.selectedStateNew,
         level: this.selectedLevelNew,
@@ -320,6 +322,13 @@ onDocumentClick(event: Event): void {
       console.log('New level: ' + this.selectedLevelNew);
       
     }
+  }
+
+  isAddNewCate: boolean = false;
+
+  addNewCategory(): void {
+    this.isAddNewCate = !this.isAddNewCate;
+    console.log(this.isAddNewCate);
   }
 
   limitWords(title: string, limit: number = 5): string {

@@ -13,7 +13,8 @@
     
     .con-todo {
         display: flex;
-        height: 90vh;
+        flex-direction: column;
+        // height: 90vh;
         // border: 1px solid black;
         border-radius: 10px;
         background-color: #87ceff;
@@ -27,11 +28,10 @@
             // border: 1px solid black;
             display: flex;
             justify-content: space-between;
-            width: 100%;
-            height: 50vh;
+            height: 30vh;
 
             .con-flex-card { 
-                // border: 1px solid black;
+                border: 1px solid black;
                 padding: 10px;
                 display: flex;
                 width: 100%;
@@ -108,6 +108,31 @@
                         }
                     }
                 }
+            }
+        }
+
+        .con-todo-list-2 { 
+            // border: 1px solid black;
+            display: flex;
+            padding: 10px;
+            border-radius: 10px;
+            margin: 0px; //adjust here
+            height: 55vh;
+
+            .con-flex-1, .con-flex-2 {
+                margin: 0px 5px;
+                padding: 10px;
+                border-radius: 10px;
+            }
+
+            .con-flex-1 {
+                border: 1px solid black;
+                width: 70%;
+            }
+            
+            .con-flex-2 {
+                border: 1px solid black;
+                width: 30%;
             }
         }
         

@@ -90,7 +90,7 @@ onNewCategoriesChange(): void {
   }
 
   saveEdit(): void { 
-    if ( this.selectedId !== null && this.selectedTitle && this.selectedDescription && this.selectedStateNew && this.selectedLevelNew ){
+    if ( this.selectedId !== null && this.selectedTitle  && this.selectedStateNew && this.selectedLevelNew ){
       
       const todoIndex = this.todos.findIndex(todo => todo.todoId === this.selectedId);
 
@@ -98,7 +98,7 @@ onNewCategoriesChange(): void {
         this.todos[todoIndex] = {
           todoId: this.selectedId,
           title: this.selectedTitle,
-          description: this.selectedDescription,  
+          description: this.selectedDescription ?? "null",  
           isComplete: this.todos[todoIndex].isComplete,
           state: this.selectedStateNew,
           level: this.selectedLevelNew,
@@ -163,28 +163,28 @@ onNewCategoriesChange(): void {
         this.selectedNavIndex = null;
         console.log('Update', this.todos);
     }
-}
-  
-delete(state: string, index: number, event: Event): void {
-  event.stopPropagation();
-
-  // Find the todo to delete using the state and index
-  const todos = this.getTodoByState(state);
-  const todoToDelete = todos[index];
-
-  if (todoToDelete) {
-      // Remove the todo from the main list
-      this.todos = this.todos.filter(todo => todo !== todoToDelete);
-      
-      // Update localStorage
-      localStorage.setItem('todos', JSON.stringify(this.todos));
-      
-      // Reload todos and reset selected dropdown
-      this.loadTodo();
-      this.selectedNavIndex = null;
-      console.log('Todo deleted', this.todos);
   }
-}
+ 
+  delete(state: string, index: number, event: Event): void {
+    event.stopPropagation();
+
+    // Find the todo to delete using the state and index
+    const todos = this.getTodoByState(state);
+    const todoToDelete = todos[index];
+
+    if (todoToDelete) {
+        // Remove the todo from the main list
+        this.todos = this.todos.filter(todo => todo !== todoToDelete);
+        
+        // Update localStorage
+        localStorage.setItem('todos', JSON.stringify(this.todos));
+        
+        // Reload todos and reset selected dropdown
+        this.loadTodo();
+        this.selectedNavIndex = null;
+        console.log('Todo deleted', this.todos);
+    }
+  }
 
   limitWords(description: string, limit: number = 10): string {
     if (!description) return '';
