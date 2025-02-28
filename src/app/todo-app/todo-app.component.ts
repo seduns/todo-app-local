@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { CheckboxControlValueAccessor, FormsModule } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Todo } from '../model/todo.mode';
 import { faBars, faCheck, faClose, faL, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -7,11 +7,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { eventNames } from 'node:process';
 
 @Component({
-  selector: 'app-todo-app',
-  standalone: true,
-  imports: [CommonModule, FormsModule, FontAwesomeModule ],
-  templateUrl: './todo-app.component.html',
-  styleUrls: ['./todo-app.component.scss']
+    selector: 'app-todo-app',
+    standalone: true,
+    imports: [CommonModule, FormsModule, FontAwesomeModule],
+    templateUrl: './todo-app.component.html',
+    styleUrls: ['./todo-app.component.scss']
 })
 export class TodoAppComponent implements OnInit {
 

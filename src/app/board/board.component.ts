@@ -8,11 +8,11 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faBars, faClose } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-  selector: 'app-board',
-  standalone: true,
-  imports: [ CommonModule, FormsModule, FontAwesomeModule],
-  templateUrl: './board.component.html',
-  styleUrl: './board.component.scss'
+    selector: 'app-board',
+    standalone: true,
+    imports: [CommonModule, FormsModule, FontAwesomeModule],
+    templateUrl: './board.component.html',
+    styleUrl: './board.component.scss'
 })
 export class BoardComponent implements OnInit {
 

@@ -4,13 +4,14 @@ import { Router } from '@angular/router';
 import { Todo } from '../model/todo.mode';
 import { stringify } from 'node:querystring';
 import { consumerAfterComputation } from '@angular/core/primitives/signals';
+import { Chart } from 'chart.js';
 
 @Component({
-  selector: 'app-homepage',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './homepage.component.html',
-  styleUrl: './homepage.component.scss'
+    selector: 'app-homepage',
+    standalone: true,
+    imports: [CommonModule],
+    templateUrl: './homepage.component.html',
+    styleUrl: './homepage.component.scss'
 })
 export class HomepageComponent implements OnInit {
 
@@ -96,10 +97,6 @@ export class HomepageComponent implements OnInit {
 
       console.log('Total submit by categories:', this.categoryCounts);
   }
-
-
-
-
 
   openTodos(todo: any, index: number, event?: Event): void {
     if (event && event.target instanceof HTMLInputElement) {

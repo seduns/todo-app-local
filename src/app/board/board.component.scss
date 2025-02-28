@@ -147,6 +147,7 @@ button:hover {
             overflow: hidden;
             display: -webkit-box;
             -webkit-line-clamp: 3; /* Set max number of lines before truncating */
+            line-clamp: 3;
             -webkit-box-orient: vertical;
         
             /* Important: These properties help with text wrapping */

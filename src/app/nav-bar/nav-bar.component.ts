@@ -6,11 +6,11 @@ import { faC, faHome, faListCheck, faTableList } from '@fortawesome/free-solid-s
 
 
 @Component({
-  selector: 'app-nav-bar',
-  standalone: true,
-  imports: [CommonModule, FontAwesomeModule],
-  templateUrl: './nav-bar.component.html',
-  styleUrl: './nav-bar.component.scss'
+    selector: 'app-nav-bar',
+    standalone: true,
+    imports: [CommonModule, FontAwesomeModule],
+    templateUrl: './nav-bar.component.html',
+    styleUrl: './nav-bar.component.scss'
 })
 export class NavBarComponent implements OnInit {
 
