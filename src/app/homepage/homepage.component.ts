@@ -1,10 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { Todo } from '../model/todo.mode';
 import { stringify } from 'node:querystring';
 import { consumerAfterComputation } from '@angular/core/primitives/signals';
-import { Chart } from 'chart.js';
+import { Chart, registerables } from 'chart.js';
+import { create } from 'node:domain';
+
+Chart.register(...registerables);
 
 @Component({
     selector: 'app-homepage',
@@ -14,14 +17,17 @@ import { Chart } from 'chart.js';
     styleUrl: './homepage.component.scss'
 })
 export class HomepageComponent implements OnInit {
+  @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
+  chart!: Chart;
+
 
   todos:Todo[] =[] ;
   allTodos: Todo[] =[];
   constructor(private router : Router) {}
 
-    ngOnInit(): void {
-        this.checkLocalStorageUsage();
+  ngOnInit(): void {
         this.loadTodo();
+        this.checkLocalStorageUsage();
         this.totalCategoriesSubmit();
   } 
 
@@ -125,6 +131,39 @@ export class HomepageComponent implements OnInit {
     this.loadTodo();
     console.log('Update', this.todos);
   }
+
+  createChart(): void {
+    if (this.chartCanvas?.nativeElement) {
+      this.chart = new Chart(this.chartCanvas.nativeElement, {
+        type: 'bar',
+        data: {
+          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+          datasets: [
+            {
+              label: 'Sample Data',
+              data: [12, 19, 3, 5, 2, 3],
+              backgroundColor: 'rgba(75, 192, 192, 0.2)',
+              borderColor: 'rgba(75, 192, 192, 1)',
+              borderWidth: 1,
+            },
+          ],
+        },
+        options: {
+          responsive: true,
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
+          },
+        },
+      });
+    } else {
+      console.error('Chart canvas not available');
+    }
+  }
+
+
+
 
   limitWords(description: string, limit: number = 10): string {
     if (!description) return '';

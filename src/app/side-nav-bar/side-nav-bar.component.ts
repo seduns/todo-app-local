@@ -21,17 +21,23 @@ export class SideNavBarComponent implements OnInit {
   faAngleLeft = faAnglesLeft;
   faAngleRight = faAnglesRight;
 
-
-  isMinimizeNav: boolean = false;
+  isMinimizeNav: boolean | null = null; // Initialize as null to handle loading state
+  private readonly NAV_STATE_KEY = 'isMinimizeNav';
   
   ngOnInit(): void {
+    if (typeof window != 'undefined') { 
+      const storedState = localStorage.getItem(this.NAV_STATE_KEY);
+      this.isMinimizeNav = storedState === 'true';
+    }
   }
 
   minimizeNav(): void { 
-    if (this.isMinimizeNav) {
-       console.log('open nav');
-    }
+    
       this.isMinimizeNav = !this.isMinimizeNav;
       console.log('Close Nav: ' + this.isMinimizeNav);
+
+      // Persist state to localStorage
+      localStorage.setItem(this.NAV_STATE_KEY, this.isMinimizeNav.toString());
+
   } 
 }

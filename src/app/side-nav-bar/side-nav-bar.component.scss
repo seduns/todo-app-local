@@ -9,6 +9,8 @@
     flex-direction: column;
     overflow-y: auto; /* Ensure content is scrollable if needed */
     border-top-right-radius: 10px;
+    overflow-x: hidden;
+
 }
 
 .minimize-nav { 
