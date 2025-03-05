@@ -19,7 +19,7 @@ Chart.register(...registerables);
     templateUrl: './homepage.component.html',
     styleUrls: ['./homepage.component.scss']
 })
-export class HomepageComponent implements AfterViewInit {
+export class HomepageComponent implements OnInit {
 
   @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
   chart!: Chart;
@@ -36,7 +36,7 @@ export class HomepageComponent implements AfterViewInit {
 
   constructor(private router : Router, @Inject(PLATFORM_ID) private platformId: Object) {}
 
-  ngAfterViewInit(): void {
+  ngOnInit(): void {
       this.loadTodo();
       this.checkLocalStorageUsage();
       this.totalCategoriesSubmit();
@@ -122,7 +122,7 @@ export class HomepageComponent implements AfterViewInit {
       });
 
       console.log('Total submit by categories:', this.categoryCounts);
-    })
+    }, 0);
 
     this.createChart();
   }

@@ -237,7 +237,7 @@ button:hover {
     .todo-item {
             background: #f4f4f4;
             margin: 5px;
-            padding: 20px;
+            padding: 10px 20px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -493,6 +493,12 @@ tr {
         .card { 
             width: 60%;
             max-height: 500px;
+        }
+
+        .content .todo-item { 
+            padding: 5px 5px;
+
+
         }
 
      
