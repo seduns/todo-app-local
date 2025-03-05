@@ -42,7 +42,7 @@ button:hover {
         flex-direction: column;
         border-radius: 10px;
         margin-bottom: 5px;
-        font-size: 20px;
+        font-size: 18px;
         color: rgba(0, 0, 0, 0.693);
         // position: relative;
         
@@ -128,7 +128,7 @@ button:hover {
         }
         
         .con-title-item { 
-            width: 120px;
+            width: 130px;
             text-wrap: nowrap;
             overflow: hidden;
             display: block;
@@ -219,6 +219,19 @@ button:hover {
     .table-con-todo-item {
         display: flex;
         justify-content: center;
+    }
+
+    .todo-card {
+        list-style: none;
+        padding: 0;
+        display: flex;
+        flex-wrap: wrap;
+        /* Allows items to wrap when max width is reached */
+        gap: 10px;
+        /* Adds spacing between items */
+        justify-content: center;
+        /* Centers items */
+        width: 100%;
     }
 
     .todo-item {

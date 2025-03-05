@@ -9,15 +9,10 @@
 
             <div class="todo-list-background">
 
-                <!-- <div class="todo-card"> <div class="todo-item" *ngFor="let todo of todos;
-                let i = index;" (click)="openTodos(todo, i, $event)"> <div class="todo-title">
-                {{ todo.title }} </div> <div class="todo-description"> {{
-                limitWords(todo.description, 50)}} </div> </div> </div> -->
-
                 <div class="con-flex-card con-1">
                     <div class="con-col-1">
-                        <div 
-                            class="col-cate col-1" 
+                        <div
+                            class="col-cate col-1"
                             *ngFor="let category of (categoryCounts | keyvalue)">
                             <div class="col-cate-name">
                                 {{ category.key }}
@@ -27,10 +22,19 @@
                             </div>
                         </div>
                     </div>
-                    
+
                 </div>
                 <div class="con-flex-card con-2">
-                    test
+                    <span class="con-label-flex">All Task</span>
+                    <div class="todo-card"> 
+                        <div class="todo-item" *ngFor="let todo of todos; let i = index;" (click)="openTodos(todo, i)">
+                            <span class="con-title-item">{{limitWords(todo.title, 5)}}</span>
+
+                            <div class="level-con" [ngClass]="{'high-level' : todo.level === 'high', 'medium-level' : todo.level === 'medium', 'low-level' : todo.level === 'low'}">{{todo.level}}</div>
+
+                        </div>
+
+                    </div>
                 </div>
                 <div class="con-flex-card con-3">
                     test
@@ -43,26 +47,14 @@
             <div class="con-todo-list-2">
 
                 <div class="con-flex-1">
-                    <div>
+                    <div class="chart">
                         <canvas #chartCanvas></canvas>
-                      </div>
-                      
+                    </div>
+
                 </div>
                 <div class="con-flex-2">
-                    test
+
                 </div>
             </div>
-
-
-
-
         </div>
     </div>
-
-    <!-- Button to clear all localStorage -->
-<!-- <button (click)="clearLocalStorage()" class="clean-up-btn">
-    Clear All Data
-</button> -->
-
-
-</div>

@@ -1,34 +1,52 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, Inject, OnInit, PLATFORM_ID, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, HostListener, inject, Inject, OnInit, PLATFORM_ID, runInInjectionContext, ViewChild } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { Todo } from '../model/todo.mode';
 import { stringify } from 'node:querystring';
 import { consumerAfterComputation } from '@angular/core/primitives/signals';
 import { Chart, registerables } from 'chart.js';
+import { faBars, faBlackboard, faCheck, faClose, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { create } from 'node:domain';
+import { createTracing } from 'node:trace_events';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 Chart.register(...registerables);
 
 @Component({
     selector: 'app-homepage',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, FontAwesomeModule],
     templateUrl: './homepage.component.html',
-    styleUrl: './homepage.component.scss'
+    styleUrls: ['./homepage.component.scss']
 })
-export class HomepageComponent implements OnInit {
+export class HomepageComponent implements AfterViewInit {
+
   @ViewChild('chartCanvas') chartCanvas!: ElementRef<HTMLCanvasElement>;
   chart!: Chart;
+
+  faPlus = faPlus;
+  faClose = faClose;
+  faTrash = faTrash;
+  faBar = faBars;
+  faCheck = faCheck;
 
 
   todos:Todo[] =[] ;
   allTodos: Todo[] =[];
-  constructor(private router : Router) {}
 
-  ngOnInit(): void {
-        this.loadTodo();
-        this.checkLocalStorageUsage();
-        this.totalCategoriesSubmit();
+  constructor(private router : Router, @Inject(PLATFORM_ID) private platformId: Object) {}
+
+  ngAfterViewInit(): void {
+      this.loadTodo();
+      this.checkLocalStorageUsage();
+      this.totalCategoriesSubmit();
+
+      //check running on browser
+      if (isPlatformBrowser(this.platformId)) { 
+        setTimeout(() =>  {
+          this.createChart();
+        }, 100);
+    }
   } 
 
   checkLocalStorageUsage(): void {
@@ -92,16 +110,21 @@ export class HomepageComponent implements OnInit {
   categoryCounts: { [key: string]: number } = {};
 
   totalCategoriesSubmit(): void {
-      this.categoryCounts = {};
+    setTimeout(() => { 
 
+      this.categoryCounts = {};
+      
       this.todos.forEach((todo) => { 
-          const category = todo.categories;
-          if (category) { 
+        const category = todo.categories;
+        if (category) { 
               this.categoryCounts[category] = (this.categoryCounts[category] || 0) + 1;
-          }
+            }
       });
 
       console.log('Total submit by categories:', this.categoryCounts);
+    })
+
+    this.createChart();
   }
 
   openTodos(todo: any, index: number, event?: Event): void {
@@ -132,38 +155,85 @@ export class HomepageComponent implements OnInit {
     console.log('Update', this.todos);
   }
 
+
   createChart(): void {
-    if (this.chartCanvas?.nativeElement) {
-      this.chart = new Chart(this.chartCanvas.nativeElement, {
-        type: 'bar',
-        data: {
-          labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-          datasets: [
-            {
-              label: 'Sample Data',
-              data: [12, 19, 3, 5, 2, 3],
-              backgroundColor: 'rgba(75, 192, 192, 0.2)',
-              borderColor: 'rgba(75, 192, 192, 1)',
-              borderWidth: 1,
-            },
-          ],
-        },
-        options: {
-          responsive: true,
-          scales: {
-            y: {
-              beginAtZero: true,
-            },
-          },
-        },
-      });
-    } else {
-      console.error('Chart canvas not available');
+    if (this.chart) { 
+      this.chart.destroy();
     }
+
+   if (this.chartCanvas?.nativeElement) {
+
+    const labels = Object.keys(this.categoryCounts);
+    const values = Object.values(this.categoryCounts);
+
+    const totalTask = values.reduce((sum, value) => sum + value, 0);
+
+    const percentage = values.map(value => ((value/ totalTask)) * 100);
+
+      this.chart = new Chart(this.chartCanvas.nativeElement, { 
+        type: 'pie', 
+        data: { 
+          labels: labels,
+          datasets: [ 
+            { 
+              label: 'Task by Category',
+              data: values,
+              backgroundColor: [ 
+                '#007ec2', '#00b02f', '#0205b8'
+              ],
+              borderWidth: 1,
+              borderColor: 'rgba(0, 0, 0, 0.23)',
+              
+            }
+          ], 
+        },
+        options: { 
+          responsive: true, 
+          maintainAspectRatio: false,
+          plugins: { 
+            tooltip : { 
+              callbacks: { 
+                label: function (tooltipItem: any) { 
+                  let dataset = tooltipItem.dataset;
+                  let currentValue = dataset.data[tooltipItem.dataIndex];
+                  let percentage = ((currentValue / totalTask) * 100).toFixed(2);
+                  return `${labels[tooltipItem.dataIndex]}: ${percentage}%`;
+                }
+              }
+            }
+          }
+        },
+
+      })
+   }
   }
 
+ selectedNavIndex: number | null = null;
+ 
+ toggleNav(event: Event, index: number): void {
+   event.stopPropagation(); 
+   // Toggle the selected index or close if the same index is clicked
+   this.selectedNavIndex = this.selectedNavIndex === index ? null : index;
+   console.log(this.selectedNavIndex); 
+ }
+ 
+ @HostListener('document:click', ['$event'])
+ onDocumentClick(event: Event): void {
+   this.selectedNavIndex = null;
+ }
 
+ delete(index: number, event: Event): void {
+  event.stopPropagation();
+  this.todos.splice(index, 1);  // Remove the todo item at the specified index.
+  if (typeof window !== 'undefined') {  // Ensure localStorage is available.
+    localStorage.setItem('todos', JSON.stringify(this.todos));  // Update localStorage.
+  }
+  console.log('Todo deleted');
+  this.checkLocalStorageUsage();
 
+  this.selectedNavIndex = null;
+
+}
 
   limitWords(description: string, limit: number = 10): string {
     if (!description) return '';
