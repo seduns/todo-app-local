@@ -15,7 +15,7 @@
     .add-task-con {
         // border: 1px solid black;
         border-radius: 10px;
-        background-color: rgba(28, 236, 0, 0.941);
+        background-color: rgba(191, 221, 187, 0.941);
         padding: 10px;
         display: flex;
         justify-content: center;
@@ -557,6 +557,14 @@ th, td {
             min-width: 250px;
             // max-width: 150px;
             max-height: 400px;
+        }
+
+        .todo-content { 
+            .add-task-con { 
+                background-color: rgb(138, 80, 80);
+                display: flex;
+                flex-direction: column;
+            }
         }
         
     }

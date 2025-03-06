@@ -14,20 +14,27 @@
                 Clear All Data
             </button>
 
+            <button (click)="resetAllFilter()">Reset Filter</button>
 
 
+            <span>Select Level</span>
             <select
                 name="stateOption"
                 id=""
                 [(ngModel)]="selectedLevelOption"
                 (ngModelChange)="onSelectedStateChange()">
                 <option value="" disabled="disabled" selected="selected">State</option>
+                <option value="">All</option>
                 <option value="high">high</option>
                 <option value="medium">medium</option>
                 <option value="low">low</option>
             </select>
 
-            <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()">
+                <input type="text" placeholder="search" [(ngModel)]="searchItem" (ngModelChange)="filteredTodos()">
+
+            <!-- <span>Select Date</span>
+            <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()"> -->
+
                 <div *ngIf="isAddTask">
                     <div class="card-overlay">
                         <div class="card">
@@ -131,6 +138,7 @@
                             </div>
                             </div>
                         </div>
+                        <div class="con-no-task" *ngIf="todos.length === 0">no item</div>
                     </div>
 
                     <div *ngIf="showTodo">

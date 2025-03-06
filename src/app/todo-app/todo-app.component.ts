@@ -133,48 +133,60 @@ export class TodoAppComponent implements OnInit {
     console.log('Categories: ', this.selectedCategoriesNew);
   }
 
+  selectedLevelOption: string | null = null;
+  searchItem: string | null = null;
+
   filteredTodos(): void {
     // Start with all todos as the base
     this.todos = [...this.allTodos];
 
+    // Apply search filter (case-insensitive, partial match)
+    if (this.searchItem) { 
+        this.todos = this.todos.filter(todo => 
+            todo.title?.toLowerCase().includes(this.searchItem ?? "".toLowerCase()) // Safe optional chaining (?)
+        );
+    }
+
+    // Apply level filter
     if (this.selectedLevelOption) { 
-      const selectLevel = this.selectedLevelOption;
-      this.todos = this.allTodos.filter((todo) => {
-        return todo.level === selectLevel;
-      }) 
+        this.todos = this.todos.filter(todo => todo.level === this.selectedLevelOption);
     }
 
-    // Apply date filter if a date is selected
+    // Apply date filter safely
     if (this.selectedDate) {
-        const selectedDateString = new Date(this.selectedDate).toLocaleDateString();
-        this.todos = this.todos.filter((todo) => {
-            const todoDateString = new Date(todo.submissionDate).toLocaleDateString();
-            console.log(`Comparing dates: ${todoDateString} === ${selectedDateString}`);
-            return todoDateString === selectedDateString;
-        });
+        const selectedDateObj = new Date(this.selectedDate);
+        if (!isNaN(selectedDateObj.getTime())) { // Ensure valid date
+            const selectedDateString = selectedDateObj.toISOString().split('T')[0];
+
+            this.todos = this.todos.filter(todo => {
+                const todoDateObj = todo.submissionDate ? new Date(todo.submissionDate) : null;
+                const todoDateString = todoDateObj && !isNaN(todoDateObj.getTime()) 
+                    ? todoDateObj.toISOString().split('T')[0] 
+                    : null;
+
+                return todoDateString === selectedDateString;
+            });
+        }
     }
 
-    console.log('Filtered Todos:', this.todos);
-}
-
-selectedNavIndex: number | null = null;
-
-toggleNav(event: Event, index: number): void {
-  event.stopPropagation(); 
-
-  // Toggle the selected index or close if the same index is clicked
-  this.selectedNavIndex = this.selectedNavIndex === index ? null : index;
-  console.log(this.selectedNavIndex); 
-
-
-}
-
-@HostListener('document:click', ['$event'])
-onDocumentClick(event: Event): void {
-  this.selectedNavIndex = null;
+    // console.log('Filtered Todos:', this.todos);
 }
 
 
+  selectedNavIndex: number | null = null;
+
+  toggleNav(event: Event, index: number): void {
+    event.stopPropagation(); 
+
+    // Toggle the selected index or close if the same index is clicked
+    this.selectedNavIndex = this.selectedNavIndex === index ? null : index;
+    console.log(this.selectedNavIndex); 
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    this.selectedNavIndex = null;
+  }
 
   getLatestTodoId(): number { 
     if (this.allTodos.length === 0) { 
@@ -262,7 +274,7 @@ onDocumentClick(event: Event): void {
   selectedUpdateDate: string | null = null;
   selectedDate: string | null = null;
 
-  selectedLevelOption: string | null = null;
+  
 
 
   onSelectedStateChange(): void { 
@@ -360,4 +372,12 @@ onDocumentClick(event: Event): void {
     this.title = '';
     this.description = '';
   }
+
+  resetAllFilter(): void { 
+    this.selectedLevelOption = null; 
+    this.selectedDate = null; 
+    this.todos = [...this.allTodos];
+  }   
+
+
 }
