@@ -133,6 +133,7 @@ export class TodoAppComponent implements OnInit {
 
   selectedLevelOption: string | null = null;
   selectedStateOption: string | null = null;
+  selectedCategoryOption: string | null = null;
   searchItem: string | null = null;
 
   filteredTodos(): void {
@@ -153,6 +154,10 @@ export class TodoAppComponent implements OnInit {
 
     if (this.selectedStateOption) { 
         this.todos = this.todos.filter(todo => todo.state === this.selectedStateOption);
+    }
+
+    if (this.selectedCategoryOption) { 
+        this.todos = this.todos.filter(todo => todo.categories === this.selectedCategoryOption);
     }
 
     // Apply date filter safely
@@ -311,12 +316,17 @@ export class TodoAppComponent implements OnInit {
 
 
   onSelectedLevelChange(): void { 
-    console.log('Selected Filtered State: ' + this.selectedLevelOption);
+    console.log('Selected Filtered Level: ' + this.selectedLevelOption);
     this.filteredTodos();
   }
 
   onSelectedStateChange(): void { 
     console.log('Selected Filtered State: ' + this.selectedStateOption);
+    this.filteredTodos();
+  }
+
+  onSelectedCategoryChange(): void { 
+    console.log('Selected Filtered Category: ' + this.selectedCategoryOption);
     this.filteredTodos();
   }
 
@@ -424,6 +434,8 @@ export class TodoAppComponent implements OnInit {
   resetAllFilter(): void { 
     this.selectedLevelOption = null; 
     this.selectedStateOption = null; 
+    this.selectedCategoryOption = null; 
+    this.searchItem = null;
     this.selectedDate = null; 
     this.todos = [...this.allTodos];
   }   

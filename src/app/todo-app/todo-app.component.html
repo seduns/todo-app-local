@@ -48,6 +48,21 @@
                 </select>
             </div>
 
+            <div class="con-selection category-select">
+                <span>Select Category</span>
+                <select
+                    name="stateOption"
+                    id=""
+                    [(ngModel)]="selectedCategoryOption"
+                    (ngModelChange)="onSelectedCategoryChange()">
+                    <option value="" disabled="disabled" selected="selected">Category</option>
+                    <option value="">All</option>
+                    <option value="work">Work</option>
+                    <option value="personal">Personal</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+
                 <input type="text" placeholder="search" [(ngModel)]="searchItem" (ngModelChange)="filteredTodos()">
 
             <!-- <span>Select Date</span>
