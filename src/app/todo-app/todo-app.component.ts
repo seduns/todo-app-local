@@ -5,6 +5,7 @@ import { Todo } from '../model/todo.mode';
 import { faBars, faCheck, faClose, faL, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { eventNames } from 'node:process';
+import { filter } from 'rxjs';
 
 @Component({
     selector: 'app-todo-app',
@@ -38,17 +39,9 @@ export class TodoAppComponent implements OnInit {
 
   ngOnInit(): void {
     this.checkLocalStorageUsage();
-    this.loadTodo();
-    this.getLatestTodoId();
+    this.loadTodo(); // Load all todos first
+}
 
-    this.todos.forEach(todo => { 
-      if (todo.state === "done") {
-        todo.isComplete = true;
-      } else { 
-        todo.isComplete = false;
-      }
-    })
-  }
 
   usage: string | null = null;
 
@@ -89,19 +82,24 @@ export class TodoAppComponent implements OnInit {
   }
 
   loadTodo(): void { 
-    if (typeof window != 'undefined') { 
-      const storedTodo = localStorage.getItem('todos');
-      if (storedTodo) {
-        this.todos = JSON.parse(storedTodo);
-        this.allTodos = [...this.todos];
-  
-        console.log("Stored Todos:", this.todos);
-        this.todos.forEach(todo => {
-            // console.log("Stored Date:", todo.submissionDate);
-        });
-      }
+    if (typeof window !== 'undefined') { 
+        const storedTodo = localStorage.getItem('todos');
+        if (storedTodo) {
+            this.allTodos = JSON.parse(storedTodo);
+
+            // Ensure `isComplete` is correctly set
+            this.allTodos.forEach(todo => { 
+                todo.isComplete = todo.state === "done";
+            });
+
+            this.filteredTodos(); // Apply filters automatically
+
+            console.log("Stored Todos:", this.allTodos);
+        }
     }
-  }
+}
+
+
 
   onDateChange(): void {
     console.log('Selected Date: ', this.selectedDate);
@@ -134,6 +132,7 @@ export class TodoAppComponent implements OnInit {
   }
 
   selectedLevelOption: string | null = null;
+  selectedStateOption: string | null = null;
   searchItem: string | null = null;
 
   filteredTodos(): void {
@@ -143,13 +142,17 @@ export class TodoAppComponent implements OnInit {
     // Apply search filter (case-insensitive, partial match)
     if (this.searchItem) { 
         this.todos = this.todos.filter(todo => 
-            todo.title?.toLowerCase().includes(this.searchItem ?? "".toLowerCase()) // Safe optional chaining (?)
+        (todo.title?.toLowerCase().includes(this.searchItem ?? "") || todo.description?.toLowerCase().includes(this.searchItem ?? ""))
         );
     }
 
     // Apply level filter
     if (this.selectedLevelOption) { 
         this.todos = this.todos.filter(todo => todo.level === this.selectedLevelOption);
+    }
+
+    if (this.selectedStateOption) { 
+        this.todos = this.todos.filter(todo => todo.state === this.selectedStateOption);
     }
 
     // Apply date filter safely
@@ -170,22 +173,23 @@ export class TodoAppComponent implements OnInit {
     }
 
     // console.log('Filtered Todos:', this.todos);
+  }
+
+
+  selectedNavId: number | null = null;
+
+  toggleNav(event: Event, todoId: number): void {
+    event.stopPropagation(); 
+
+    // Toggle based on todoId instead of index
+    this.selectedNavId = this.selectedNavId === todoId ? null : todoId;
+    console.log('Selected Nav ID:', this.selectedNavId);
 }
 
 
-  selectedNavIndex: number | null = null;
-
-  toggleNav(event: Event, index: number): void {
-    event.stopPropagation(); 
-
-    // Toggle the selected index or close if the same index is clicked
-    this.selectedNavIndex = this.selectedNavIndex === index ? null : index;
-    console.log(this.selectedNavIndex); 
-  }
-
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
-    this.selectedNavIndex = null;
+    this.selectedNavId = null;
   }
 
   getLatestTodoId(): number { 
@@ -205,62 +209,91 @@ export class TodoAppComponent implements OnInit {
   
   submit(): void {
     if (this.title && this.selectState && this.selectCategories) {
+        this.todoId = this.getLatestTodoId() + 1;
 
-      this.todoId = this.getLatestTodoId() + 1;
+        const newTodo = {
+            todoId: this.todoId,
+            title: this.title,
+            description: this.description || "",
+            isComplete: this.isComplete || false,
+            submissionDate: new Date().toLocaleString(),
+            state: this.selectState,
+            level: this.selectLevel || "low",
+            categories: this.selectCategories,
+            updateDate: "" // Use empty string instead of "null"
+        };
 
-      this.todos.push({ todoId: this.todoId, title: this.title, description: this.description, isComplete: this.isComplete, submissionDate: new Date().toLocaleString(), state:  this.selectState, level: this.selectLevel, categories: this.selectCategories, updateDate: "null"});  // Add the todo as an object.
+        // Add the new todo to allTodos (ensuring filtering works)
+        this.allTodos.push(newTodo);
+        this.todos.push(newTodo); // Also update displayed list
 
-      if (typeof window !== 'undefined') {  // Ensure localStorage available.
-        localStorage.setItem('todos', JSON.stringify(this.todos));  // submit new to localStorage.
-      }
+        if (typeof window !== 'undefined') {
+            localStorage.setItem('todos', JSON.stringify(this.allTodos));
+        }
 
-      console.log('New task added: ', this.title);
-      alert('New task added');
-      this.loadTodo();
-      this.checkLocalStorageUsage();
-      this.title = '';  // Clear the input field after submission.
-      this.description = '';  // Clear the description field.
-      this.selectState = 'new';
-      this.isAddTask = false;
-      this.getLatestTodoId();
-    } 
-    else {
-      alert('Complete all the form!');
+        console.log('New task added:', newTodo);
+        alert('New task added');
+
+        this.loadTodo();  // Reload todos & apply filters
+        this.checkLocalStorageUsage();
+
+        // Clear input fields after adding a new task
+        this.title = '';
+        this.description = '';
+        this.selectState = 'new';
+        this.isAddTask = false;
+    } else {
+        alert('Complete all the form fields!');
     }
-  }
+}
 
-  setComplete(index: number, event: Event): void {
-    event.stopPropagation();  // Prevent event from bubbling up to the li element
-  
-    // Directly toggle the isComplete property for the clicked todo
-    this.todos[index].isComplete = !this.todos[index].isComplete;
 
-    this.todos[index].state = this.todos[index].isComplete ? "done" : "new";
+  setComplete(todoId: number, event: Event): void {
+    event.stopPropagation();  
 
-     // Save the updated todos to localStorage
-    localStorage.setItem('todos', JSON.stringify(this.todos));
-    
-    this.loadTodo();
+    // Find the todo in allTodos to ensure filtering works correctly
+    const todo = this.allTodos.find(t => t.todoId === todoId);
+    if (!todo) return; // Exit if not found
+
+    // Toggle completion status
+    todo.isComplete = !todo.isComplete;
+    todo.state = todo.isComplete ? "done" : "new";
+
+    // Save updates to localStorage
+    localStorage.setItem('todos', JSON.stringify(this.allTodos));
+
+    // Apply filtering after update
+    this.filteredTodos();
     this.checkLocalStorageUsage();
-    console.log('Update', this.todos);
-    
-    this.selectedNavIndex = null;
+    console.log('Updated Todos:', this.todos);
+
+    this.selectedNavId = null;
   }
   
- 
-  
-  delete(index: number, event: Event): void {
+  delete(todoId: number, event: Event): void {
     event.stopPropagation();
-    this.todos.splice(index, 1);  // Remove the todo item at the specified index.
-    if (typeof window !== 'undefined') {  // Ensure localStorage is available.
-      localStorage.setItem('todos', JSON.stringify(this.todos));  // Update localStorage.
-    }
-    console.log('Todo deleted');
+
+    // Find index in allTodos
+    const index = this.allTodos.findIndex(todo => todo.todoId === todoId);
+    if (index === -1) return; // Exit if not found
+
+    // Remove the todo from allTodos
+    this.allTodos.splice(index, 1);
+
+    // Update localStorage with the new list
+    localStorage.setItem('todos', JSON.stringify(this.allTodos));
+
+    console.log('Todo deleted:', todoId);
+
+    // Reload full todo list and apply filters again
+    this.loadTodo();
+
+    // Update localStorage usage info
     this.checkLocalStorageUsage();
 
-    this.selectedNavIndex = null;
-
+    this.selectedNavId = null;
   }
+
 
   showTodo: boolean = false;
   selectedIndex: number | null = null;
@@ -277,20 +310,24 @@ export class TodoAppComponent implements OnInit {
   
 
 
-  onSelectedStateChange(): void { 
+  onSelectedLevelChange(): void { 
     console.log('Selected Filtered State: ' + this.selectedLevelOption);
     this.filteredTodos();
   }
 
+  onSelectedStateChange(): void { 
+    console.log('Selected Filtered State: ' + this.selectedStateOption);
+    this.filteredTodos();
+  }
 
-  openTodos(todo: Todo, index: number): void  {
+
+  openTodos(todo: Todo): void {
     if (event && event.target instanceof HTMLInputElement) {
         return;  // Do nothing if a radio button was clicked
     } 
 
     console.log('Selected todo id: ' + todo.todoId);
     this.selectedId = todo.todoId;
-    this.selectedIndex = index;
     this.selectedTitle = todo.title;
     this.selectedDescription = todo.description;
     this.selectedDateSubmission = todo.submissionDate;
@@ -301,40 +338,51 @@ export class TodoAppComponent implements OnInit {
     this.showTodo = true;
   }
 
-  saveEdit(): void { 
-    if ( this.selectedIndex !== null && this.selectedTitle && this.selectedStateNew && this.selectedLevelNew && this.selectedCategoriesNew && this.selectedUpdateDate){
-      this.todos[this.selectedIndex] = {
-        todoId: this.selectedId ?? 0,
-        title: this.selectedTitle,
-        description: this.selectedDescription ?? "null",
-        isComplete: this.selectedStateNew === "done" ? true : false,
-        state: this.selectedStateNew,
-        level: this.selectedLevelNew,
-        categories: this.selectedCategoriesNew ?? "null",
-        submissionDate: this.selectedDateSubmission ?? "null",
-        updateDate: new Date().toLocaleString()
-      };
-      alert('Update Success');
-      localStorage.setItem('todos', JSON.stringify(this.todos));
-      this.loadTodo();
-      this.checkLocalStorageUsage();
-      this.selectedDateSubmission = new Date().toLocaleString(); 
-      this.showTodo = false;
-      this.isEditTodo = false;
 
+  saveEdit(): void { 
+    if (this.selectedId !== null && this.selectedTitle && this.selectedStateNew && this.selectedLevelNew && this.selectedCategoriesNew) {
+        // Find the todo in `allTodos` (not just `todos`)
+        const todo = this.allTodos.find(t => t.todoId === this.selectedId);
+        if (!todo) {
+            alert('Todo not found!');
+            return;
+        }
+
+        // Update todo properties
+        todo.title = this.selectedTitle;
+        todo.description = this.selectedDescription ?? "null";
+        todo.isComplete = this.selectedStateNew === "done";
+        todo.state = this.selectedStateNew;
+        todo.level = this.selectedLevelNew;
+        todo.categories = this.selectedCategoriesNew ?? "null";
+        todo.submissionDate = this.selectedDateSubmission ?? "null";
+        todo.updateDate = new Date().toLocaleString();
+
+        alert('Update Success');
+        
+        // Save updated todos to localStorage
+        localStorage.setItem('todos', JSON.stringify(this.allTodos));
+
+        // Reload all todos, then apply filters again
+        this.loadTodo();
+        
+        this.checkLocalStorageUsage();
+
+        // Reset UI state
+        this.showTodo = false;
+        this.isEditTodo = false;
 
     } else {
-      alert('Complete all the fields');
-      //check value retrieve
-      console.log('todoId : ' + this.selectedId);
-      console.log('New title: ' + this.selectedTitle);
-      console.log('Complete: ' + this.isComplete);
-      console.log('New description:  ' + this.selectedDescription);
-      console.log('New state: ' + this.selectedStateNew);
-      console.log('New level: ' + this.selectedLevelNew);
-      
+        alert('Complete all the fields');
+        console.log('todoId : ' + this.selectedId);
+        console.log('New title: ' + this.selectedTitle);
+        console.log('New description:  ' + this.selectedDescription);
+        console.log('New state: ' + this.selectedStateNew);
+        console.log('New level: ' + this.selectedLevelNew);
     }
   }
+
+
 
   isAddNewCate: boolean = false;
 
@@ -375,6 +423,7 @@ export class TodoAppComponent implements OnInit {
 
   resetAllFilter(): void { 
     this.selectedLevelOption = null; 
+    this.selectedStateOption = null; 
     this.selectedDate = null; 
     this.todos = [...this.allTodos];
   }   

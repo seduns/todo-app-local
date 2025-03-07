@@ -17,18 +17,36 @@
             <button (click)="resetAllFilter()">Reset Filter</button>
 
 
-            <span>Select Level</span>
-            <select
-                name="stateOption"
-                id=""
-                [(ngModel)]="selectedLevelOption"
-                (ngModelChange)="onSelectedStateChange()">
-                <option value="" disabled="disabled" selected="selected">State</option>
-                <option value="">All</option>
-                <option value="high">high</option>
-                <option value="medium">medium</option>
-                <option value="low">low</option>
-            </select>
+           
+            <div class="con-selection level-select">
+                <span>Select Level</span>
+                <select
+                    name="levelOption"
+                    id=""
+                    [(ngModel)]="selectedLevelOption"
+                    (ngModelChange)="onSelectedLevelChange()">
+                    <option value="" disabled="disabled" selected="selected">Level</option>
+                    <option value="">All</option>
+                    <option value="high">High</option>
+                    <option value="medium">Medium</option>
+                    <option value="low">Low</option>
+                </select>
+            </div>
+
+            <div class="con-selection state-select">
+                <span>Select State</span>
+                <select
+                    name="stateOption"
+                    id=""
+                    [(ngModel)]="selectedStateOption"
+                    (ngModelChange)="onSelectedStateChange()">
+                    <option value="" disabled="disabled" selected="selected">State</option>
+                    <option value="">All</option>
+                    <option value="new">New</option>
+                    <option value="progress">Progress</option>
+                    <option value="done">Done</option>
+                </select>
+            </div>
 
                 <input type="text" placeholder="search" [(ngModel)]="searchItem" (ngModelChange)="filteredTodos()">
 
@@ -113,20 +131,20 @@
 
                 <div class="todo-list-background">
                     <div class="todo-card">
-                        <div class="todo-item" *ngFor="let todo of todos; let i = index;" (click)="openTodos(todo, i)">
+                        <div class="todo-item" *ngFor="let todo of todos; let i = index;" (click)="openTodos(todo)">
                             <div class="todo-title" [ngClass]="{'complete-task' : todo.isComplete}">
                                 
                                 <span class="con-title-item">{{limitWords(todo.title, 5)}}</span>
 
                                 <span class="con-desc-item">{{limitWords(todo.description, 10) || "Description not provided"}}</span>
                                 
-                                <button class="drop-btn" (click)="toggleNav($event, i)"><fa-icon [icon]="faBar"></fa-icon></button>
+                                <button class="drop-btn" (click)="toggleNav($event, todo.todoId)"><fa-icon [icon]="faBar"></fa-icon></button>
 
-                                <div *ngIf="selectedNavIndex === i" class="con-nav-1">
+                                <div *ngIf="selectedNavId === todo.todoId" class="con-nav-1">
                                     <ul >
-                                        <li *ngIf="!todo.isComplete"><button class="complete-btn" (click)="setComplete(i, $event)">Mark as done</button></li>
-                                        <li *ngIf="todo.isComplete"><button class="complete-btn" (click)="setComplete(i, $event)">Mark as undone</button></li>
-                                        <li><button class="del-btn" (click)="delete(i, $event)">Delete</button></li>
+                                        <li *ngIf="!todo.isComplete"><button class="complete-btn" (click)="setComplete(todo.todoId, $event)">Mark as done</button></li>
+                                        <li *ngIf="todo.isComplete"><button class="complete-btn" (click)="setComplete(todo.todoId, $event)">Mark as undone</button></li>
+                                        <li><button class="del-btn" (click)="delete(todo.todoId, $event)">Delete</button></li>
                                     </ul>
                                 </div>
 

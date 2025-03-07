@@ -15,10 +15,12 @@
     .add-task-con {
         // border: 1px solid black;
         border-radius: 10px;
-        background-color: rgba(191, 221, 187, 0.941);
-        padding: 10px;
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        background-color: rgba(255, 255, 255, 0.941);
+        margin: 10px;
         display: flex;
-        justify-content: center;
+        padding: 10px;
+        justify-content: start;
         align-items: center;
 
         .usage-label { 
@@ -31,6 +33,19 @@
             border-radius: 5px;
             text-wrap: nowrap;
         }
+
+        .con-selection { 
+
+            select { 
+                background-color: yellow;
+                width: 100px;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+    
+            }
+        }
+
     }
     
     .add-task-btn { 
@@ -62,9 +77,9 @@
         padding: 5vh;
         overflow-y: scroll;
         overflow-x: hidden;
-        // border: 1px solid rgba(0, 0, 0, 0.424);
+        border: 1px solid rgba(0, 0, 0, 0.2);
         border-radius: 10px;
-        background-color: rgba(128, 0, 207, 0.257);   
+        background-color: rgb(240, 240, 240);   
     }
     
     .todo-card {
@@ -244,6 +259,7 @@
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.171);
         transition: 0.4s;
         position: relative;
+        border: 1px solid rgba(0, 0, 0, 0.3);
         
     }
     
@@ -438,7 +454,7 @@
                 }
 
                 select { 
-                    padding: 5px 50px;
+                    padding: 5px 10px;
                     border-radius: 5px;
                     margin-left: 0px;
                     border: 1px solid rgba(0, 0, 0, 0.246);
@@ -537,6 +553,17 @@ th, td {
         display: flex;
        
      }
+
+
+     //Select: All
+     select { 
+        padding: 5px 10px;
+        border-radius: 5px;
+        margin-left: 0px;
+        border: 1px solid rgba(0, 0, 0, 0.246);
+        width: 100%;
+        
+    }
 
 
     @media (max-width: 768px) {
