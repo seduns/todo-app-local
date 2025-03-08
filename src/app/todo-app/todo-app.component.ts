@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Component, HostListener, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { Todo } from '../model/todo.mode';
-import { faBars, faCheck, faClose, faL, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faCheck, faClose, faL, faPlus, faSearch, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { eventNames } from 'node:process';
 import { filter } from 'rxjs';
@@ -21,8 +21,9 @@ export class TodoAppComponent implements OnInit {
   faTrash = faTrash;
   faBar = faBars;
   faCheck = faCheck;
+  faSearch = faSearch;
 
-  constructor() {}
+  constructor(private cdRef: ChangeDetectorRef) {}
 
   todoId: number = 0;
   title: string = '';
@@ -38,6 +39,9 @@ export class TodoAppComponent implements OnInit {
   allTodos: Todo[] =[];
 
   ngOnInit(): void {
+    this.totalCategoriesSubmit();
+    this.totalLevelSubmit();
+    this.totalStateSubmit();
     this.checkLocalStorageUsage();
     this.loadTodo(); // Load all todos first
 }
@@ -240,6 +244,11 @@ export class TodoAppComponent implements OnInit {
         alert('New task added');
 
         this.loadTodo();  // Reload todos & apply filters
+
+        this.totalCategoriesSubmit();
+        this.totalLevelSubmit();
+        this.totalStateSubmit();
+
         this.checkLocalStorageUsage();
 
         // Clear input fields after adding a new task
@@ -256,7 +265,6 @@ export class TodoAppComponent implements OnInit {
   setComplete(todoId: number, event: Event): void {
     event.stopPropagation();  
 
-    // Find the todo in allTodos to ensure filtering works correctly
     const todo = this.allTodos.find(t => t.todoId === todoId);
     if (!todo) return; // Exit if not found
 
@@ -267,12 +275,16 @@ export class TodoAppComponent implements OnInit {
     // Save updates to localStorage
     localStorage.setItem('todos', JSON.stringify(this.allTodos));
 
+    this.totalCategoriesSubmit();
+    this.totalLevelSubmit();
+    this.totalStateSubmit();
+
     // Apply filtering after update
-    this.filteredTodos();
-    this.checkLocalStorageUsage();
+      this.filteredTodos();
+
+
     console.log('Updated Todos:', this.todos);
 
-    this.selectedNavId = null;
   }
   
   delete(todoId: number, event: Event): void {
@@ -312,8 +324,6 @@ export class TodoAppComponent implements OnInit {
   selectedUpdateDate: string | null = null;
   selectedDate: string | null = null;
 
-  
-
 
   onSelectedLevelChange(): void { 
     console.log('Selected Filtered Level: ' + this.selectedLevelOption);
@@ -327,7 +337,7 @@ export class TodoAppComponent implements OnInit {
 
   onSelectedCategoryChange(): void { 
     console.log('Selected Filtered Category: ' + this.selectedCategoryOption);
-    this.filteredTodos();
+    this.filteredTodos(); 
   }
 
 
@@ -355,7 +365,7 @@ export class TodoAppComponent implements OnInit {
         const todo = this.allTodos.find(t => t.todoId === this.selectedId);
         if (!todo) {
             alert('Todo not found!');
-            return;
+            return;1
         }
 
         // Update todo properties
@@ -375,6 +385,10 @@ export class TodoAppComponent implements OnInit {
 
         // Reload all todos, then apply filters again
         this.loadTodo();
+
+        this.totalCategoriesSubmit();
+        this.totalLevelSubmit();
+        this.totalStateSubmit();
         
         this.checkLocalStorageUsage();
 
@@ -392,6 +406,79 @@ export class TodoAppComponent implements OnInit {
     }
   }
 
+  categoryCounts: { [key: string]: number } = {};
+  defaultCategories: string[] = ["work", "personal", "other"]; // Ensure all categories appear
+
+  totalCategoriesSubmit(): void {
+    setTimeout(() => { 
+      this.categoryCounts = {}; // Reset counts
+
+      this.allTodos.forEach((todo) => { 
+        const category = todo.categories;
+        if (category) { 
+          this.categoryCounts[category] = (this.categoryCounts[category] || 0) + 1;
+        }
+      });
+      // Ensure all categories appear, even if count is 0
+      this.defaultCategories.forEach((category) => {
+        if (!(category in this.categoryCounts)) {
+          this.categoryCounts[category] = 0;
+        }
+      });
+
+      console.log('Total submit by categories:', this.categoryCounts);
+    }, 0);
+  }
+
+  levelCount: { [key: string]: number } = {};
+  defaultLevel: string[] = ["high", "medium", "low"];
+
+  totalLevelSubmit(): void { 
+    setTimeout(() => { 
+      this.levelCount = {};
+
+      this.allTodos.forEach((todo) => { 
+        const level = todo.level;
+        if (level) { 
+          this.levelCount[level] = (this.levelCount[level] || 0) + 1;
+        }
+      });
+        
+        this.defaultLevel.forEach((level) => {
+          if (!(level in this.levelCount)) { 
+            this.levelCount[level] = 0;
+          }
+      });
+      console.log('Total submit by level:', this.levelCount);
+
+    }, 0);
+  }
+
+  stateCount: { [key: string]: number } = {};
+  defaultState: string[] = ["new", "progress", "done"];
+
+  totalStateSubmit(): void { 
+    setTimeout(() => { 
+      this.stateCount = {};
+
+      this.allTodos.forEach((todo) => { 
+        const state = todo.state;
+        if (state) { 
+          this.stateCount[state] = (this.stateCount[state] || 0) + 1;
+        }
+      });
+        
+        this.defaultState.forEach((state) => {
+          if (!(state in this.stateCount)) { 
+            this.stateCount[state] = 0;
+          }
+      });
+      console.log('Total submit by state:', this.stateCount);
+
+    }, 0);
+  }
+
+  
 
 
   isAddNewCate: boolean = false;

@@ -9,65 +9,67 @@
     <div class="todo-content">
         <div class="add-task-con">
 
-            <label class="usage-label" for="">Total usage: {{usage}}bytes</label>
+            <!-- USAGE -->
+            <!-- <label class="usage-label" for="">Total usage: {{usage}}bytes</label>
             <button (click)="clearLocalStorage()" class="clean-up-btn">
                 Clear All Data
-            </button>
-
-            <button (click)="resetAllFilter()">Reset Filter</button>
-
-
-           
-            <div class="con-selection level-select">
-                <span>Select Level</span>
-                <select
-                    name="levelOption"
-                    id=""
-                    [(ngModel)]="selectedLevelOption"
-                    (ngModelChange)="onSelectedLevelChange()">
-                    <option value="" disabled="disabled" selected="selected">Level</option>
-                    <option value="">All</option>
-                    <option value="high">High</option>
-                    <option value="medium">Medium</option>
-                    <option value="low">Low</option>
-                </select>
-            </div>
+            </button> -->
 
             <div class="con-selection state-select">
-                <span>Select State</span>
-                <select
+                    <span>State</span>
+                    <select
                     name="stateOption"
                     id=""
                     [(ngModel)]="selectedStateOption"
                     (ngModelChange)="onSelectedStateChange()">
                     <option value="" disabled="disabled" selected="selected">State</option>
                     <option value="">All</option>
-                    <option value="new">New</option>
-                    <option value="progress">Progress</option>
-                    <option value="done">Done</option>
+                    <option *ngFor="let state of defaultState" [value]="state">
+                        {{ state }} ({{ stateCount[state] || 0 }})
+                    </option>
                 </select>
             </div>
+            
+        <div class="con-selection level-select">
+            <span>Level</span>
+            <select
+            name="levelOption"
+            id=""
+            [(ngModel)]="selectedLevelOption"
+            (ngModelChange)="onSelectedLevelChange()">
+            <option value="" disabled="disabled" selected="selected">Level</option>
+            <option value="">All</option>
+            <option *ngFor="let level of defaultLevel" [value]="level">
+                {{ level }} ({{ levelCount[level] || 0 }})
+            </option>
+            </select>
+        </div>
+            
+        
+        <div class="con-selection category-select">
+            <span>Category</span>
+            <select name="stateOption" [(ngModel)]="selectedCategoryOption" (ngModelChange)="onSelectedCategoryChange()">
+                <option value="" disabled selected>Category</option>
+                <option value="">All</option>
+                <option *ngFor="let category of defaultCategories" [value]="category">
+                    {{ category }} ({{ categoryCounts[category] || 0 }})
+                </option>
+            </select>
+        </div>
+        
+        
 
-            <div class="con-selection category-select">
-                <span>Select Category</span>
-                <select
-                    name="stateOption"
-                    id=""
-                    [(ngModel)]="selectedCategoryOption"
-                    (ngModelChange)="onSelectedCategoryChange()">
-                    <option value="" disabled="disabled" selected="selected">Category</option>
-                    <option value="">All</option>
-                    <option value="work">Work</option>
-                    <option value="personal">Personal</option>
-                    <option value="other">Other</option>
-                </select>
-            </div>
-
-                <input type="text" placeholder="search" [(ngModel)]="searchItem" (ngModelChange)="filteredTodos()">
-
-            <!-- <span>Select Date</span>
-            <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()"> -->
-
+        <div class="con-reset-filter">
+            <button class="reset-filter-btn" (click)="resetAllFilter()">Reset Filter</button>
+        </div>
+        
+        <div class="con-search-item">
+            <input type="text" class="search-item" placeholder="Filter quick search" [(ngModel)]="searchItem" (ngModelChange)="filteredTodos()">
+        </div>
+    
+    <!-- <span>Select Date</span>
+    <input type="date" [(ngModel)]="selectedDate" (change)="onDateChange()"> -->
+    
                 <div *ngIf="isAddTask">
                     <div class="card-overlay">
                         <div class="card">
@@ -268,5 +270,9 @@
                                     </div>
                                 </div>
                             </div>
+                    </div>
+    </div>
+</div>
+
 
                             <!-- Update submit todo, open todo and save -->

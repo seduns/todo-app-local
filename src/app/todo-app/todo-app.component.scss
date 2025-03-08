@@ -3,11 +3,13 @@
 
 .main-content { 
     display: flex;
+    
 }
 
 
 .todo-content { 
-    // border: 1px solid black;
+    // border: 1px solid rgb(31, 0, 171);
+    height: 90vh;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -22,6 +24,7 @@
         padding: 10px;
         justify-content: start;
         align-items: center;
+        transition: 0.3s;
 
         .usage-label { 
             border: 1px solid black;
@@ -35,15 +38,38 @@
         }
 
         .con-selection { 
+            margin-right: 10px;
+
 
             select { 
-                background-color: yellow;
+                // background-color: yellow;
                 width: 100px;
                 display: flex;
                 justify-content: center;
                 align-items: center;
+                text-transform: capitalize;
     
             }
+        }
+        
+        .con-reset-filter { 
+            margin-right: 10px;
+        }
+
+        .reset-filter-btn { 
+            padding: 10px 10px;
+            margin-top: 10px;
+        }
+        
+        .search-item { 
+            border: 2px solid rgb(0, 0, 0, 0.2);
+            padding: 5px 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+
+        &:hover { 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.171);
         }
 
     }
@@ -75,11 +101,40 @@
     .todo-list-background {
         margin: 10px;
         padding: 5vh;
-        overflow-y: scroll;
+        overflow-y: auto;
         overflow-x: hidden;
         border: 1px solid rgba(0, 0, 0, 0.2);
         border-radius: 10px;
         background-color: rgb(240, 240, 240);   
+        height: 100%;
+        max-height: 50%;
+        transition: 0.3s;
+
+        &:hover { 
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.171);
+        }
+    }
+
+    .todo-list-background::-webkit-scrollbar { 
+        width: 5px;
+    }
+
+    .todo-list-background::-webkit-scrollbar-track { 
+        background-color: rgb(160, 160, 199);
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+    
+    .todo-list-background::-webkit-scrollbar-thumb { 
+        background-color: rgb(75, 75, 240);
+        border-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    .todo-list-background::-webkit-scrollbar-thumb:hover { 
+        background-color: blue;
+        border-radius: 10px;
     }
     
     .todo-card {
@@ -163,7 +218,7 @@
             margin-right: 15px;
             
             &:hover { 
-                color: rgba(255, 255, 255, 0.726);
+                color: rgba(101, 56, 56, 0.726);
                 
             }
         }
@@ -227,7 +282,7 @@
         }
         
         .low-level {
-            background-color: #62ea74; /* Fresh green */
+            background-color: #75d982; /* Fresh green */
         }
     }
 
@@ -264,30 +319,30 @@
     }
     
     .todo-item:hover {
-        background-color: rgb(0, 23, 141);
+        // background-color: rgb(0, 23, 141);
         transform:scale(1.05);
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.482);
     }
 
-    .todo-item:hover .con-title-item  { 
-        color: white;
-    }
+    // .todo-item:hover .con-title-item  { 
+    //     color: white;
+    // }
 
-    .todo-item:hover .con-state { 
-        color: white;
-    }
+    // .todo-item:hover .con-state { 
+    //     color: white;
+    // }
 
-    .todo-item:hover .con-category { 
-        color: white;
-    }
+    // .todo-item:hover .con-category { 
+    //     color: white;
+    // }
 
-    .todo-item:hover .con-desc-item { 
-        color: rgba(255, 255, 255, 0.745);
-    }
+    // .todo-item:hover .con-desc-item { 
+    //     color: rgba(255, 255, 255, 0.745);
+    // }
 
-    .todo-item:hover .complete-task .con-title-item { 
-        color: rgba(255, 255, 255, 0.679);
-    }
+    // .todo-item:hover .complete-task .con-title-item { 
+    //     color: rgba(255, 255, 255, 0.679);
+    // }
     
     .complete-btn,
     .del-btn {
@@ -539,7 +594,7 @@ th, td {
         
 
         &:hover { 
-           background-color: rgba(58, 8, 8, 0.182);
+           background-color: rgba(58, 8, 8, 0.085);
         }
     }
 
@@ -560,7 +615,7 @@ th, td {
         padding: 5px 10px;
         border-radius: 5px;
         margin-left: 0px;
-        border: 1px solid rgba(0, 0, 0, 0.246);
+        border: 1px solid rgba(0, 0, 0, 0.2);
         width: 100%;
         
     }
@@ -573,7 +628,7 @@ th, td {
         }
         .todo-content {
             // border: 1px solid black;
-            height: 130vw;
+            height: 100vw;
         }
         .con-select {
             display: flex;
