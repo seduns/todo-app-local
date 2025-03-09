@@ -609,7 +609,6 @@ th, td {
        
      }
 
-
      //Select: All
      select { 
         padding: 5px 10px;
@@ -626,6 +625,7 @@ th, td {
             // background-color: rgba(4, 0, 255, 0.411);
             max-height: 100%;
         }
+
         .con-select {
             display: flex;
             flex-direction: column; /* Stack items vertically */
@@ -641,7 +641,9 @@ th, td {
             .add-task-con { 
                 // background-color: rgb(138, 80, 80);
                 display: flex;
-                flex-direction: column;
+                overflow-y: hidden;
+                overflow-x: auto;
+
             }
         }
         

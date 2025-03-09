@@ -284,6 +284,8 @@ export class TodoAppComponent implements OnInit {
 
 
     console.log('Updated Todos:', this.todos);
+    this.checkLocalStorageUsage();
+    this.selectedNavId = null;
 
   }
   

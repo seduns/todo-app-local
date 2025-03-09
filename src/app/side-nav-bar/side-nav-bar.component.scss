@@ -1,46 +1,175 @@
 .side-nav-bar {
-    background-color: #1A237E  ;
+    background-color: #1A237E;
     width: 250px;
     padding: 10px;
-    margin: 0;
-    height: 100vh; /* Full viewport height */
-    box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.483);
+    height: 100vh;
+    box-shadow: 1px 0px 6px rgba(0, 0, 0, 0.5);
     display: flex;
     flex-direction: column;
-    overflow-y: auto; /* Ensure content is scrollable if needed */
+    overflow-y: auto;
     border-top-right-radius: 10px;
     overflow-x: hidden;
 
+    user-select: none;
+    
 }
 
-.minimize-nav { 
-    width: 60%;
+/* Minimized Navigation */
+.minimize-nav {
+    width: 60px;
 }
 
+
+
+/* Minimized nav: Hide text & adjust icon spacing */
+.minimize-nav .nav-links li a {
+    justify-content: center;
+}
+
+.minimize-nav .nav-links li a span {
+    display: none;
+}
+
+.minimize-nav .nav-links li a fa-icon {
+    margin-right: 0;
+}
+
+/* Main container */
 .con-side-nav-bar {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    justify-content: space-between; /* Push the minimize button to the bottom */
+    justify-content: space-between;
 }
 
+/* Navigation Links */
 .nav-links {
     list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
     padding: 0;
-    margin: 5px;
-    // border: 1px solid yellow;
-    max-height: 80vh;
-    overflow: auto;
-    overflow-x: hidden;
+    margin: 0;
+}
+
+/* Parent Links */
+.nav-links li {
+    position: relative;
 }
 
 .nav-links li a {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    text-decoration: none;
     color: white;
+    transition: background 0.3s;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 5px;
+    // border: 1px solid yellow;
+
+    &:hover fa-icon { 
+        animation: jiggleIcon 0.3s;
+    }
+
+    &:hover .dropdown-icon { 
+        animation: none;
+    }
+
+    span { 
+        transition: 0.3s ease-in-out;
+    }
+
+    &:hover > span { 
+        transform: translateX(10px);
+    }
+    
+  
 }
 
+@keyframes jiggleIcon {
+    0% { transform: rotate(0deg); }
+    30% { transform: rotate(-10deg); }
+    60% { transform: rotate(10deg); }
+    100% { transform: rotate(0deg); }
+}
+
+
+/* Hover effect */
+.nav-links li a:hover {
+    background-color: rgba(255, 255, 255, 0.286);
+}
+
+/* Icon Spacing */
+.nav-links li a fa-icon {
+    flex-shrink: 0;
+    margin-right: 10px;
+}
+
+/* Default state */
+.nav-links .dropdown-icon {
+    margin-left: auto;
+    transition: transform 0.3s ease-in-out;  /* Ensure smooth animation */
+}
+
+/* Rotate when expanded */
+.nav-links .dropdown-icon.rotate-icon {
+    transform: rotate(90deg);
+}
+
+
+/* Submenu Styling */
+.sub-links {
+    list-style: none;
+    padding-left: 20px;  /* Indent child items */
+    margin: 0;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-in-out;
+    border-radius: 5px;
+    // background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Expanded Submenu */
+.sub-links.expanded {
+    max-height: 500px;  /* Adjust based on content */
+    // border: 1px solid black;
+}
+
+/* Child Links */
+.sub-links li {
+    padding-left: 0px;
+}
+
+.sub-links li a {
+    padding: 8px 15px;
+    color: white;
+    display: block;
+    border-radius: 5px;
+
+    &:hover > fa-icon { 
+        display: inline-block;
+        animation: jiggleIcon 0.3s;
+    }
+
+    span { 
+        display: inline-block;
+        transition: 0.3s ease-in-out;
+    }
+
+    &:hover > span { 
+        display: inline-block;
+        transform: translateX(10px);
+    }
+
+}
+
+
+
+/* Hover Effect for Child Links */
+.sub-links li a:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Minimize Button */
 .nav-minimize-container {
     display: flex;
     justify-content: center;
@@ -65,50 +194,16 @@
     }
 }
 
-
 .nav-minimize-on  {
     // border: 1px solid yellow;
     margin-bottom: 50px;
 }
 
-.nav-minimize-on-btn { 
-    // border: 1px solid yellow;
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    flex: 1;
-
-}
-
-ul li {
-    list-style: none;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: 0.3s;
-    border-radius: 5px;
-}
-
-ul li a {
-    flex: 1;
-    text-decoration: none;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    color: white;
-    transition: 0.3s;
-}
-
-ul li:hover {
-    background-color: rgba(255, 255, 255, 0.286);
-}
-
+/* Responsive */
 @media (max-width: 768px) {
     .side-nav-bar {
         position: absolute;
         z-index: 10;
         display: none;
     }
-   
 }

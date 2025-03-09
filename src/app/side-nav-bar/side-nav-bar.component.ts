@@ -3,41 +3,86 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faAnglesLeft, faAnglesRight, faArrowRight, faCoffee, faHome, faListCheck, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesLeft, faAnglesRight, faChevronDown, faChevronRight, faCoffee, faHome, faListCheck, faTableList } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
-    selector: 'app-side-nav-bar',
-    standalone: true,
-    imports: [CommonModule, FormsModule, FontAwesomeModule, RouterLink],
-    templateUrl: './side-nav-bar.component.html',
-    styleUrls: ['./side-nav-bar.component.scss'] // <-- Corrected here
+  selector: 'app-side-nav-bar',
+  standalone: true,
+  imports: [CommonModule, FormsModule, FontAwesomeModule, RouterLink],
+  templateUrl: './side-nav-bar.component.html',
+  styleUrls: ['./side-nav-bar.component.scss']
 })
 export class SideNavBarComponent implements OnInit {
-  
+
+  // FontAwesome icons
   faCoffee = faCoffee;
   faHome = faHome;
   faTableList = faTableList;
   faListCheck = faListCheck;
   faAngleLeft = faAnglesLeft;
   faAngleRight = faAnglesRight;
+  faChevronDown = faChevronDown;
+  faChevronRight = faChevronRight;
 
-  isMinimizeNav: boolean | null = null; // Initialize as null to handle loading state
+  // Define nav link type directly within the class
+  navLinks: { 
+    path?: string;
+    label: string;
+    icon: any;
+    isExpanded?: boolean;
+    children?: { path: string; label: string; icon: any }[];
+  }[] = [
+    { 
+      path: '/home', 
+      label: 'Home',
+      icon: faHome, 
+    },
+    { 
+      label: 'Task',
+      icon: this.faListCheck, 
+      isExpanded: false,
+      children: [
+        { path: '/todo', label: 'Task 1', icon: faListCheck },
+        { path: '/todo2', label: 'Task 2', icon: faListCheck },
+      ]
+    },
+    { 
+      path: '/board', 
+      label: 'Board',
+      icon: faTableList, 
+    }
+  ];
+
+  // State variables
+  isMinimizeNav: boolean | null = null;
   private readonly NAV_STATE_KEY = 'isMinimizeNav';
-  
+  private readonly NAV_STATE_KEY_CHILD = 'isExpanded';
+
   ngOnInit(): void {
-    if (typeof window != 'undefined') { 
+    if (typeof window !== 'undefined') { 
       const storedState = localStorage.getItem(this.NAV_STATE_KEY);
       this.isMinimizeNav = storedState === 'true';
+
+      // Load submenu state
+      this.navLinks.forEach(link => {
+        if (link.children) {
+          const storedExpanded = localStorage.getItem(`${this.NAV_STATE_KEY_CHILD}_${link.label}`);
+          link.isExpanded = storedExpanded === 'true';
+        }
+      });
+    }
+  }
+
+  toggleSubmenu(link: any, event: Event): void {
+    event.stopPropagation();
+    if (link.children) {
+      link.isExpanded = !link.isExpanded;
+      localStorage.setItem(`${this.NAV_STATE_KEY_CHILD}_${link.label}`, link.isExpanded.toString());
     }
   }
 
   minimizeNav(): void { 
-    
-      this.isMinimizeNav = !this.isMinimizeNav;
-      console.log('Close Nav: ' + this.isMinimizeNav);
-
-      // Persist state to localStorage
-      localStorage.setItem(this.NAV_STATE_KEY, this.isMinimizeNav.toString());
-
+    this.isMinimizeNav = !this.isMinimizeNav;
+    localStorage.setItem(this.NAV_STATE_KEY, this.isMinimizeNav.toString());
   } 
 }
