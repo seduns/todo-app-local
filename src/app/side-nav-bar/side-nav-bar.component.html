@@ -1,5 +1,5 @@
 <!-- Render the sidebar only when isMinimizeNav is not null -->
-<nav *ngIf="isMinimizeNav !== null" 
+<nav *ngIf="isMinimizeNav !== null && !isNavHide" 
      class="side-nav-bar" 
      [ngClass]="{'minimize-nav': isMinimizeNav}">
     <div class="con-side-nav-bar">
@@ -15,7 +15,6 @@
                         class="dropdown-icon"
                         [ngClass]="{'rotate-icon': link.isExpanded}">
                     </fa-icon>
-
                 </a>
         
                 <!-- Dropdown Menu -->
@@ -37,6 +36,9 @@
             <button class="nav-minimize" (click)="minimizeNav()"> 
                 <fa-icon [icon]="isMinimizeNav ? faAngleRight : faAngleLeft "></fa-icon> 
             </button>
+            <button  *ngIf="!isNavHidden" class="nav-minimize eye-btn" (click)="hideSideNav()"><fa-icon [icon]="faEye"></fa-icon></button>
         </div>  
     </div>
 </nav>
+
+

@@ -1,16 +1,16 @@
 <nav class="nav-bar">
     <div class="con-nav-bar">
-        <!-- <a href="">Logo</a> -->
-        <ul class="nav-links">
-        </ul>
-        <button class="menu-toggle" (click)="toggleNav()">☰</button>
+        <button *ngIf="isNavHidden" class="menu-toggle" (click)="toggleNav()">☰</button>
 
-        <div *ngIf="isToggleNav" class="side-nav-toggle">
+        <!-- <div *ngIf="isToggleNav" class="side-nav-toggle">
             <ul >
                 <li><a href="/home"><fa-icon [icon]="faHome"></fa-icon> Home</a></li>
                 <li><a href="/todo"><fa-icon [icon]="faListCheck"></fa-icon> Todo</a></li>
                 <li><a href="/board"><fa-icon [icon]="faTableList"></fa-icon> Board</a></li>
             </ul>
+        </div> -->
+        <div class="con-flex-menu">
+            Logo
         </div>
     </div>
 </nav>

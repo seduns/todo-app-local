@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faAnglesLeft, faAnglesRight, faChevronDown, faChevronRight, faCoffee, faHome, faListCheck, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesLeft, faAnglesRight, faArrowsToEye, faChevronDown, faChevronRight, faCoffee, faEye, faHome, faListCheck, fas, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { NavStateService } from '../nav-bar/service/nav-state.service';
 
 @Component({
   selector: 'app-side-nav-bar',
@@ -23,6 +24,11 @@ export class SideNavBarComponent implements OnInit {
   faAngleRight = faAnglesRight;
   faChevronDown = faChevronDown;
   faChevronRight = faChevronRight;
+  faEye = faEye;
+
+  constructor(private navStateService: NavStateService) {
+    this.navStateService.isNavHidden$.subscribe(state => this.isNavHide = state);
+  }
 
   // Define nav link type directly within the class
   navLinks: { 
@@ -43,7 +49,7 @@ export class SideNavBarComponent implements OnInit {
       isExpanded: false,
       children: [
         { path: '/todo', label: 'Task 1', icon: faListCheck },
-        { path: '/todo2', label: 'Task 2', icon: faListCheck },
+        { path: '/todo', label: 'Task 2', icon: faListCheck },
       ]
     },
     { 
@@ -71,6 +77,10 @@ export class SideNavBarComponent implements OnInit {
         }
       });
     }
+
+    this.navStateService.isNavHidden$.subscribe(state => {
+      this.isNavHidden = state;
+    });
   }
 
   toggleSubmenu(link: any, event: Event): void {
@@ -85,4 +95,11 @@ export class SideNavBarComponent implements OnInit {
     this.isMinimizeNav = !this.isMinimizeNav;
     localStorage.setItem(this.NAV_STATE_KEY, this.isMinimizeNav.toString());
   } 
+  
+  @Input() isNavHidden: boolean = false;
+  isNavHide: boolean = false;
+
+  hideSideNav(): void { 
+    this.navStateService.toggleNav(); // Toggle state in service
+  }
 }

@@ -4,6 +4,8 @@
     height: 100vh;
     overflow: hidden;
     overflow: hidden;
+    width: 100% ;
+    
 }
 
 .content-wrapper {
@@ -11,6 +13,7 @@
     flex-grow: 1;
     overflow: hidden;
     transition: width 0.3s;
+    
 }
 
 .side-nav {
@@ -23,6 +26,8 @@
     padding: 1rem;
     overflow: auto;
     transition: width 0.3s;
+    overflow-x: hidden;
+    overflow-y: hidden;
 }
 
 .minimize-nav .side-nav {

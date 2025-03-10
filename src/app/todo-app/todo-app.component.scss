@@ -3,6 +3,8 @@
 
 .main-content { 
     display: flex;
+    overflow-x: hidden;
+    overflow-y: hidden;
     
 }
 
@@ -18,13 +20,17 @@
         // border: 1px solid black;
         border-radius: 10px;
         border: 1px solid rgba(0, 0, 0, 0.2);
-        background-color: rgba(255, 255, 255, 0.941);
+        background-color: white;
         margin: 10px;
         display: flex;
         padding: 10px;
         justify-content: start;
         align-items: center;
         transition: 0.3s;
+        overflow-x: auto;
+
+        
+
 
         .usage-label { 
             border: 1px solid black;
@@ -73,6 +79,29 @@
         }
 
     }
+
+    .add-task-con::-webkit-scrollbar { 
+        width: 5px;
+        height: 5px;
+    }
+
+    .add-task-con::-webkit-scrollbar-track { 
+        background-color: rgb(160, 160, 199);
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+    
+    .add-task-con::-webkit-scrollbar-thumb { 
+        background-color: rgb(75, 75, 240);
+        border-radius: 10px;
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
+
+    .add-task-con::-webkit-scrollbar-thumb:hover { 
+        background-color: blue;
+        border-radius: 10px;
+    }
     
     .add-task-btn { 
         background-color: rgb(141, 111, 232);
@@ -105,7 +134,7 @@
         overflow-x: hidden;
         border: 1px solid rgba(0, 0, 0, 0.2);
         border-radius: 10px;
-        background-color: rgb(240, 240, 240);   
+        background-color: white;   
         height: 100%;
         max-height: 50%;
         transition: 0.3s;
@@ -198,13 +227,19 @@
         }
 
         .new-task {
-            background-color: #4CAF50;
+            background-color: rgba(0, 128, 0, 0.250);
+            color: green;
+            font-weight: 600;
         }
         .progress-task {
-            background-color: #2196F3;
+            background-color: rgba(137, 43, 226, 0.250);
+            color: blueviolet;
+            font-weight: 600;
         }
         .done-task {
-            background-color: #9C27B0;
+            background-color: rgba(128, 0, 128, 0.250);
+            color: purple;
+            font-weight: 600;
         }
 
         .drop-btn {
@@ -274,15 +309,18 @@
         
         
         .high-level {
-            background-color: #d20000; /* Soft red */
+            background-color: rgba(255, 0, 0, 0.750); /* Soft red */
+            font-weight: bold;
         }
         
         .medium-level {
-            background-color: #d4ab04; /* Warm yellow */
+            background-color: rgba(0, 128, 0, 0.750); /* Soft red */
+            font-weight: bold;
         }
         
         .low-level {
-            background-color: #75d982; /* Fresh green */
+            background-color: rgba(209, 209, 3, 0.75); /* Fresh green */
+            font-weight: bold;
         }
     }
 
@@ -301,7 +339,7 @@
     }
     
     .todo-item {
-        background: #f4f4f4;
+        background: white;
         margin: 5px;
         padding: 10px;
         display: flex;
