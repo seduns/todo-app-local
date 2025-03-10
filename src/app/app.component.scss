@@ -5,6 +5,7 @@
     overflow: hidden;
     overflow: hidden;
     width: 100% ;
+
     
 }
 
@@ -27,11 +28,12 @@
     overflow: auto;
     transition: width 0.3s;
     overflow-x: hidden;
-    overflow-y: hidden;
+    
 }
 
 .minimize-nav .side-nav {
     width: 60px; /* Minimized width */
+
 }
 
 .minimize-nav .main-content {

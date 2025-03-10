@@ -1,6 +1,5 @@
 
-
-
+  
 .main-content { 
     display: flex;
     overflow-x: hidden;
@@ -20,7 +19,7 @@
         // border: 1px solid black;
         border-radius: 10px;
         border: 1px solid rgba(0, 0, 0, 0.2);
-        background-color: white;
+        background-color: var(--bg-color-todo-list-bg);
         margin: 10px;
         display: flex;
         padding: 10px;
@@ -28,9 +27,6 @@
         align-items: center;
         transition: 0.3s;
         overflow-x: auto;
-
-        
-
 
         .usage-label { 
             border: 1px solid black;
@@ -76,6 +72,10 @@
 
         &:hover { 
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.171);
+        }
+
+        span { 
+            color: var(--text-color);
         }
 
     }
@@ -134,7 +134,7 @@
         overflow-x: hidden;
         border: 1px solid rgba(0, 0, 0, 0.2);
         border-radius: 10px;
-        background-color: white;   
+        background-color: var(--bg-color-todo-list-bg);   
         height: 100%;
         max-height: 50%;
         transition: 0.3s;
@@ -186,7 +186,7 @@
         border-radius: 10px;
         margin-bottom: 5px;
         font-size: 18px;
-        color: rgba(0, 0, 0, 0.693);
+        color: var(--text-color);
         // position: relative;
         
 
@@ -194,7 +194,7 @@
             // position: absolute; /* Enable positioning within the parent */
             // margin-top: 45%;
             // margin-left: -5%;
-            color: white;
+            color: rgb(255, 255, 255);
             display: flex;
             justify-content: center;
             padding: 5px 0px 5px 0px;
@@ -241,11 +241,27 @@
             color: purple;
             font-weight: 600;
         }
+        
+        .work-cate { 
+            background-color: rgba(255, 0, 0, 0.250);
+            color: rgb(255, 0, 0);
+            font-weight: 600;
+        }
+        .personal-cate { 
+            background-color: rgba(101, 101, 255, 0.250);
+            color: rgb(101, 101, 255);
+            font-weight: 600;
+        }
+        .other-cate { 
+            background-color: rgba(0, 99, 0, 0.250);
+            color: rgb(0, 99, 0);
+            font-weight: 600;
+        }
 
         .drop-btn {
             background-color: rgba(255, 255, 0, 0);
             width: 10px;
-            color: rgba(0, 0, 0, 0.234);
+            color: var(--drop-btn-color);
             margin-bottom: 0;
             font-size: 12px;
             position: absolute;
@@ -253,7 +269,7 @@
             margin-right: 15px;
             
             &:hover { 
-                color: rgba(101, 56, 56, 0.726);
+                color: var(--drop-btn-color-hover);
                 
             }
         }
@@ -309,19 +325,19 @@
         
         
         .high-level {
-            background-color: rgba(255, 0, 0, 0.750); /* Soft red */
+            background-color: rgba(255, 0, 0, 0.750); 
             font-weight: bold;
         }
-        
         .medium-level {
-            background-color: rgba(0, 128, 0, 0.750); /* Soft red */
+            background-color: rgba(0, 128, 0, 0.750); 
             font-weight: bold;
         }
-        
         .low-level {
-            background-color: rgba(209, 209, 3, 0.75); /* Fresh green */
+            background-color: rgba(209, 209, 3, 0.75); 
             font-weight: bold;
         }
+
+        
     }
 
     .todo-description {
@@ -334,15 +350,15 @@
     }
     
     .complete-task {
-        color: rgba(0, 0, 0, 0.224);
+        color: var(--text-color-complete-task);
         // text-decoration: line-through;
     }
     
     .todo-item {
-        background: white;
+        background-color: var(--bg-color-todo-item);
         margin: 5px;
         padding: 10px;
-        display: flex;
+        display: flex;  
         flex-direction: column;
         justify-content: center;
         align-items: center;
@@ -353,6 +369,8 @@
         transition: 0.4s;
         position: relative;
         border: 1px solid rgba(0, 0, 0, 0.3);
+        cursor: pointer;
+        user-select: none;
         
     }
     
@@ -467,7 +485,7 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.3);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -475,17 +493,18 @@
     }
     
     .card {
-        background-color: rgba(255, 255, 255, 0.812);
+        background-color: var(--bg-color-todo-card);
         padding: 20px;
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
         border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
         width: 50%;
         max-width: 1000px;
         min-height: 200px;
         text-align: center;
         overflow-y: auto;
+        border: 1px solid rgba(0, 0, 0, 0.5);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 
         .close-btn { 
             display: flex;
@@ -500,7 +519,7 @@
         justify-content: space-between;
         gap: 10px;
         margin-top: 10px;
-        color: #1E3A5F ;
+        color: var(--text-color) ;
         font-weight: bold;
 
         .con-btn {
@@ -529,7 +548,14 @@
                     border-radius: 5px;
                     font-size: 14px;
                     border: 1px solid rgba(0, 0, 0, 0.246);
+                    background-color: var(--bg-input-color);
+                    
+                    &:disabled { 
+                        background-color: var(--bg-input-color-disable);
+                    }
                 }
+
+               
             }
 
             .con-select { 
@@ -552,6 +578,13 @@
                     margin-left: 0px;
                     border: 1px solid rgba(0, 0, 0, 0.246);
                     width: 100%;
+
+                    background-color: var(--bg-input-color);
+                    
+                    &:disabled { 
+                        background-color: var(--bg-input-color-disable);
+                    }
+                    
                     
                 }
 
@@ -578,6 +611,13 @@
                     height: 100px;
                     border-radius: 5px;
                     border: 1px solid rgba(0, 0, 0, 0.246);
+                    background-color: yellow;
+                    background-color: var(--bg-input-color);
+                    
+                    &:disabled { 
+                        background-color: var(--bg-input-color-disable);
+                        
+                    }
 
                 }
             }

@@ -3,7 +3,9 @@
         <div class="con-flex-menu">
         </div>
 
-        
+        <button (click)="toggleDarkMode()">
+            {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
+        </button>
         <button *ngIf="isNavHidden" class="menu-toggle" (click)="toggleNav()">☰</button>
 
         <!-- <div *ngIf="isToggleNav" class="side-nav-toggle">

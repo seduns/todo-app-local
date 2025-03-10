@@ -167,7 +167,7 @@
 
                                 <div class="con-state" [ngClass]="{'new-task' : todo.state === 'new', 'progress-task' : todo.state === 'progress', 'done-task' : todo.state === 'done', }">{{todo.state}}</div>
 
-                                <div class="con-category">{{todo.categories}}</div>
+                                <div class="con-category" [ngClass]="{'work-cate' : todo.categories === 'work', 'personal-cate' : todo.categories === 'personal', 'other-cate' : todo.categories === 'other'}" >{{todo.categories}}</div>
 
                                 <div class="level-con" [ngClass]="{'high-level' : todo.level === 'high', 'medium-level' : todo.level === 'medium', 'low-level' : todo.level === 'low'}">{{todo.level}}</div>
                             </div>
@@ -188,7 +188,7 @@
                                     <div class="con-title-1">
                                         <label class="label-title">Title</label>
                                         <div class="con-title">
-                                            <input type="text" placeholder="title" [(ngModel)]="selectedTitle" [disabled]="!isEditTodo"></div>
+                                            <input type="text" placeholder="Title" [(ngModel)]="selectedTitle" [disabled]="!isEditTodo"></div>
                                         </div>
     
                                         <div class="con-select">

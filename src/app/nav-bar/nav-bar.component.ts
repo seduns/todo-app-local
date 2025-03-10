@@ -2,10 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faC, faHome, faListCheck, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { faC, faHome, faListCheck, faSlash, faTableList } from '@fortawesome/free-solid-svg-icons';
 import { truncateSync } from 'node:fs';
 import { NavStateService } from './service/nav-state.service';
 import { BehaviorSubject } from 'rxjs';
+import { BackgrondModeService } from './service/backgrond-mode.service';
+import { isDeepStrictEqual } from 'node:util';
 
 
 @Component({
@@ -22,12 +24,16 @@ export class NavBarComponent implements OnInit {
   faListCheck = faListCheck;
   isMinimizeNav: boolean = false;
 
-  @Input() isNavHidden: boolean = false; // ✅ Receive state from parent
+  @Input() isNavHidden: boolean = false; 
 
-  constructor(private navStateService: NavStateService) {}
+  isDarkMode: boolean = false;
+
+  constructor(private navStateService: NavStateService, private backgroundMode: BackgrondModeService) {
+    this.isDarkMode = this.backgroundMode.isDarkMode();
+
+  }
 
   ngOnInit(): void {
-    // ✅ Subscribe to the nav state to update UI when it changes
     this.navStateService.isNavHidden$.subscribe(state => {
       this.isNavHidden = state;
     });
@@ -36,7 +42,12 @@ export class NavBarComponent implements OnInit {
   isToggleNav: boolean = false;
 
   toggleNav() {
-    this.navStateService.toggleNav(); // ✅ Toggle state globally
+    this.navStateService.toggleNav(); 
+  }
+
+  toggleDarkMode(): void {
+    this.backgroundMode.toggleDarkMode();
+    this.isDarkMode = this.backgroundMode.isDarkMode();
   }
 
 }

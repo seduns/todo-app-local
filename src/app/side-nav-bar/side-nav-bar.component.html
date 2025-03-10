@@ -36,7 +36,7 @@
             <button class="nav-minimize" (click)="minimizeNav()"> 
                 <fa-icon [icon]="isMinimizeNav ? faAngleRight : faAngleLeft "></fa-icon> 
             </button>
-            <button  *ngIf="!isNavHidden" class="nav-minimize eye-btn" (click)="hideSideNav()"><fa-icon [icon]="faEye"></fa-icon></button>
+            <button  *ngIf="!isNavHidden" class="nav-minimize eye-btn" title="hide side bar" (click)="hideSideNav()"><fa-icon [icon]="faEye"></fa-icon></button>
         </div>  
     </div>
 </nav>
