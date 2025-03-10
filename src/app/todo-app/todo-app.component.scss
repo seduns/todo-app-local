@@ -50,9 +50,11 @@
                 justify-content: center;
                 align-items: center;
                 text-transform: capitalize;
+                color: var(--text-color);
+                background-color: var(--bg-select-color);
     
             }
-        }
+        }   
         
         .con-reset-filter { 
             margin-right: 10px;
@@ -64,10 +66,12 @@
         }
         
         .search-item { 
-            border: 2px solid rgb(0, 0, 0, 0.2);
+            border: 1px solid var(--border-color);
             padding: 5px 10px;
             margin-top: 10px;
             border-radius: 5px;
+            background-color: var(--bg-select-color);
+            color: var(--text-color);
         }
 
         &:hover { 
@@ -549,9 +553,11 @@
                     font-size: 14px;
                     border: 1px solid rgba(0, 0, 0, 0.246);
                     background-color: var(--bg-input-color);
+                    color: var(--text-color);
                     
                     &:disabled { 
                         background-color: var(--bg-input-color-disable);
+                        color: var(--text-color);
                     }
                 }
 
@@ -578,11 +584,12 @@
                     margin-left: 0px;
                     border: 1px solid rgba(0, 0, 0, 0.246);
                     width: 100%;
-
+                    color: var(--text-color);
                     background-color: var(--bg-input-color);
                     
                     &:disabled { 
                         background-color: var(--bg-input-color-disable);
+                        color: var(--text-color);
                     }
                     
                     
@@ -613,9 +620,11 @@
                     border: 1px solid rgba(0, 0, 0, 0.246);
                     background-color: yellow;
                     background-color: var(--bg-input-color);
+                    color: var(--text-color);
                     
                     &:disabled { 
                         background-color: var(--bg-input-color-disable);
+                        color: var(--text-color);
                         
                     }
 

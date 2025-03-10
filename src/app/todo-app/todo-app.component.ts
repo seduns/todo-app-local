@@ -146,10 +146,14 @@ export class TodoAppComponent implements OnInit {
 
     // Apply search filter (case-insensitive, partial match)
     if (this.searchItem) { 
-        this.todos = this.todos.filter(todo => 
-        (todo.title?.toLowerCase().includes(this.searchItem ?? "") || todo.description?.toLowerCase().includes(this.searchItem ?? ""))
-        );
-    }
+      const searchQuery = this.searchItem.toLowerCase(); // Convert search input to lowercase
+  
+      this.todos = this.todos.filter(todo => 
+          todo.title?.toLowerCase().includes(searchQuery) || 
+          todo.description?.toLowerCase().includes(searchQuery)
+      );
+  }
+  
 
     // Apply level filter
     if (this.selectedLevelOption) { 
