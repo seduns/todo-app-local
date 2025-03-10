@@ -5,14 +5,16 @@
         display: flex;
         align-items: center;
         max-width: 1200px;
-        padding: 10px;
+        padding: 5px;
         color: white;
 
 
         .con-flex-menu { 
             margin: 5px;
-            // background-color: yellow;
-            width: 100%;
+            background-image: url(../../asset/Logo/Listify\ Logo.png);
+            background-size: contain, cover;
+            padding: 20px 60px;
+            background-repeat: no-repeat;
         }
     }
     .nav-links {

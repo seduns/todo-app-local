@@ -1,5 +1,9 @@
 <nav class="nav-bar">
     <div class="con-nav-bar">
+        <div class="con-flex-menu">
+        </div>
+
+        
         <button *ngIf="isNavHidden" class="menu-toggle" (click)="toggleNav()">☰</button>
 
         <!-- <div *ngIf="isToggleNav" class="side-nav-toggle">
@@ -9,8 +13,6 @@
                 <li><a href="/board"><fa-icon [icon]="faTableList"></fa-icon> Board</a></li>
             </ul>
         </div> -->
-        <div class="con-flex-menu">
-            Logo
-        </div>
+       
     </div>
 </nav>
