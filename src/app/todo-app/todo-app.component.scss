@@ -201,7 +201,6 @@
             margin-right: auto;
             border-radius: 5px;
             padding: 20px 10px;
-            white-space: nowrap; /* Prevents text from wrapping */
             color: var(--text-color);
         }
 
@@ -793,6 +792,11 @@ th, td {
                 overflow-x: auto;
 
             }
+        }
+
+        .con-no-task { 
+            width: 100px; /* Make it responsive */
+            max-width: 400px; /* Set a max width */
         }
         
     }

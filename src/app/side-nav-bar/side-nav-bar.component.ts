@@ -63,6 +63,7 @@ export class SideNavBarComponent implements OnInit {
   isMinimizeNav: boolean | null = null;
   private readonly NAV_STATE_KEY = 'isMinimizeNav';
   private readonly NAV_STATE_KEY_CHILD = 'isExpanded';
+  private readonly NAV_STATE_KEY_HIDE = 'isNavHide';
 
   ngOnInit(): void {
     if (typeof window !== 'undefined') { 
@@ -81,6 +82,9 @@ export class SideNavBarComponent implements OnInit {
     this.navStateService.isNavHidden$.subscribe(state => {
       this.isNavHidden = state;
     });
+
+    const hideState = localStorage.getItem(this.NAV_STATE_KEY_HIDE);
+    this.isNavHide = hideState === 'true';
   }
 
   toggleSubmenu(link: any, event: Event): void {
@@ -101,5 +105,7 @@ export class SideNavBarComponent implements OnInit {
 
   hideSideNav(): void { 
     this.navStateService.toggleNav(); // Toggle state in service
+
+    localStorage.setItem(this.NAV_STATE_KEY_HIDE, this.isNavHide.toString());
   }
 }
