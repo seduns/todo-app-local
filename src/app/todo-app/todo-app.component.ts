@@ -48,25 +48,29 @@ export class TodoAppComponent implements OnInit {
 
 
   usage: string | null = null;
+  usagePercent: number = 0; // Storage usage in percentage
 
   checkLocalStorageUsage(): void {
-    if (typeof window != 'undefined') { 
+    if (typeof window !== 'undefined') { 
 
     try {
       // Calculate the approximate size of localStorage usage in bytes
-      const usedBytes = new TextEncoder().encode(JSON.stringify(localStorage)).length;
+      const todos = localStorage.getItem("todos");
+
+      const todosValue = todos && todos !== "[]" ? todos : "";
+
+      const todosSize = todos ? new TextEncoder().encode(todosValue).length : 0;
       const maxBytes = 5 * 1024 * 1024; // Approx. 5MB limit
+      this.usagePercent = parseFloat(Math.min((todosSize / maxBytes) * 100, 100).toFixed(0));
 
-      this.usage = usedBytes.toString();
+      this.usage = this.formatedBytes(todosSize);
 
-      console.log(`localStorage usage: ${usedBytes} bytes`);
-      
-      if (usedBytes >= maxBytes) { 
+      console.log(`localStorage usage: ${todosSize} bytes`);
+      if (todosSize >= maxBytes) { 
         console.log('localStorage is full');
-      } else if (usedBytes >= maxBytes * 0.9) { 
+      } else if (todosSize >= maxBytes * 0.9) { 
           console.log('localStorage is almost full!');
       }
-
 
     } catch (e) {
       console.error('Error checking localStorage usage:', e);
@@ -74,10 +78,20 @@ export class TodoAppComponent implements OnInit {
   }
   }
 
+  formatedBytes(bytes: number, decimal: number = 2): string {
+    if (bytes === 0 )  return `0 Bytes`;
+
+    const size = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes)/ Math.log(1024));
+    const formattedSize = parseFloat((bytes/ Math.pow(1024, i)).toFixed(decimal));
+
+    return `${formattedSize} ${size[i]}`;
+  }
+
   // Clear all localStorage data
   clearLocalStorage(): void {
     if (confirm('Are you sure you want to clear all saved data? This action cannot be undone.')) {
-      localStorage.clear();
+      localStorage.removeItem("todos");
       this.todos = []; // Clear the local todos array as well
       console.log('All localStorage data cleared.');
       this.loadTodo();

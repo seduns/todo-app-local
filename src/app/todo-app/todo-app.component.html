@@ -10,10 +10,13 @@
         <div class="add-task-con">
 
             <!-- USAGE -->
-            <!-- <label class="usage-label" for="">Total usage: {{usage}}bytes</label>
-            <button (click)="clearLocalStorage()" class="clean-up-btn">
-                Clear All Data
-            </button> -->
+             <div class="usage-container">
+                 <div class="usage-label" for="">Total usage: {{usage}} ({{usagePercent}}%)</div>
+                <div class="usage-bar" [style.width]="usagePercent + '%'" ></div>
+
+            </div>
+
+           
 
             <div class="con-selection state-select">
                     <span>State</span>
@@ -62,6 +65,10 @@
         <div class="con-reset-filter">
             <button class="reset-filter-btn" (click)="resetAllFilter()">Reset Filter</button>
         </div>
+
+        <button (click)="clearLocalStorage()" class="clean-up-btn">
+            Clear All Task
+        </button>
         
         <div class="con-search-item">
             <input type="text" class="search-item" placeholder="Filter quick search" [(ngModel)]="searchItem" (ngModelChange)="filteredTodos()">
@@ -173,7 +180,18 @@
                             </div>
                             </div>
                         </div>
-                        <div class="con-no-task" *ngIf="todos.length === 0">no item</div>
+
+                        <div class="con-no-task" *ngIf="todos.length === 0 && !searchItem">
+                            <div class="no-task-image"></div>
+                            Looks like there's nothing here yet! Add your first task to get started.
+                        </div>
+
+                        <div class="con-no-task no-item-search" *ngIf="searchItem && todos.length === 0">
+                            <div class="no-task-image no-item-found"></div>
+                            No results found. Try searching with different keywords!
+
+                        </div>
+
                     </div>
 
                     <div *ngIf="showTodo">

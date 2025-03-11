@@ -2,15 +2,13 @@
   
 .main-content { 
     display: flex;
-    overflow-x: hidden;
-    overflow-y: hidden;
-    
+    overflow: hidden;    
 }
 
 
 .todo-content { 
     // border: 1px solid rgb(31, 0, 171);
-    height: 90vh;
+    height: 100%;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -28,17 +26,54 @@
         transition: 0.3s;
         overflow-x: auto;
 
-        .usage-label { 
-            border: 1px solid black;
-            background-color: blue;
-            color: white;
-            border: none;
-            padding: 5px 20px;
-            margin: 0px 10px;
-            border-radius: 5px;
-            text-wrap: nowrap;
+        .clean-up-btn { 
+            display: flex;
+            margin: 10px 5px 0px;
+            padding: 10px 10px;
         }
 
+        .usage-container { 
+            display: flex;
+            justify-content: center;
+            background-color: var(--bg-color-usage);
+            width: 200px;
+            height: 20px;
+            position: relative;
+            margin: 15px 10px 0px;
+            border-radius: 5px;
+            padding: 5px 20px;
+            color: var(--text-color-usage);
+            z-index: 1;
+            padding: 5px 20px ;
+            align-items: center;
+            text-align: center;
+            border-radius: 5px;
+
+            .usage-bar { 
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 100%;
+                width: 100%;
+                background: linear-gradient(90deg, var(--bg-color-gradient-usage), var(--bg-color-gradient-usage-2));
+                transition: width 0.3s;
+                border-radius: 5px;
+                z-index: 0;
+                
+            }
+
+            .usage-label { 
+                position: relative;
+                z-index: 1;
+                font-weight: bold;
+                text-align: center;
+                white-space: nowrap; /* Prevents text wrapping */
+                
+            }
+            
+        }
+
+        
         .con-selection { 
             margin-right: 10px;
 
@@ -128,7 +163,7 @@
     
     button:hover {
         background-color: #1A237E;
-        color: rgb(248, 248, 255);
+        color: rgb(252, 255, 248);
     }
     
     .todo-list-background {
@@ -146,6 +181,34 @@
         &:hover { 
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.171);
         }
+
+        .no-task-image { 
+            background-image: var(--icon-no-task);
+            padding: 40px;
+            background-size: cover;
+        }
+
+        .no-item-found { 
+            background-image: url(../../asset/icon/no-item-found.svg);
+        }
+
+        .con-no-task { 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: fit-content; /* Adjust width to fit text */
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 5px;
+            padding: 20px 10px;
+            white-space: nowrap; /* Prevents text from wrapping */
+            color: var(--text-color);
+        }
+
+        .no-item-found { 
+            margin-right: 10px;
+        }
+        
     }
 
     .todo-list-background::-webkit-scrollbar { 
@@ -231,34 +294,34 @@
         }
 
         .new-task {
-            background-color: rgba(0, 128, 0, 0.250);
-            color: green;
+            background-color: rgba(25, 149, 25, 0.368);
+            color: rgb(7, 149, 7);
             font-weight: 600;
         }
         .progress-task {
-            background-color: rgba(137, 43, 226, 0.250);
-            color: blueviolet;
+            background-color: rgba(137, 43, 226, 0.633);
+            color: rgb(226, 217, 235);
             font-weight: 600;
         }
         .done-task {
-            background-color: rgba(128, 0, 128, 0.250);
-            color: purple;
+            background-color: rgba(134, 5, 134, 0.519);
+            color: rgb(245, 187, 245);
             font-weight: 600;
         }
         
         .work-cate { 
-            background-color: rgba(255, 0, 0, 0.250);
-            color: rgb(255, 0, 0);
+            background-color: rgba(176, 27, 27, 0.568);
+            color: rgb(255, 203, 203);
             font-weight: 600;
         }
         .personal-cate { 
-            background-color: rgba(101, 101, 255, 0.250);
-            color: rgb(101, 101, 255);
+            background-color: rgba(101, 101, 255, 0.405);
+            color: rgb(139, 139, 250);
             font-weight: 600;
         }
         .other-cate { 
-            background-color: rgba(0, 99, 0, 0.250);
-            color: rgb(0, 99, 0);
+            background-color: rgba(0, 99, 0, 0.538);
+            color: rgb(125, 244, 125);
             font-weight: 600;
         }
 
@@ -291,7 +354,7 @@
             display: flex;
             
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.26);
-            background-color: white;
+            background-color: var(--bg-color-con-nav-1);
             z-index: 10; /* To ensure it appears above other elements if needed */
         }
         
@@ -410,14 +473,14 @@
         cursor: pointer;
         background-color: transparent;
         background-size: cover;
-        color: rgba(255, 0, 0, 0.567);
         font-size: 12px;
+        color: var(--text-color);
         flex: 1;
 
         &:hover {
             background-color: transparent;
-            color: rgb(136, 0, 0);
             transform: translateX(5px);
+            color: var(--text-color);
 
         }
     }
@@ -425,11 +488,9 @@
     .complete-btn { 
         background-color: transparent;
         background-size: cover;
-        color: green;
         
         &:hover {
             background-color: transparent;
-            color: rgb(0, 75, 0);
             transform: translateX(5px);
         }
     }

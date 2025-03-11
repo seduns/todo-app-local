@@ -3,9 +3,7 @@
     flex-direction: column;
     height: 100vh;
     overflow: hidden;
-    overflow: hidden;
     width: 100% ;
-
     
 }
 
@@ -28,6 +26,8 @@
     overflow: auto;
     transition: width 0.3s;
     overflow-x: hidden;
+    overflow-y: auto;
+    // border: 2px solid yellow;
     
 }
 
