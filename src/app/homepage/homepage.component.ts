@@ -40,32 +40,59 @@ export class HomepageComponent implements OnInit {
       this.loadTodo();
       this.checkLocalStorageUsage();
       this.totalCategoriesSubmit();
-
+      
+      
       //check running on browser
       if (isPlatformBrowser(this.platformId)) { 
         setTimeout(() =>  {
           this.createChart();
+
+          this.ctx = this.donutCanvas.nativeElement.getContext('2d');
+          this.animateUsage();
+
         }, 100);
     }
   } 
 
+  usage: string | null = null;
+  usagePercent: number = 0; // Storage usage in percentage
+
   checkLocalStorageUsage(): void {
-    if (typeof window != 'undefined') { 
+    if (typeof window !== 'undefined') { 
+
     try {
       // Calculate the approximate size of localStorage usage in bytes
-      const usedBytes = new TextEncoder().encode(JSON.stringify(localStorage)).length;
-      const maxBytes = 5 * 1024 * 1024; // Approx. 5MB limit
+      const todos = localStorage.getItem("todos");
 
-      console.log(`localStorage usage: ${usedBytes} bytes`);
-      
-      if (usedBytes >= maxBytes * 0.9) { // Warn at 90% capacity
-        console.warn('localStorage is almost full!');
+      const todosValue = todos && todos !== "[]" ? todos : "";
+
+      const todosSize = todos ? new TextEncoder().encode(todosValue).length : 4400000 ;
+      const maxBytes = 5 * 1024 * 1024; // Approx. 5MB limit
+      this.usagePercent = parseFloat(Math.min((todosSize / maxBytes) * 100, 100).toFixed(0));
+
+      this.usage = this.formatedBytes(todosSize);
+
+      console.log(`localStorage usage: ${todosSize} bytes`);
+      if (todosSize >= maxBytes) { 
+        console.log('localStorage is full');
+      } else if (todosSize >= maxBytes * 0.9) { 
+          console.log('localStorage is almost full!');
       }
 
     } catch (e) {
-      console.error('Error checking localStorage usage:', e);
+      console.error('Error checking localStorage usage:', e); 
     }
   }
+  }
+
+  formatedBytes(bytes: number, decimal: number = 2): string {
+    if (bytes === 0 )  return `0 Bytes`;
+
+    const size = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes)/ Math.log(1024));
+    const formattedSize = parseFloat((bytes/ Math.pow(1024, i)).toFixed(decimal));
+
+    return `${formattedSize} ${size[i]}`;
   }
 
   // Clear all localStorage data
@@ -75,6 +102,74 @@ export class HomepageComponent implements OnInit {
       this.todos = []; // Clear the local todos array as well
       console.log('All localStorage data cleared.');
     }
+  }
+
+  @ViewChild('donutCanvas', { static: false }) donutCanvas!: ElementRef<HTMLCanvasElement>;
+
+
+  maxPercent: number = 100;
+  ctx!: CanvasRenderingContext2D | null;
+  animationInterval: any;
+
+  drawDonut(percent: number) {
+    if (!this.ctx) return;
+    
+    const canvas = this.donutCanvas.nativeElement;
+    const ctx = this.ctx;
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+    const radius = 40;
+    const thickness = 10;
+
+    // Get text color from CSS variables
+    const computedStyles = getComputedStyle(document.documentElement);
+    const textColor = computedStyles.getPropertyValue('--text-color-usage').trim(); // Only text color changes
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear previous frame
+
+    // 🎨 Background Circle (Keeps original color)
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, 0, 2 * Math.PI);
+    ctx.lineWidth = thickness;
+    ctx.strokeStyle = "#e0e0e0";  // Fixed light grey
+    ctx.stroke();
+
+    // 🟢 Progress Arc (Keeps original color)
+    const startAngle = -Math.PI / 2;
+    const endAngle = startAngle + (2 * Math.PI * (percent / 100));
+
+    ctx.beginPath();
+    ctx.arc(centerX, centerY, radius, startAngle, endAngle);
+    ctx.lineWidth = thickness;
+    ctx.strokeStyle = "#ffcc00"; // Fixed yellow
+    ctx.lineCap = "round";
+    ctx.stroke();
+
+    // 🔢 Percentage Text (Only this changes dynamically)
+    ctx.fillStyle = textColor; // Uses CSS variable
+    ctx.font = "12px Arial";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText(`${percent}%`, centerX, centerY);
+}
+
+
+
+  animateUsage() {
+    let currentPercent = 0;
+    this.animationInterval = setInterval(() => {
+      if (currentPercent >= this.usagePercent) {
+        clearInterval(this.animationInterval);
+      } else {
+        currentPercent += 1; // Increment gradually
+        this.drawDonut(currentPercent);
+      }
+    }, 20); // Smooth animation
+  }
+
+  updateUsage(newUsage: number) {
+    this.usagePercent = newUsage;
+    this.animateUsage();
   }
 
 

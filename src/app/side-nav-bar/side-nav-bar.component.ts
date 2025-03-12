@@ -77,14 +77,14 @@ export class SideNavBarComponent implements OnInit {
           link.isExpanded = storedExpanded === 'true';
         }
       });
+      
+      this.navStateService.isNavHidden$.subscribe(state => {
+        this.isNavHidden = state;
+      });
+      
+      const hideState = localStorage.getItem(this.NAV_STATE_KEY_HIDE);
+      this.isNavHide = hideState === 'true';
     }
-
-    this.navStateService.isNavHidden$.subscribe(state => {
-      this.isNavHidden = state;
-    });
-
-    const hideState = localStorage.getItem(this.NAV_STATE_KEY_HIDE);
-    this.isNavHide = hideState === 'true';
   }
 
   toggleSubmenu(link: any, event: Event): void {

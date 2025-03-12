@@ -54,10 +54,10 @@
                 top: 0;
                 left: 0;
                 height: 100%;
-                width: 100%;
                 background: linear-gradient(90deg, var(--bg-color-gradient-usage), var(--bg-color-gradient-usage-2));
                 transition: width 0.3s;
                 border-radius: 5px;
+                width: 0%;
                 z-index: 0;
                 
             }

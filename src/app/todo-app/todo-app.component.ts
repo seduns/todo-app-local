@@ -59,7 +59,7 @@ export class TodoAppComponent implements OnInit {
 
       const todosValue = todos && todos !== "[]" ? todos : "";
 
-      const todosSize = todos ? new TextEncoder().encode(todosValue).length : 0;
+      const todosSize = todos ? new TextEncoder().encode(todosValue).length : 0 ;
       const maxBytes = 5 * 1024 * 1024; // Approx. 5MB limit
       this.usagePercent = parseFloat(Math.min((todosSize / maxBytes) * 100, 100).toFixed(0));
 
@@ -73,7 +73,7 @@ export class TodoAppComponent implements OnInit {
       }
 
     } catch (e) {
-      console.error('Error checking localStorage usage:', e);
+      console.error('Error checking localStorage usage:', e); 
     }
   }
   }
