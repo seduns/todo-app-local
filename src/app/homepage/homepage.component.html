@@ -9,9 +9,39 @@
 
             <div class="todo-list-background">
 
+                <div class="con-flex-card con-4">
+                    <div class="con-no-usage" *ngIf=""> 
+                        
+
+                    </div>
+
+                    <div class="usage-container">
+                        <div class="usage-bar" [style.height]="usagePercent + '%'" ></div>
+                        <div class="in-percentage">{{ usagePercent | number: '1.0-0' }}%</div>
+                        
+                    </div>
+                    <div class="usage-label" for="">
+                        <span class="total-usage-title">Total usage:</span> 
+                        <span>{{usage}}</span>
+                        <button (click)="clearLocalStorage()" class="clean-up-btn" [disabled]="todos.length === 0">
+                            Clear All Task
+                        </button>
+                    </div>
+
+                    <!-- <canvas #donutCanvas width="100" height="100"></canvas>
+                    Total usage -->
+                    
+                </div>
+
                 <div class="con-flex-card con-1">
-                    <span class="con-label-flex">All Task</span>
-                    <div class="con-col-1">
+                    <span class="con-label-flex">Category</span>
+
+                    <div class="con-no-task category" *ngIf="todos && todos.length === 0 ">
+                        No categories yet. Add your first task to create one!
+                    </div>
+
+
+                    <div class="con-col-1" *ngIf="todos.length > 0">
                         <div
                         class="col-cate col-1"
                         *ngFor="let category of (categoryCounts | keyvalue)">
@@ -26,8 +56,13 @@
                 
             </div>
             <div class="con-flex-card con-2">
-                <span class="con-label-flex">All Task</span>
-                <div class="todo-card"> 
+                <span class="con-label-flex">All Task ({{totalTask}})</span>
+
+                <div class="con-no-task category" *ngIf="todos.length === 0 ">
+                    No tasks yet. Add your first task to get started!
+                </div>
+
+                <div class="todo-card" *ngIf="todos.length > 0"> 
                         <div class="todo-item" *ngFor="let todo of todos; let i = index;" (click)="openTodos(todo, i)">
                             <span class="con-title-item">{{limitWords(todo.title, 3)}}</span>
                             
@@ -37,40 +72,33 @@
                         
                     </div>
                 </div>
+
                 <div class="con-flex-card con-3">
-                    
-
-
-
+                    Comming Son
                 </div>
-                <div class="con-flex-card con-4">
-                    <div class="con-no-usage" *ngIf=""> 
 
 
-                    </div>
-                    <!-- <div class="usage-container">
-                        <div class="usage-bar" [style.height]="usagePercent + '%'" ></div>
-                        
-                    </div>
-                    <div class="usage-label" for="">Total usage: {{usage}} ({{usagePercent}}%)</div> -->
-
-                    <canvas #donutCanvas width="100" height="100"></canvas>
-                    Total usage
-                    
-                </div>
+                
             </div>
 
             <div class="con-todo-list-2 con-4">
 
                 <div class="con-flex-1">
-                    <div class="chart">
+                    <div class="chart" *ngIf="todos.length > 0">
                         <canvas #chartCanvas></canvas>
-
                     </div>
+
+                    <div class="con-no-task-chart" *ngIf="todos && todos.length === 0">
+                        <div class="no-task-image"></div>
+                        Looks like there's nothing here yet! Add your first task to get started.
+                    </div>
+
+
+
 
                 </div>
                 <div class="con-flex-2">
-
+                    <span>Comming Soon</span>
                 </div>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import { AfterViewChecked, AfterViewInit, Component, ElementRef, HostListener, inject, Inject, OnInit, PLATFORM_ID, runInInjectionContext, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, ChangeDetectorRef, Component, ElementRef, HostListener, inject, Inject, OnInit, PLATFORM_ID, runInInjectionContext, ViewChild } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Router } from '@angular/router';
 import { Todo } from '../model/todo.mode';
@@ -34,28 +34,58 @@ export class HomepageComponent implements OnInit {
   todos:Todo[] =[] ;
   allTodos: Todo[] =[];
 
-  constructor(private router : Router, @Inject(PLATFORM_ID) private platformId: Object) {}
+  constructor(private router : Router, @Inject(PLATFORM_ID) private platformId: Object, private cdr : ChangeDetectorRef) {}
 
   ngOnInit(): void {
+    setTimeout(() => { 
+
       this.loadTodo();
       this.checkLocalStorageUsage();
       this.totalCategoriesSubmit();
-      
-      
+
       //check running on browser
       if (isPlatformBrowser(this.platformId)) { 
         setTimeout(() =>  {
           this.createChart();
-
-          this.ctx = this.donutCanvas.nativeElement.getContext('2d');
-          this.animateUsage();
-
-        }, 100);
-    }
+          
+          
+        }, 10);
+      }
+    }, 10);
   } 
 
   usage: string | null = null;
   usagePercent: number = 0; // Storage usage in percentage
+  currentUsageSize: number = 0;
+
+  
+  simulateUsageIncrease(targetPercent: number, targetSize: number) {
+    let currentUsage = 0;
+    let currentSize = 0;
+
+    // Adjust step dynamically based on percentage to speed ratio
+    const percentStep = Math.max(targetPercent / 30, 1); // Faster scaling for large values
+    const sizeStep = targetSize / targetPercent; // Scale size correctly
+
+    const interval = setInterval(() => {
+        if (currentUsage >= targetPercent) {
+            this.usagePercent = targetPercent; // Ensure exact final value
+            this.usage = this.formatedBytes(targetSize); // Ensure exact final size
+            clearInterval(interval);
+        } else {
+            currentUsage = Math.min(currentUsage + percentStep, targetPercent);
+            currentSize = Math.min(currentSize + sizeStep * percentStep, targetSize);
+
+            this.usagePercent = Math.round(currentUsage);
+            this.usage = this.formatedBytes(currentSize);
+
+            // Force UI update in Angular
+            this.cdr.detectChanges();
+        }
+    }, 40); // Faster updates for smoother animation
+}
+
+  
 
   checkLocalStorageUsage(): void {
     if (typeof window !== 'undefined') { 
@@ -66,9 +96,10 @@ export class HomepageComponent implements OnInit {
 
       const todosValue = todos && todos !== "[]" ? todos : "";
 
-      const todosSize = todos ? new TextEncoder().encode(todosValue).length : 4400000 ;
+      const todosSize = todos ? new TextEncoder().encode(todosValue).length : 0 ;
       const maxBytes = 5 * 1024 * 1024; // Approx. 5MB limit
-      this.usagePercent = parseFloat(Math.min((todosSize / maxBytes) * 100, 100).toFixed(0));
+      const calculatedPercent = Math.min((todosSize / maxBytes) * 100 , 100);
+
 
       this.usage = this.formatedBytes(todosSize);
 
@@ -78,6 +109,8 @@ export class HomepageComponent implements OnInit {
       } else if (todosSize >= maxBytes * 0.9) { 
           console.log('localStorage is almost full!');
       }
+
+      this.simulateUsageIncrease(calculatedPercent, todosSize);
 
     } catch (e) {
       console.error('Error checking localStorage usage:', e); 
@@ -98,9 +131,11 @@ export class HomepageComponent implements OnInit {
   // Clear all localStorage data
   clearLocalStorage(): void {
     if (confirm('Are you sure you want to clear all saved data? This action cannot be undone.')) {
-      localStorage.clear();
+      localStorage.removeItem("todos");
       this.todos = []; // Clear the local todos array as well
       console.log('All localStorage data cleared.');
+      this.loadTodo();
+      this.checkLocalStorageUsage();
     }
   }
 
@@ -202,6 +237,8 @@ export class HomepageComponent implements OnInit {
     return this.todos.filter(todo => todo.categories === categories);
   }
 
+
+
   categoryCounts: { [key: string]: number } = {};
 
   totalCategoriesSubmit(): void {
@@ -217,7 +254,7 @@ export class HomepageComponent implements OnInit {
       });
 
       console.log('Total submit by categories:', this.categoryCounts);
-    }, 0);
+    }, 1);
 
     this.createChart();
   }
@@ -251,6 +288,7 @@ export class HomepageComponent implements OnInit {
   }
 
 
+
   createChart(): void {
     if (this.chart) { 
       this.chart.destroy();
@@ -262,6 +300,8 @@ export class HomepageComponent implements OnInit {
     const values = Object.values(this.categoryCounts);
 
     const totalTask = values.reduce((sum, value) => sum + value, 0);
+
+    this.totalTask = totalTask; 
 
     const percentage = values.map(value => ((value/ totalTask)) * 100);
 
@@ -325,6 +365,7 @@ export class HomepageComponent implements OnInit {
   }
   console.log('Todo deleted');
   this.checkLocalStorageUsage();
+  
 
   this.selectedNavIndex = null;
 
