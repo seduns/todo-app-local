@@ -25,6 +25,7 @@
         align-items: center;
         transition: 0.3s;
         overflow-x: auto;
+        overflow: visible;
 
         .clean-up-btn { 
             display: flex;
@@ -68,10 +69,55 @@
                 font-weight: bold;
                 text-align: center;
                 white-space: nowrap; /* Prevents text wrapping */
-                
             }
             
         }
+        
+        .con-usage-max-reach { 
+            font-size: 15px;
+            margin: 5px;
+            margin-left: -5px;
+            color: red;
+            position: relative;
+            z-index: 1; /* Higher z-index to ensure it's above other elements */
+            animation: changeColor 1s infinite linear;
+        }
+        
+        .alert-message { 
+            color: var(--text-color);
+            padding: 10px 20px;
+            width: 250px;
+            font-size: 12px;
+            background-color: var(--bg-color-todo-item);
+            position: absolute;
+            border-radius: 5px;
+            margin-left: -200px;
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+            display: block;
+            white-space: normal; /* Ensures text wraps inside */
+            word-wrap: break-word; /* Breaks long words */
+            display: none;
+        }
+        
+        .con-usage-max-reach:hover .alert-message { 
+            display: block; /* Show when hovered */
+        }
+
+        @keyframes changeColor {
+            0% {
+                color: red;
+            }
+            50% {
+                color: rgb(117, 0, 0);
+            }
+            100% {
+                color: red;
+            }
+        }
+        
+
+        
 
         
         .con-selection { 
@@ -279,7 +325,7 @@
             font-size: 12px;
             border-radius: 5px;
             padding: 5px;
-            color: white;
+            color: var(--text-color);
             background-color: rgba(0, 0, 0, 0.168);
             display: flex;
             justify-content: center;
@@ -289,7 +335,7 @@
             margin-left: auto;
             box-sizing: border-box; /* Ensure padding doesn't affect width */
             margin-bottom: 5px;
-            color: rgb(255, 255, 255);
+            overflow: hidden;
         }
 
         .new-task {
@@ -635,7 +681,6 @@
                 .con-state-select, .con-level-select, .con-cate-select {
                     display: flex;
                     flex-direction: column;
-                    
                 }
 
                 select { 
@@ -646,6 +691,7 @@
                     width: 100%;
                     color: var(--text-color);
                     background-color: var(--bg-input-color);
+                    text-transform: capitalize;
                     
                     &:disabled { 
                         background-color: var(--bg-input-color-disable);
@@ -788,11 +834,19 @@ th, td {
             .add-task-con { 
                 // background-color: rgb(138, 80, 80);
                 display: flex;
-                overflow-y: hidden;
-                overflow-x: auto;
+                overflow-y: hidden; /* Prevents vertical scrolling */
+                overflow-x: auto; /* Allows horizontal scrolling */
+                white-space: nowrap; /* Prevents wrapping */
 
+                .alert-message { 
+                    text-wrap: nowrap;
+                    width: fit-content;
+                    margin-top: -20px;
+        
+                }
             }
         }
+
 
         .con-no-task { 
             width: 100px; /* Make it responsive */

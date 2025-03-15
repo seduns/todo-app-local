@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faAnglesLeft, faAnglesRight, faArrowsToEye, faChevronDown, faChevronRight, faCoffee, faEye, faHome, faListCheck, fas, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesLeft, faAnglesRight, faArrowsToEye, faChevronDown, faChevronRight, faCoffee, faEye, faHome, faList12, faListCheck, fas, faTableList } from '@fortawesome/free-solid-svg-icons';
 import { NavStateService } from '../nav-bar/service/nav-state.service';
 
 @Component({
@@ -19,6 +19,7 @@ export class SideNavBarComponent implements OnInit {
   faCoffee = faCoffee;
   faHome = faHome;
   faTableList = faTableList;
+  faList12 = faList12;
   faListCheck = faListCheck;
   faAngleLeft = faAnglesLeft;
   faAngleRight = faAnglesRight;
@@ -44,12 +45,11 @@ export class SideNavBarComponent implements OnInit {
       icon: faHome, 
     },
     { 
-      label: 'Task',
+      label: 'My Task',
       icon: this.faListCheck, 
       isExpanded: false,
       children: [
-        { path: '/todo', label: 'Task 1', icon: faListCheck },
-        { path: '/todo', label: 'Task 2', icon: faListCheck },
+        { path: '/todo', label: 'All Task', icon: faList12 },
       ]
     },
     { 

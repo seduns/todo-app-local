@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { Todo } from '../model/todo.mode';
-import { faBars, faCheck, faClose, faL, faPlus, faSearch, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faCheck, faCircleExclamation, faClose, faL, faPlus, faSearch, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { eventNames } from 'node:process';
 import { filter } from 'rxjs';
@@ -22,6 +22,8 @@ export class TodoAppComponent implements OnInit {
   faBar = faBars;
   faCheck = faCheck;
   faSearch = faSearch;
+  faAlert = faCircleExclamation;
+
 
   constructor(private cdRef: ChangeDetectorRef) {}
 
