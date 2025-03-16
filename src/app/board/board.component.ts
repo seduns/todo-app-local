@@ -1,20 +1,24 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, Inject, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { SideNavBarComponent } from "../side-nav-bar/side-nav-bar.component";
 import { NavBarComponent } from "../nav-bar/nav-bar.component";
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Todo } from '../model/todo.mode';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faBars, faClose } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faClose, faSlash } from '@fortawesome/free-solid-svg-icons';
+import { CdkDrag, CdkDragDrop, DragDropModule, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { windowTime } from 'rxjs';
 
 @Component({
     selector: 'app-board',
     standalone: true,
-    imports: [CommonModule, FormsModule, FontAwesomeModule],
+    imports: [CommonModule, FormsModule, FontAwesomeModule, DragDropModule ],
     templateUrl: './board.component.html',
     styleUrl: './board.component.scss'
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, AfterViewInit {
+
+  constructor(private renderer: Renderer2, @Inject(DOCUMENT) private document: Document) {}
 
  faClose = faClose;
  faBar = faBars;
@@ -31,9 +35,25 @@ onNewCategoriesChange(): void {
   console.log('Categories: ', this.selectedCategoriesNew);
 }
 
+@ViewChild('scrollContainer') scrollContainer!: ElementRef
+
+private scrollListener!: () => void;
+
   ngOnInit(): void {
     this.loadTodo();
-  } 
+  }
+
+  ngAfterViewInit(): void {
+    const scrollContainer = this.document.querySelector('tbody');
+
+    if (scrollContainer) { 
+      // ✅ Add event listener to close dropdown on scroll inside tbody
+      this.scrollListener = this.renderer.listen(scrollContainer, 'scroll', () => {
+        console.log('Scroll detected inside tbody, closing dropdown');
+        this.selectedNavIndex = null;
+      });
+    } 
+  }
 
    todos:Todo[] =[] ;
    allTodos: Todo[] =[];
@@ -127,6 +147,8 @@ onNewCategoriesChange(): void {
       
     } 
   }
+  
+  
 
   selectedNavIndex: string | null = null;
 
@@ -135,6 +157,14 @@ onNewCategoriesChange(): void {
       // Toggle the dropdown only for the clicked card
       this.selectedNavIndex = this.selectedNavIndex === index ? null : index;
       console.log('Selected Index:', this.selectedNavIndex);
+  }
+
+  
+  ngOnDestroy() {
+    // ✅ Remove listener when component is destroyed (performance optimization)
+    if (this.scrollListener) {
+      this.scrollListener();
+    }
   }
 
   @HostListener('document:click', ['$event'])
@@ -164,26 +194,101 @@ onNewCategoriesChange(): void {
         console.log('Update', this.todos);
     }
   }
- 
-  delete(state: string, index: number, event: Event): void {
+
+    allowDrop(event: DragEvent) { 
+      event.preventDefault();
+    }
+
+    draggedTodo: any = null;
+
+    drag(event: DragEvent, todo: any) { 
+      this.draggedTodo = todo; 
+      event.dataTransfer?.setData("text/plain", JSON.stringify(todo));
+
+      this.renderer.setStyle(event.target, 'opacity', '0.5');
+      this.renderer.setStyle(event.target, 'border', '2px dashed #62ea74');
+    }
+
+    drop(event: DragEvent, newState: string) {
+      event.preventDefault();
+    
+      const todoData = event.dataTransfer?.getData("text");
+      if (!todoData) return;
+    
+      const todo = JSON.parse(todoData);
+    
+      // Remove the old todo from the array
+      this.allTodos = this.allTodos.filter(t => t.todoId !== todo.todoId);
+    
+      // Update the todo's state
+      todo.state = newState;
+    
+      // Get the target element
+      const targetElement = event.target as HTMLElement;
+      const targetRect = targetElement.getBoundingClientRect();
+      const dropPosition = event.clientY - targetRect.top; // Y position inside the column
+    
+      // Determine if the drop happened near the top or bottom  
+      const insertAtTop = dropPosition < targetRect.height / 2;
+    
+      if (insertAtTop) {
+        this.allTodos.unshift(todo); // Insert at the top
+      } else {
+        this.allTodos.push(todo); // Insert at the bottom
+      }
+    
+      // Save and refresh UI
+      localStorage.setItem('todos', JSON.stringify(this.allTodos));
+      this.loadTodo();
+    }
+    
+    
+    
+
+    dragEnd(event: DragEvent) { 
+      console.log("Drag ended:", this.draggedTodo);
+      this.resetDragStyle(event);
+    }
+    
+
+    resetDragStyle(event: DragEvent) { 
+      const target = event.target as HTMLElement;
+      if (target) {
+        this.renderer.setStyle(target, 'opacity', '1`');
+        this.renderer.setStyle(target, 'border', 'none');
+      }
+    }
+    
+
+    updateTodoStore(updatedTodo: any) { 
+      const index = this.allTodos.findIndex(todo => todo.todoId === updatedTodo.todoId);
+      if (index !== -1) {
+        this.allTodos[index] = updatedTodo;
+        localStorage.setItem('todos', JSON.stringify(this.allTodos));
+        this.loadTodo(); 
+      }
+    }
+
+  delete(todoId: number, event: Event): void {
     event.stopPropagation();
 
-    // Find the todo to delete using the state and index
-    const todos = this.getTodoByState(state);
-    const todoToDelete = todos[index];
+    // Find index in allTodos
+    const index = this.allTodos.findIndex(todo => todo.todoId === todoId);
+    if (index === -1) return; // Exit if not found
 
-    if (todoToDelete) {
-        // Remove the todo from the main list
-        this.todos = this.todos.filter(todo => todo !== todoToDelete);
-        
-        // Update localStorage
-        localStorage.setItem('todos', JSON.stringify(this.todos));
-        
-        // Reload todos and reset selected dropdown
-        this.loadTodo();
-        this.selectedNavIndex = null;
-        console.log('Todo deleted', this.todos);
-    }
+    // Remove the todo from allTodos
+    this.allTodos.splice(index, 1);
+
+    // Update localStorage with the new list
+    localStorage.setItem('todos', JSON.stringify(this.allTodos));
+
+    console.log('Todo deleted:', todoId);
+
+    // Reload full todo list and apply filters again
+    this.loadTodo();
+
+    // Update localStorage usage info
+
   }
 
   limitWords(description: string, limit: number = 10): string {

@@ -98,6 +98,14 @@ export class TodoAppComponent implements OnInit {
       console.log('All localStorage data cleared.');
       this.loadTodo();
       this.checkLocalStorageUsage();
+
+
+      this.categoryCounts = {};
+      this.levelCount = {};
+      this.stateCount = {};
+
+      
+  
     }
   }
 
@@ -118,8 +126,6 @@ export class TodoAppComponent implements OnInit {
         }
     }
 }
-
-
 
   onDateChange(): void {
     console.log('Selected Date: ', this.selectedDate);
@@ -169,7 +175,6 @@ export class TodoAppComponent implements OnInit {
           todo.description?.toLowerCase().includes(searchQuery)
       );
   }
-  
 
     // Apply level filter
     if (this.selectedLevelOption) { 
@@ -276,6 +281,8 @@ export class TodoAppComponent implements OnInit {
         this.description = '';
         this.selectState = 'new';
         this.isAddTask = false;
+        this.selectLevel = "medium";
+        this.selectCategories = "other";
     } else {
         alert('Complete all the form fields!');
     }
@@ -329,6 +336,11 @@ export class TodoAppComponent implements OnInit {
 
     // Update localStorage usage info
     this.checkLocalStorageUsage();
+
+
+    this.totalCategoriesSubmit();
+    this.totalLevelSubmit(); 
+    this.totalStateSubmit(); 
 
     this.selectedNavId = null;
   }
@@ -526,6 +538,8 @@ export class TodoAppComponent implements OnInit {
   closeTodos(): void {
     this.showTodo = false;
     this.isEditTodo = false;
+    
+    
   }
 
   isAddTask: boolean = false;
@@ -538,6 +552,8 @@ export class TodoAppComponent implements OnInit {
     this.isAddTask = false;
     this.title = '';
     this.description = '';
+    this.selectLevel = "medium";
+    this.selectCategories = "other";
   }
 
   resetAllFilter(): void { 

@@ -9,74 +9,71 @@
             <div class="table-container">
                 <table>
                     <thead>
-                        <tr>
-                            <th *ngFor="let state of ['new', 'progress', 'done']">
-                                {{ state | titlecase }}
-                            </th>
-                        </tr>
+                      <tr>
+                        <th *ngFor="let state of ['new', 'progress', 'done']">
+                          {{ state | titlecase }}
+                        </th>
+                      </tr>
                     </thead>
-                    <tbody>
-                        <tr>
-                            <td *ngFor="let state of ['new', 'progress', 'done']; let stateIndex = index">
-                                <div class="table-con-todo-item"
-                                     *ngFor="let todo of getTodoByState(state); let i = index">
-                                    
-                                    <div class="todo-item" (click)="openTodos(todo, i)">
-                                        <div class="todo-title" [ngClass]="{'complete-task': todo.isComplete}">
-                        
-                                            <span class="con-title-item">{{limitWords(todo.title, 5)}}</span>
-                                            <span class="con-desc-item">{{limitWords(todo.description, 10) || "Description not provided"}}</span>
-                        
-                                            <!-- Generate a unique index for the dropdown -->
-                                            <button class="drop-btn" (click)="toggleNav($event, stateIndex + '-' + i)">
-                                                <fa-icon [icon]="faBar"></fa-icon>
-                                            </button>
-                        
-                                            <!-- Show dropdown only for the selected card -->
-                                            <div *ngIf="selectedNavIndex === (stateIndex + '-' + i)" class="con-nav-1">
-                                                <ul>
-                                                    <li *ngIf="!todo.isComplete && (todo.state === 'new' || todo.state === 'progress')">
-                                                        <button class="complete-btn" (click)="setComplete(state, i, $event)">Mark as done</button>
-                                                    </li>
-                                                    <li *ngIf="todo.isComplete && state === 'done'">
-                                                        <button class="complete-btn" (click)="setComplete(state, i, $event)">Mark as undone</button>
-                                                    </li>
-                                                    <li>
-                                                        <button class="del-btn" (click)="delete(state, i, $event)">Delete</button>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                        
-                                            <div class="con-state" 
-                                                 [ngClass]="{
-                                                    'new-task': todo.state === 'new', 
-                                                    'progress-task': todo.state === 'progress', 
-                                                    'done-task': todo.state === 'done'
-                                                 }">
-                                                
-                                            </div>
-                        
-                                            <div class="con-category">{{todo.categories}}</div>
-                        
-                                            <div class="level-con" 
-                                                 [ngClass]="{
-                                                    'high-level': todo.level === 'high', 
-                                                    'medium-level': todo.level === 'medium', 
-                                                    'low-level': todo.level === 'low'
-                                                 }">
-                                                {{todo.level}}
-                                            </div>
-                        
-                                        </div>
-                                    </div>
-                        
+                    <tbody #scrollContainer class="scroll-body">
+                      <tr>
+                        <td 
+                          *ngFor="let state of ['new', 'progress', 'done']; let stateIndex = index"
+                          (dragover)="allowDrop($event)" 
+                          (drop)="drop($event, state)">
+                          
+                          <div class="table-con-todo-item" *ngFor="let todo of getTodoByState(state); let i = index">
+                            <div class="todo-item" 
+                                 (click)="openTodos(todo, i)" 
+                                 draggable="true"
+                                 (dragstart)="drag($event, todo)" 
+                                 (dragend)="dragEnd($event)">
+                              
+                              <div class="todo-title" [ngClass]="{'complete-task': todo.isComplete}">
+                                <span class="con-title-item">{{ limitWords(todo.title, 5) }}</span>
+                                <span class="con-desc-item">{{ limitWords(todo.description, 5) || "Description not provided" }}</span>
+                  
+                                <!-- Dropdown button -->
+                                <button class="drop-btn" (click)="toggleNav($event, stateIndex + '-' + i)">
+                                  <fa-icon [icon]="faBar"></fa-icon>
+                                </button>
+                  
+                                <!-- Dropdown menu -->
+                                <div *ngIf="selectedNavIndex === (stateIndex + '-' + i)" class="con-nav-1">
+                                  <ul>
+                                    <li>
+                                      <button class="del-btn" (click)="delete(todo.todoId, $event)">Delete</button>
+                                    </li>
+                                  </ul>
                                 </div>
-                            </td>
-                        </tr>
-                        
-                        
+                  
+                                <div class="con-state" 
+                                     [ngClass]="{
+                                        'new-task': todo.state === 'new', 
+                                        'progress-task': todo.state === 'progress', 
+                                        'done-task': todo.state === 'done'
+                                     }">
+                                </div>
+                  
+                                <div class="con-category">{{todo.categories}}</div>
+                  
+                                <div class="level-con" 
+                                     [ngClass]="{
+                                        'high-level': todo.level === 'high', 
+                                        'medium-level': todo.level === 'medium', 
+                                        'low-level': todo.level === 'low'
+                                     }">
+                                  {{todo.level}}
+                                </div>
+                  
+                              </div>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
                     </tbody>
-                </table>
+                  </table>
+                  
             </div>
             
         </div>

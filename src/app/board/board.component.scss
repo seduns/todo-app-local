@@ -30,21 +30,29 @@ button:hover {
     .con-todo {
         display: flex;
         height: 100%;
-        max-height: 70vh;
-        border: 1px solid black;
+        // border: 1px solid black;
         // overflow: scroll;
         margin-left: auto;  
     }
     
     .todo-title {
-        width: 100%;
         display: flex;
+        width: 100%;
         flex-direction: column;
         border-radius: 10px;
         margin-bottom: 5px;
         font-size: 18px;
-        color: rgba(0, 0, 0, 0.693);
+        color: var(--text-color);
+        border: 1px solid rgba(0, 0, 0, 0.3);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.150);
+        padding: 10px 20px;
+        transition: 0.3s;
+        background-color: var(--bg-color-todo-list-bg);
         // position: relative;
+
+        &:hover { 
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.250);
+        }
         
 
         .level-con { 
@@ -70,7 +78,7 @@ button:hover {
             font-size: 12px;
             border-radius: 5px;
             padding: 5px;
-            color: white;
+            color: var(--text-color);
             background-color: rgba(0, 0, 0, 0.168);
             display: flex;
             justify-content: center;
@@ -80,7 +88,7 @@ button:hover {
             margin-left: auto;
             box-sizing: border-box; /* Ensure padding doesn't affect width */
             margin-bottom: 5px;
-            color: rgb(255, 255, 255);
+            color: var(--text-color);
         }
 
         .con-state { 
@@ -98,33 +106,33 @@ button:hover {
         // }
 
         .drop-btn {
-            background-color: rgba(255, 255, 0, 0);
+            background-color: transparent;
             width: 10px;
             // border: 1px solid black;
-            color: rgba(0, 0, 0, 0.234);
-            margin-top: -10px;
+            color: var(--drop-btn-color);
             font-size: 12px;
+            position: relative;
+            
             
             &:hover { 
-                color: rgba(252, 246, 246, 0.726);
+                color: var(--drop-btn-color-hover);
                 
             }
         }
 
         .con-nav-1 {
-            padding: 5px;
-            width: 120px;
+            width: 100px;
             height: fit-content;
             
             /* Use relative positioning to allow free placement */
-            position: relative; 
+            position: absolute;
             margin: 0px 30px -80px;
-        
+            
+
             border-radius: 5px;
             display: flex;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.26);
-            background-color: white;
-            z-index: 10;
+            background-color: var(--bg-color-con-nav-1);
         }
         
         .con-title-item { 
@@ -149,11 +157,13 @@ button:hover {
             -webkit-line-clamp: 3; /* Set max number of lines before truncating */
             line-clamp: 3;
             -webkit-box-orient: vertical;
-        
+            text-wrap: nowrap;
+            
             /* Important: These properties help with text wrapping */
-            white-space: normal; 
-            line-height: 1.2; /* Adjust line height if needed */
-            max-height: calc(1.2em * 3); /* line-height * max lines */
+            text-wrap: nowrap;
+            overflow: hidden;
+            display: block;
+            text-overflow:ellipsis;
         }
         
         
@@ -176,14 +186,15 @@ button:hover {
         cursor: pointer;
         background-color: transparent;
         background-size: cover;
-        color: rgba(255, 0, 0, 0.567);
         font-size: 12px;
         flex: 1;
         text-wrap: nowrap;
+        color: var(--text-color);
+
 
         &:hover {
             background-color: transparent;
-            color: rgb(136, 0, 0);
+            color: var(--text-color);
             transform: translateX(5px);
 
         }
@@ -235,7 +246,7 @@ button:hover {
     }
 
     .todo-item {
-            background: #f4f4f4;
+            background-color: transparent;
             margin: 5px;
             padding: 10px 20px;
             display: flex;
@@ -247,41 +258,11 @@ button:hover {
             width: 100%;
             word-break: break-word;
             overflow-wrap: break-word;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.171);
             transition: 0.4s;
             height: 100%;
-        }
-        .todo-item:hover {
-            background-color: rgb(0, 23, 141);
-            transform: scale(1.1);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.482);
+            color: var(--text-color);
         }
         
-        .todo-item:hover {
-            background-color: rgb(0, 23, 141);
-            transform:scale(1.05);
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.482);
-        }
-    
-        .todo-item:hover .con-title-item  { 
-            color: white;
-        }
-    
-        .todo-item:hover .con-state { 
-            color: transparent;
-        }
-    
-        .todo-item:hover .con-category { 
-            color: white;
-        }
-    
-        .todo-item:hover .con-desc-item { 
-            color: rgba(255, 255, 255, 0.745);
-        }
-    
-        .todo-item:hover .complete-task .con-title-item { 
-            color: rgba(255, 255, 255, 0.679);
-        }
 }
 
 .card-overlay {
@@ -319,34 +300,56 @@ button:hover {
 .table-container {
     height: 100%;
     position: relative;
+    transition: 0.2s;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
+    transition: 0.2s;
 }
 
 th, td {
     padding: 8px;
-    border: 1px solid #ddd;
     text-align: left;
-    background: rgb(161, 102, 102);
+    background-color: var(--bg-color-todo-list-bg);
+    overflow: hidden;
 }
 
-thead th {
+th { 
+    background-color: var(--bg-color-thead);
+}
+
+
+thead {
     position: sticky;
     top: 0;
-    background: #f1f1f1; /* Add background to avoid transparency while scrolling */
-    z-index: 2; /* Ensure header is above scrollable content */
-
+    z-index: 1; /* Ensure it stays above other elements */
+    background-color: var(--bg-color-thead);
+    box-shadow: 
+    0px -15px 20px var(--bg-color), /* First shadow */
+    0px 5px 5px (var(--bg-color)); /* Second shadow */
+    color: var(--text-color);
+    display: flex;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.3);
 }
+
+td { 
+    border: 2px solid var(--border-color-td);
+}
+
+
 
 tbody {
     display: block;
     overflow-y: auto;
     overflow-x:hidden;
-    height: 100%;
-    max-height: 500px; 
+    height: 100%; 
+    margin: 10px;
+    border-radius: 10px;
 }
 
 tr {
@@ -467,8 +470,8 @@ tr {
         
 
         &:hover { 
-           background-color: rgba(58, 8, 8, 0.182);
-        }
+            background-color: rgba(58, 8, 8, 0.090);
+         }
     }
 
     ul li a {
@@ -479,6 +482,7 @@ tr {
         text-align: center;
         color: rgb(0, 0, 0);
         display: flex;
+        
        
      }
 
