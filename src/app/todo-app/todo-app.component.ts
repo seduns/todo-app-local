@@ -95,6 +95,7 @@ export class TodoAppComponent implements OnInit {
     if (confirm('Are you sure you want to clear all saved data? This action cannot be undone.')) {
       localStorage.removeItem("todos");
       this.todos = []; // Clear the local todos array as well
+      this.allTodos = []; // Clear the local todos array as well
       console.log('All localStorage data cleared.');
       this.loadTodo();
       this.checkLocalStorageUsage();
@@ -103,10 +104,8 @@ export class TodoAppComponent implements OnInit {
       this.categoryCounts = {};
       this.levelCount = {};
       this.stateCount = {};
-
-      
   
-    }
+    } 
   }
 
   loadTodo(): void { 
