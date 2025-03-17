@@ -3,6 +3,7 @@
 .main-content { 
     display: flex;
     overflow: hidden;    
+    user-select: none;
 }
 
 
@@ -399,6 +400,7 @@
             display: flex;
             
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.26);
+            border: 1px solid rgba(0, 0, 0, 0.3);
             background-color: var(--bg-color-con-nav-1);
             z-index: 10; /* To ensure it appears above other elements if needed */
         }
@@ -488,7 +490,7 @@
     
     .todo-item:hover {
         // background-color: rgb(0, 23, 141);
-        transform:scale(1.05);
+        transform:scale(1.03);
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.482);
     }
 
