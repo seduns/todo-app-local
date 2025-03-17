@@ -327,6 +327,48 @@
                     }
                 }
 
+                .con-usage-max-reach { 
+                    font-size: 15px;
+                    margin: 5px;
+                    margin-left: -5px;
+                    color: red;
+                    z-index: 1; /* Higher z-index to ensure it's above other elements */
+                    animation: changeColor 1.5s infinite linear;
+                    height: 10px;
+                    // border: 1px solid yellow;
+                }
+                
+                .alert-message { 
+                    color: var(--text-color);
+                    padding: 10px 20px;
+                    width: 250px;
+                    font-size: 12px;
+                    background-color: var(--bg-color-todo-item);
+                    position: absolute;
+                    border-radius: 5px;
+                    border: 1px solid rgba(0, 0, 0, 0.2);
+                    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+                    white-space: normal; /* Ensures text wraps inside */
+                    word-wrap: break-word; /* Breaks long words */
+                    display: none;
+                }
+
+                .con-usage-max-reach:hover .alert-message { 
+                    display: block; /* Show when hovered */
+                }
+
+                @keyframes changeColor {
+                    0% {
+                        color: red;
+                    }
+                    50% {
+                        color: rgba(232, 231, 234, 0);
+                    }
+                    100% {
+                        color: red;
+                    }
+                }
+                
                 
 
             }

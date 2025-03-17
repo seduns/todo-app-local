@@ -81,7 +81,7 @@
             color: red;
             position: relative;
             z-index: 1; /* Higher z-index to ensure it's above other elements */
-            animation: changeColor 1s infinite linear;
+            animation: changeColor 1.5s infinite linear;
         }
         
         .alert-message { 
@@ -105,12 +105,13 @@
             display: block; /* Show when hovered */
         }
 
+        
         @keyframes changeColor {
             0% {
                 color: red;
             }
             50% {
-                color: rgb(117, 0, 0);
+                color: rgba(232, 231, 234, 0);
             }
             100% {
                 color: red;

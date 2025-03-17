@@ -5,7 +5,7 @@ import { Todo } from '../model/todo.mode';
 import { stringify } from 'node:querystring';
 import { consumerAfterComputation } from '@angular/core/primitives/signals';
 import { Chart, registerables } from 'chart.js';
-import { faBars, faBlackboard, faCheck, faClose, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faBlackboard, faCheck, faCircleExclamation, faClose, faPlus, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { create } from 'node:domain';
 import { createTracing } from 'node:trace_events';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -29,6 +29,7 @@ export class HomepageComponent implements OnInit {
   faTrash = faTrash;
   faBar = faBars;
   faCheck = faCheck;
+  faAlert = faCircleExclamation;
 
 
   todos:Todo[] =[] ;
