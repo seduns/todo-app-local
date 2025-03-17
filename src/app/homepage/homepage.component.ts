@@ -41,7 +41,9 @@ export class HomepageComponent implements OnInit {
 
       this.loadTodo();
       this.checkLocalStorageUsage();
+
       this.totalCategoriesSubmit();
+      this.totalLevelSubmit();
 
       //check running on browser
       if (isPlatformBrowser(this.platformId)) { 
@@ -133,6 +135,8 @@ export class HomepageComponent implements OnInit {
     if (confirm('Are you sure you want to clear all saved data? This action cannot be undone.')) {
       localStorage.removeItem("todos");
       this.todos = []; // Clear the local todos array as well
+      this.allTodos = []; // Clear the local todos array as well
+      this.totalTask = 0;
       console.log('All localStorage data cleared.');
       this.loadTodo();
       this.checkLocalStorageUsage();
@@ -239,6 +243,25 @@ export class HomepageComponent implements OnInit {
 
 
 
+  levelCounts: { [key: string]: number } = {};
+
+  totalLevelSubmit(): void {
+    setTimeout(() => { 
+
+      this.levelCounts = {};
+      
+      this.todos.forEach((todo) => { 
+        const category = todo.level;
+        if (category) { 
+              this.levelCounts[category] = (this.levelCounts[category] || 0) + 1;
+            }
+      });
+
+      console.log('Total submit by level:', this.levelCounts);
+    }, 1);
+
+  }
+
   categoryCounts: { [key: string]: number } = {};
 
   totalCategoriesSubmit(): void {
@@ -291,57 +314,56 @@ export class HomepageComponent implements OnInit {
 
   createChart(): void {
     if (this.chart) { 
-      this.chart.destroy();
+        this.chart.destroy();
     }
 
-   if (this.chartCanvas?.nativeElement) {
+    if (this.chartCanvas?.nativeElement) {
+        const labels = Object.keys(this.categoryCounts);
+        const values = Object.values(this.categoryCounts);
 
-    const labels = Object.keys(this.categoryCounts);
-    const values = Object.values(this.categoryCounts);
+        const totalTask = values.reduce((sum, value) => sum + value, 0);
+        this.totalTask = totalTask; // Update totalTask
 
-    const totalTask = values.reduce((sum, value) => sum + value, 0);
+        const percentage = totalTask > 0 
+            ? values.map(value => (value / totalTask) * 100) 
+            : values.map(() => 0); // Avoid division by zero
 
-    this.totalTask = totalTask; 
-
-    const percentage = values.map(value => ((value/ totalTask)) * 100);
-
-      this.chart = new Chart(this.chartCanvas.nativeElement, { 
-        type: 'pie', 
-        data: { 
-          labels: labels,
-          datasets: [ 
-            { 
-              label: 'Task by Category',
-              data: values,
-              backgroundColor: [ 
-                '#007ec2', '#00b02f', '#0205b8'
-              ],
-              borderWidth: 1,
-              borderColor: 'rgba(0, 0, 0, 0.23)',
-              
-            }
-          ], 
-        },
-        options: { 
-          responsive: true, 
-          maintainAspectRatio: false,
-          plugins: { 
-            tooltip : { 
-              callbacks: { 
-                label: function (tooltipItem: any) { 
-                  let dataset = tooltipItem.dataset;
-                  let currentValue = dataset.data[tooltipItem.dataIndex];
-                  let percentage = ((currentValue / totalTask) * 100).toFixed(2);
-                  return `${labels[tooltipItem.dataIndex]}: ${percentage}%`;
+        this.chart = new Chart(this.chartCanvas.nativeElement, { 
+            type: 'pie', 
+            data: { 
+                labels: labels,
+                datasets: [ 
+                    { 
+                        label: 'Task by Category',
+                        data: values,
+                        backgroundColor: ['#007ec2', '#00b02f', '#0205b8'],
+                        borderWidth: 1,
+                        borderColor: 'rgba(0, 0, 0, 0.23)',
+                    }
+                ], 
+            },
+            options: { 
+                responsive: true, 
+                maintainAspectRatio: false,
+                plugins: { 
+                    tooltip: { 
+                        callbacks: { 
+                            label: function (tooltipItem: any) { 
+                                let dataset = tooltipItem.dataset;
+                                let currentValue = dataset.data[tooltipItem.dataIndex];
+                                let percentage = totalTask > 0 
+                                    ? ((currentValue / totalTask) * 100).toFixed(2) 
+                                    : "0.00";
+                                return `${labels[tooltipItem.dataIndex]}: ${percentage}%`;
+                            }
+                        }
+                    }
                 }
-              }
             }
-          }
-        },
+        });
+    }
+}
 
-      })
-   }
-  }
 
  selectedNavIndex: number | null = null;
  
