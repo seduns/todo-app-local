@@ -55,7 +55,7 @@
                                      }">
                                 </div>
                   
-                                <div class="con-category">{{todo.categories}}</div>
+                                <div class="con-category" [ngClass]="{'work-cate' : todo.categories === 'work', 'personal-cate' : todo.categories === 'personal', 'other-cate' : todo.categories === 'other'}" >{{todo.categories}}</div>
                   
                                 <div class="level-con" 
                                      [ngClass]="{

@@ -91,10 +91,32 @@ button:hover {
             box-sizing: border-box; /* Ensure padding doesn't affect width */
             margin-bottom: 5px;
             color: var(--text-color);
+
+
+            
         }
+        
 
         .con-state { 
             background-color: transparent;
+
+            
+        }
+
+        .work-cate { 
+            background-color: rgba(176, 27, 27, 0.568);
+            color: rgb(255, 203, 203);
+            font-weight: 600;
+        }
+        .personal-cate { 
+            background-color: rgba(101, 101, 255, 0.405);
+            color: rgb(139, 139, 250);
+            font-weight: 600;
+        }
+        .other-cate { 
+            background-color: rgba(0, 99, 0, 0.538);
+            color: rgb(125, 244, 125);
+            font-weight: 600;
         }
 
         // .new-task {
@@ -106,6 +128,8 @@ button:hover {
         // .done-task {
         //     background-color: #9C27B0;
         // }
+
+        
 
         .drop-btn {
             background-color: transparent;
