@@ -2,10 +2,12 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ChangeDetectorRef, Component, HostListener, OnInit } from '@angular/core';
 import { Todo } from '../model/todo.mode';
-import { faBars, faCheck, faCircleExclamation, faClose, faL, faPlus, faSearch, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faBars, faCheck, faCircleExclamation, faClose, faL, faMoon, faPlus, faSearch, faSun, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { eventNames } from 'node:process';
+import { eventNames, title } from 'node:process';
 import { filter } from 'rxjs';
+import { NavStateService } from '../nav-bar/service/nav-state.service';
+import { BackgrondModeService } from '../nav-bar/service/backgrond-mode.service';
 
 @Component({
     selector: 'app-todo-app',
@@ -23,10 +25,14 @@ export class TodoAppComponent implements OnInit {
   faCheck = faCheck;
   faSearch = faSearch;
   faAlert = faCircleExclamation;
+  faMoon = faMoon;
+  faSun = faSun;
 
 
-  constructor(private cdRef: ChangeDetectorRef) {}
-
+  constructor(private cdRef: ChangeDetectorRef, private navStateService: NavStateService, private backgroundMode: BackgrondModeService) {
+    this.isDarkMode = this.backgroundMode.isDarkMode();
+  }
+  
   todoId: number = 0;
   title: string = '';
   description: string = '';
@@ -391,8 +397,47 @@ export class TodoAppComponent implements OnInit {
     this.showTodo = true;
   }
 
+  isDarkMode: boolean = false;
+  
+  toggleDarkMode(): void {
+    this.backgroundMode.toggleDarkMode();
+    this.isDarkMode = this.backgroundMode.isDarkMode();
+  }
+
+
+
+
+  isReadOnly: boolean = false;
+ 
+  readOnly(): void { 1
+
+    if(!this.isReadOnly) { 
+      
+      this.originalTodo =  {
+        title: this.selectedTitle,
+        description: this.selectedDescription, 
+        state: this.selectedStateNew,
+        level: this.selectedLevelNew, 
+        categories: this.selectedCategoriesNew
+      };
+
+      console.log(this.originalTodo);
+      console.log(this.isReadOnly);
+    } else { 
+      console.log('null');
+    }
+    this.isReadOnly = !this.isReadOnly;
+
+
+  }
+
 
   saveEdit(): void { 
+    if (!this.isEditTodo || !this.isContentChanged) { 
+      alert("No changes detected");
+      return;
+    }
+
     if (this.selectedId !== null && this.selectedTitle && this.selectedStateNew && this.selectedLevelNew && this.selectedCategoriesNew) {
         // Find the todo in `allTodos` (not just `todos`)
         const todo = this.allTodos.find(t => t.todoId === this.selectedId);
@@ -529,16 +574,64 @@ export class TodoAppComponent implements OnInit {
 
   isEditTodo: boolean = false;
 
+  originalTodo: any = null; 
+
   editTodo(): void {
-    this.isEditTodo = !this.isEditTodo;
-    // alert('edit todo');
+
+    if (!this.isEditTodo) { 
+
+      this.originalTodo =  {
+        title: this.selectedTitle,
+        description: this.selectedDescription, 
+        state: this.selectedStateNew,
+        level: this.selectedLevelNew, 
+        categories: this.selectedCategoriesNew
+      };
+
+      this.isEditTodo = true;
+    } else { 
+      this.cancelEdit();
+    }
   }
+
+  cancelEdit(): void { 
+    if (this.originalTodo) { 
+      this.selectedTitle = this.originalTodo.title;
+      this.selectedDescription = this.originalTodo.description;
+      this.selectedStateNew = this.originalTodo.state;
+      this.selectedLevelNew = this.originalTodo.level;
+      this.selectedCategoriesNew = this.originalTodo.categories;
+    }
+    this.isEditTodo = false;
+  }
+
+  isContentChanged(): boolean {
+    return (
+      this.selectedTitle !== this.originalTodo?.title ||
+      this.selectedDescription !== this.originalTodo?.description ||
+      this.selectedStateNew !== this.originalTodo?.state ||
+      this.selectedLevelNew !== this.originalTodo?.level ||
+      this.selectedCategoriesNew !== this.originalTodo?.categories
+    );
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    const zoomLevel = window.innerWidth / window.outerWidth;
+    // console.log('Zoom Level:', zoomLevel); // Debugging output
+  
+    if (zoomLevel < 0.38) {  // Close when zooming in past 175%
+      // console.log('Zoomed In, Closing Card');
+      this.showTodo = false;
+      this.isAddTask = false;
+    }
+  }
+  
 
   closeTodos(): void {
     this.showTodo = false;
     this.isEditTodo = false;
-    
-    
+    this.isReadOnly = false;
   }
 
   isAddTask: boolean = false;

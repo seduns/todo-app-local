@@ -110,6 +110,12 @@ private scrollListener!: () => void;
   }
 
   saveEdit(): void { 
+    if (!this.isEditTodo || !this.isContentChanged) { 
+      alert("No changes detected");
+      return;
+    }
+
+
     if ( this.selectedId !== null && this.selectedTitle  && this.selectedStateNew && this.selectedLevelNew ){
       
       const todoIndex = this.todos.findIndex(todo => todo.todoId === this.selectedId);
@@ -299,9 +305,56 @@ private scrollListener!: () => void;
 
   isEditTodo: boolean = false;
 
+  originalTodo: any = null; 
+
   editTodo(): void {
-    this.isEditTodo = !this.isEditTodo;
-    // alert('edit todo');
+
+    if (!this.isEditTodo) { 
+
+      this.originalTodo =  {
+        title: this.selectedTitle,
+        description: this.selectedDescription, 
+        state: this.selectedStateNew,
+        level: this.selectedLevelNew, 
+        categories: this.selectedCategoriesNew
+      };
+
+      this.isEditTodo = true;
+    } else { 
+      this.cancelEdit();
+    }
+  }
+
+  cancelEdit(): void { 
+    if (this.originalTodo) { 
+      this.selectedTitle = this.originalTodo.title;
+      this.selectedDescription = this.originalTodo.description;
+      this.selectedStateNew = this.originalTodo.state;
+      this.selectedLevelNew = this.originalTodo.level;
+      this.selectedCategoriesNew = this.originalTodo.categories;
+    }
+    this.isEditTodo = false;
+  }
+
+  isContentChanged(): boolean {
+    return (
+      this.selectedTitle !== this.originalTodo?.title ||
+      this.selectedDescription !== this.originalTodo?.description ||
+      this.selectedStateNew !== this.originalTodo?.state ||
+      this.selectedLevelNew !== this.originalTodo?.level ||
+      this.selectedCategoriesNew !== this.originalTodo?.categories
+    );
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    const zoomLevel = window.innerWidth / window.outerWidth;
+    console.log('Zoom Level:', zoomLevel); // Debugging output
+  
+    if (zoomLevel < 0.38) {  // Close when zooming in past 175%
+      console.log('Zoomed In, Closing Card');
+      this.showTodo = false;
+    }
   }
 
   closeTodos(): void {

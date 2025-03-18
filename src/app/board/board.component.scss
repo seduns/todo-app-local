@@ -306,12 +306,13 @@ button:hover {
 }
 
 .card {
-    background-color: rgba(255, 255, 255, 0.812);
+    background-color: var(--bg-color-todo-card);
     padding: 20px;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     width: 50%;
     max-width: 1000px;
     min-height: 200px;
@@ -392,18 +393,32 @@ tr {
     justify-content: space-between;
     gap: 10px;
     margin-top: 10px;
-    color: #1E3A5F ;
+    color: var(--text-color) ;
     font-weight: bold;
 
     .con-btn {
         // border: 1px solid black;
         display: flex;
-        justify-content: center;
+        justify-content: end;
         gap: 10px;
 
         button { 
             width: 100px;
+
+
+            &:disabled { 
+                background-color: #01096877;
+                color: rgba(255, 255, 255, 0.623);
+                cursor: default;
+                
+                &:hover { 
+                    background-color: #01096877;
+                    color: rgba(255, 255, 255, 0.623);
+                }
+            }
         }
+
+       
     }
     
     .label-title { 
@@ -421,6 +436,13 @@ tr {
                 border-radius: 5px;
                 font-size: 14px;
                 border: 1px solid rgba(0, 0, 0, 0.246);
+                background-color: var(--bg-input-color);
+                color: var(--text-color);
+                
+                &:disabled { 
+                    background-color: var(--bg-input-color-disable);
+                    color: var(--text-color);
+                }
             }
         }
 
@@ -439,11 +461,20 @@ tr {
             }
 
             select { 
-                padding: 5px 50px;
+                padding: 5px 10px;
                 border-radius: 5px;
                 margin-left: 0px;
                 border: 1px solid rgba(0, 0, 0, 0.246);
                 width: 100%;
+                color: var(--text-color);
+                background-color: var(--bg-input-color);
+                text-transform: capitalize;
+                
+                &:disabled { 
+                    background-color: var(--bg-input-color-disable);
+                    color: var(--text-color);
+                }
+                
                 
             }
 
@@ -470,6 +501,15 @@ tr {
                 height: 100px;
                 border-radius: 5px;
                 border: 1px solid rgba(0, 0, 0, 0.246);
+                background-color: yellow;
+                background-color: var(--bg-input-color);
+                color: var(--text-color);
+                
+                &:disabled { 
+                    background-color: var(--bg-input-color-disable);
+                    color: var(--text-color);
+                    
+                }
 
             }
         }

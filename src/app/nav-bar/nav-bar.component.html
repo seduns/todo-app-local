@@ -4,7 +4,7 @@
         </div>
 
         <button (click)="toggleDarkMode()">
-            {{ isDarkMode ? 'Light Mode' : 'Dark Mode' }}
+            <fa-icon [icon]="isDarkMode ? faSun : faMoon"></fa-icon>
         </button>
         <button *ngIf="isNavHidden" class="menu-toggle" (click)="toggleNav()">☰</button>
 

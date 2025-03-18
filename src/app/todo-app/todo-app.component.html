@@ -210,7 +210,29 @@
                                     <fa-icon [icon]="faClose"></fa-icon>
                                 </button>
 
-                                <div class="form-controller">
+                                <div class="con-btn-sec">
+                                    <button (click)="toggleDarkMode()" *ngIf="isReadOnly">
+                                        <fa-icon [icon]="isDarkMode ? faSun : faMoon"></fa-icon>
+                                    </button>
+                                    <button class="read-btn" (click)="readOnly()">{{isReadOnly ? 'Exit' : 'Read Mode'}}</button>
+                                </div>
+
+                                <div class="con-read-only" *ngIf="isReadOnly">
+
+                                    <div class="con-selection">
+                                        <div class="con-state" [ngClass]="{'new-task' : originalTodo.state === 'new', 'progress-task' : originalTodo.state === 'progress', 'done-task' : originalTodo.state === 'done', }">{{originalTodo.state}}</div>
+                                        <div class="con-category" [ngClass]="{'work-cate' : originalTodo.categories === 'work', 'personal-cate' : originalTodo.categories === 'personal', 'other-cate' : originalTodo.categories === 'other'}" >{{originalTodo.categories}}</div>
+                                        <div class="con-level" [ngClass]="{'high-level' : originalTodo.level === 'high', 'medium-level' : originalTodo.level === 'medium', 'low-level' : originalTodo.level === 'low'}">{{originalTodo.level}}</div>
+                                    </div>
+
+                                    <div class="con-title-desc-read">
+                                       <input type="text" [(ngModel)]="originalTodo.title" value="title" disabled>
+                                        <textarea name="description" id="desc" [(ngModel)]="originalTodo.description" disabled></textarea>
+                                    </div> 
+
+                                </div>
+
+                                <div class="form-controller" *ngIf="!isReadOnly">
 
                                     <div class="con-title-1">
                                         <label class="label-title">Title</label>
@@ -292,16 +314,26 @@
                                         disabled="true" /> -->
 
                                         
+
+                                        
                                         <div class="con-btn">
                                             <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>
                                             <button *ngIf="isEditTodo" (click)="editTodo()">cancel</button>
-                                            <button (click)="saveEdit()">save</button>
+                                            <button (click)="saveEdit()" [disabled]="!isEditTodo || !isContentChanged()">save</button>
                                         </div>
                                     </div>
                                 </div>
+
+                             
+
+                               
+
                             </div>
+
+                           
                     </div>
     </div>
+   
 </div>
 
 

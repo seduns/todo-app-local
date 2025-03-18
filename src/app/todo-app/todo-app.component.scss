@@ -200,17 +200,17 @@
     }
     
     button {
-        background-color: #2e39b8;
-        color: rgba(255, 255, 255, 0.604);
+        background-color: #2f45c0;
+        color: rgba(255, 255, 255, 0.726);
         padding: 10px;
         border-radius: 5px;
         border: none;   
-        transition: 0.3s;
+        transition: 0.1s;
         cursor: pointer;
     }
     
     button:hover {
-        background-color: #1A237E;
+        background-color: #0b168f;
         color: rgb(252, 255, 248);
     }
     
@@ -623,6 +623,124 @@
             display: flex;
         
         }
+
+
+        .con-btn-sec {
+            display: flex;
+            justify-content: end;
+            align-items: end;
+            gap: 10px;
+             
+        }
+
+        .con-read-only { 
+            // border: 1px solid yellow;
+            display: flex;
+            flex-direction: column;
+            color: var(--text-color);
+            gap: 10px;
+
+            .con-title-desc-read { 
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+
+                input, textarea { 
+                    border-radius: 5px;
+                    border: none;
+                    resize: none;
+                    background-color: var(--bg-input-color);
+                    color: var(--text-color);
+                    font-size: 14px;
+                    padding: 10px;
+                }
+
+                textarea {
+                   height: 400px;
+                   max-height: 400px;
+                   overflow-y: auto;
+                   
+                }
+            }
+
+            .con-selection { 
+                display: flex;
+                gap: 5px;
+
+                .con-state, 
+                .con-category,
+                .con-level {
+                    display: flex;
+                    justify-content: end;
+                    font-size: 12px;
+                    border-radius: 5px;
+                    padding: 5px 12px;
+                    color: var(--text-color);
+                    background-color: rgba(0, 0, 0, 0.168);
+                    text-align: center; /* Center text inside */
+                    overflow: hidden;
+                    // border: 1px solid yellow;
+                }
+
+                .new-task {
+                    background-color: rgba(20, 122, 20, 0.61);
+                    color: rgb(7, 149, 7);
+                    font-weight: 600;
+                    color: white;
+                }
+                .progress-task {
+                    background-color: rgba(137, 43, 226, 0.699);
+                    color: rgb(226, 217, 235);
+                    font-weight: 600;
+                    color: white;
+                }
+                .done-task {
+                    background-color: rgba(134, 5, 134, 0.519);
+                    color: rgb(245, 187, 245);
+                    font-weight: 600;
+                    color: white;
+                }
+                
+                .work-cate { 
+                    background-color: rgba(176, 27, 27, 0.726);
+                    color: rgb(255, 203, 203);
+                    font-weight: 600;
+                    color: white;
+                }
+                .personal-cate { 
+                    background-color: rgba(101, 101, 255, 0.562);
+                    color: rgb(139, 139, 250);
+                    font-weight: 600;
+                    color: white;
+                }
+                .other-cate { 
+                    background-color: rgba(0, 99, 0, 0.719);
+                    color: rgb(125, 244, 125);
+                    font-weight: 600;
+                    color: white;
+                }
+                
+                .high-level {
+                    background-color: rgba(255, 0, 0, 0.849); 
+                    font-weight: bold;
+                    color: white;
+                }
+                .medium-level {
+                    background-color: rgba(0, 128, 0, 0.836); 
+                    font-weight: bold;
+                    color: white;
+                }
+                .low-level {
+                    background-color: rgba(209, 209, 3, 0.781); 
+                    font-weight: bold;
+                    color: white;
+                }
+        
+        
+
+            }
+
+        }
     }
 
     .form-controller { 
@@ -638,12 +756,26 @@
         .con-btn {
             // border: 1px solid black;
             display: flex;
-            justify-content: center;
+            justify-content: end;
             gap: 10px;
 
             button { 
                 width: 100px;
+
+
+                &:disabled { 
+                    background-color: #01096877;
+                    color: rgba(255, 255, 255, 0.623);
+                    cursor: default;
+                    
+                    &:hover { 
+                        background-color: #01096877;
+                        color: rgba(255, 255, 255, 0.623);
+                    }
+                }
             }
+
+           
         }
         
         .label-title { 

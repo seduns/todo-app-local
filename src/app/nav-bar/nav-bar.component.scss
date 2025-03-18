@@ -10,12 +10,14 @@
 
 
         .con-flex-menu { 
-            margin: 5px;
-            background-image: url(../../asset/Logo/Listify\ Logo.png);
-            background-size: contain, cover;
-            padding: 20px 60px;
+            margin: 5px 50px;
+            background-image: url(../../asset/Logo/Listify2.png);
+            background-size: 100px auto; /* Set a specific size */
             background-repeat: no-repeat;
+            background-position: center; /* Center the image */
+            padding: 20px 60px;
         }
+        
     }
     .nav-links {
         list-style: none;
@@ -48,6 +50,21 @@
     .side-nav-toggle {
         display: none;
         border-radius: 10px;
+    }
+
+    button {
+        background-color: #2f45c0;
+        color: rgba(255, 255, 255, 0.726);
+        padding: 10px;
+        border-radius: 5px;
+        border: none;   
+        transition: 0.1s;
+        cursor: pointer;
+    }
+    
+    button:hover {
+        background-color: #0b168f;
+        color: rgb(252, 255, 248);
     }
 
     @media (max-width: 768px) {

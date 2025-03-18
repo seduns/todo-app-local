@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faC, faHome, faListCheck, faSlash, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { faC, faHome, faListCheck, faMoon, faSlash, faSun, faTableList } from '@fortawesome/free-solid-svg-icons';
 import { truncateSync } from 'node:fs';
 import { NavStateService } from './service/nav-state.service';
 import { BehaviorSubject } from 'rxjs';
@@ -23,6 +23,8 @@ export class NavBarComponent implements OnInit {
   faTableList = faTableList;
   faListCheck = faListCheck;
   isMinimizeNav: boolean = false;
+  faMoon = faMoon;
+    faSun = faSun;
 
   @Input() isNavHidden: boolean = false; 
 

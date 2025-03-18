@@ -153,7 +153,8 @@
                         <textarea type="text" placeholder="description" [(ngModel)]="selectedDescription" placeholder="Add your description..." [disabled]="!isEditTodo"></textarea>
                     </div>
 
-                    <label for="selectedDateSubmission">Date Creation:</label>
+                    <!-- Date -->
+                    <!-- <label for="selectedDateSubmission">Date Creation:</label>
                     <input type="text" [(ngModel)]="selectedDateSubmission" disabled="true" 
                     [ngModel]="selectedDateSubmission === 'null' || !selectedDateSubmission ? 'Not Updated' : selectedDateSubmission | date: 'dd/MM/yyyy h:mm a'" 
                     >
@@ -163,14 +164,14 @@
                     type="text" 
                     [(ngModel)]="selectedUpdateDate " 
                     [ngModel]="selectedUpdateDate === 'null' || !selectedUpdateDate ? 'Not Updated' : selectedUpdateDate | date: 'dd/MM/yyyy h:mm a'" 
-                    disabled="true" />
+                    disabled="true" /> -->
                     
                     
                     <div class="con-btn">
-                        <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>
-                        <button *ngIf="isEditTodo" (click)="editTodo()">cancel</button>
-                        <button (click)="saveEdit()">save</button>
-                    </div>
+                      <button *ngIf="!isEditTodo" (click)="editTodo()">edit</button>
+                      <button *ngIf="isEditTodo" (click)="editTodo()">cancel</button>
+                      <button (click)="saveEdit()" [disabled]="!isEditTodo || !isContentChanged()">save</button>
+                  </div>
                 </div>
             </div>
         </div>

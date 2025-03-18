@@ -3,7 +3,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import { faAnglesLeft, faAnglesRight, faArrowsToEye, faChevronDown, faChevronRight, faCoffee, faEye, faHome, faList12, faListCheck, fas, faTableList } from '@fortawesome/free-solid-svg-icons';
+import { faAnglesLeft, faAnglesRight, faArrowsToEye, faChevronDown, faChevronRight, faCoffee, faEye, faHome, faList12, faListCheck, faNotesMedical, faNoteSticky, fas, faTableList } from '@fortawesome/free-solid-svg-icons';
 import { NavStateService } from '../nav-bar/service/nav-state.service';
 
 @Component({
@@ -26,6 +26,7 @@ export class SideNavBarComponent implements OnInit {
   faChevronDown = faChevronDown;
   faChevronRight = faChevronRight;
   faEye = faEye;
+  faNote = faNoteSticky;
 
   constructor(private navStateService: NavStateService) {
     this.navStateService.isNavHidden$.subscribe(state => this.isNavHide = state);
@@ -49,7 +50,8 @@ export class SideNavBarComponent implements OnInit {
       icon: this.faListCheck, 
       isExpanded: false,
       children: [
-        { path: '/todo', label: 'All Task', icon: faList12 },
+        { path: '/todo', label: 'Task', icon: faList12 },
+        // { path: '/note', label: 'Note', icon: faNoteSticky },
       ]
     },
     { 
