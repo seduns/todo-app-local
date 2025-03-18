@@ -1,7 +1,0 @@
-{
-  "routes": [
-    "/board",
-    "/home",
-    "/todo"
-  ]
-}
