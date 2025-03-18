@@ -73,15 +73,15 @@ export class TodoAppComponent implements OnInit {
 
       this.usage = this.formatedBytes(todosSize);
 
-      console.log(`localStorage usage: ${todosSize} bytes`);
+      // console.log(`localStorage usage: ${todosSize} bytes`);
       if (todosSize >= maxBytes) { 
-        console.log('localStorage is full');
+        // console.log('localStorage is full');
       } else if (todosSize >= maxBytes * 0.9) { 
-          console.log('localStorage is almost full!');
+          // console.log('localStorage is almost full!');
       }
 
     } catch (e) {
-      console.error('Error checking localStorage usage:', e); 
+      // console.error('Error checking localStorage usage:', e); 
     }
   }
   }
@@ -102,7 +102,7 @@ export class TodoAppComponent implements OnInit {
       localStorage.removeItem("todos");
       this.todos = []; // Clear the local todos array as well
       this.allTodos = []; // Clear the local todos array as well
-      console.log('All localStorage data cleared.');
+      // console.log('All localStorage data cleared.');
       this.loadTodo();
       this.checkLocalStorageUsage();
 
@@ -127,39 +127,39 @@ export class TodoAppComponent implements OnInit {
 
             this.filteredTodos(); // Apply filters automatically
 
-            console.log("Stored Todos:", this.allTodos);
+            // console.log("Stored Todos:", this.allTodos);
         }
     }
 }
 
   onDateChange(): void {
-    console.log('Selected Date: ', this.selectedDate);
+    // console.log('Selected Date: ', this.selectedDate);
     this.filteredTodos();
   }
 
   onStateChange(): void { 
     // this.selectState = this.selectState;
-    console.log('State: ', this.selectState);
+    // console.log('State: ', this.selectState);
   } 
   
   onNewStateChange(): void { 
-    console.log('State: ', this.selectedStateNew);
+    // console.log('State: ', this.selectedStateNew);
   }
 
   onLevelChange(): void { 
-    console.log('Level: ', this.selectLevel);
+    // console.log('Level: ', this.selectLevel);
   }
   
   onNewLevelChange(): void { 
-    console.log('Level: ', this.selectedLevelNew);
+    // console.log('Level: ', this.selectedLevelNew);
   }
   
   onCategoriesChange(): void { 
-    console.log('Categories: ', this.selectCategories);
+    // console.log('Categories: ', this.selectCategories);
   }
 
   onNewCategoriesChange(): void { 
-    console.log('Categories: ', this.selectedCategoriesNew);
+    // console.log('Categories: ', this.selectedCategoriesNew);
   }
 
   selectedLevelOption: string | null = null;
@@ -222,7 +222,7 @@ export class TodoAppComponent implements OnInit {
 
     // Toggle based on todoId instead of index
     this.selectedNavId = this.selectedNavId === todoId ? null : todoId;
-    console.log('Selected Nav ID:', this.selectedNavId);
+    // console.log('Selected Nav ID:', this.selectedNavId);
 }
 
 
@@ -233,7 +233,7 @@ export class TodoAppComponent implements OnInit {
 
   getLatestTodoId(): number { 
     if (this.allTodos.length === 0) { 
-        console.log('No item');
+        // console.log('No item');
         this.storeLatestTodo = 0; // Initialize to 0 if no items exist
         return 0;
     }
@@ -241,7 +241,7 @@ export class TodoAppComponent implements OnInit {
     const latestTodoId = Math.max(...this.allTodos.map(todo => todo.todoId));
     this.storeLatestTodo = latestTodoId;
 
-    console.log('Latest Todo ID: ' + this.storeLatestTodo);
+    // console.log('Latest Todo ID: ' + this.storeLatestTodo);
     return latestTodoId;
   }
 
@@ -270,7 +270,7 @@ export class TodoAppComponent implements OnInit {
             localStorage.setItem('todos', JSON.stringify(this.allTodos));
         }
 
-        console.log('New task added:', newTodo);
+        // console.log('New task added:', newTodo);
         alert('New task added');
 
         this.loadTodo();  // Reload todos & apply filters
@@ -315,7 +315,7 @@ export class TodoAppComponent implements OnInit {
       this.filteredTodos();
 
 
-    console.log('Updated Todos:', this.todos);
+    // console.log('Updated Todos:', this.todos);
     this.checkLocalStorageUsage();
     this.selectedNavId = null;
 
@@ -334,7 +334,7 @@ export class TodoAppComponent implements OnInit {
     // Update localStorage with the new list
     localStorage.setItem('todos', JSON.stringify(this.allTodos));
 
-    console.log('Todo deleted:', todoId);
+    // console.log('Todo deleted:', todoId);
 
     // Reload full todo list and apply filters again
     this.loadTodo();
@@ -365,17 +365,17 @@ export class TodoAppComponent implements OnInit {
 
 
   onSelectedLevelChange(): void { 
-    console.log('Selected Filtered Level: ' + this.selectedLevelOption);
+    // console.log('Selected Filtered Level: ' + this.selectedLevelOption);
     this.filteredTodos();
   }
 
   onSelectedStateChange(): void { 
-    console.log('Selected Filtered State: ' + this.selectedStateOption);
+    // console.log('Selected Filtered State: ' + this.selectedStateOption);
     this.filteredTodos();
   }
 
   onSelectedCategoryChange(): void { 
-    console.log('Selected Filtered Category: ' + this.selectedCategoryOption);
+    // console.log('Selected Filtered Category: ' + this.selectedCategoryOption);
     this.filteredTodos(); 
   }
 
@@ -385,7 +385,7 @@ export class TodoAppComponent implements OnInit {
         return;  // Do nothing if a radio button was clicked
     } 
 
-    console.log('Selected todo id: ' + todo.todoId);
+    // console.log('Selected todo id: ' + todo.todoId);
     this.selectedId = todo.todoId;
     this.selectedTitle = todo.title;
     this.selectedDescription = todo.description;
@@ -421,10 +421,10 @@ export class TodoAppComponent implements OnInit {
         categories: this.selectedCategoriesNew
       };
 
-      console.log(this.originalTodo);
-      console.log(this.isReadOnly);
+      // console.log(this.originalTodo);
+      // console.log(this.isReadOnly);
     } else { 
-      console.log('null');
+      // console.log('null');
     }
     this.isReadOnly = !this.isReadOnly;
 
@@ -476,11 +476,11 @@ export class TodoAppComponent implements OnInit {
 
     } else {
         alert('Complete all the fields');
-        console.log('todoId : ' + this.selectedId);
-        console.log('New title: ' + this.selectedTitle);
-        console.log('New description:  ' + this.selectedDescription);
-        console.log('New state: ' + this.selectedStateNew);
-        console.log('New level: ' + this.selectedLevelNew);
+        // console.log('todoId : ' + this.selectedId);
+        // console.log('New title: ' + this.selectedTitle);
+        // console.log('New description:  ' + this.selectedDescription);
+        // console.log('New state: ' + this.selectedStateNew);
+        // console.log('New level: ' + this.selectedLevelNew);
     }
   }
 
@@ -504,7 +504,7 @@ export class TodoAppComponent implements OnInit {
         }
       });
 
-      console.log('Total submit by categories:', this.categoryCounts);
+      // console.log('Total submit by categories:', this.categoryCounts);
     }, 0);
   }
 
@@ -527,7 +527,7 @@ export class TodoAppComponent implements OnInit {
             this.levelCount[level] = 0;
           }
       });
-      console.log('Total submit by level:', this.levelCount);
+      // console.log('Total submit by level:', this.levelCount);
 
     }, 0);
   }
@@ -551,7 +551,7 @@ export class TodoAppComponent implements OnInit {
             this.stateCount[state] = 0;
           }
       });
-      console.log('Total submit by state:', this.stateCount);
+      // console.log('Total submit by state:', this.stateCount);
 
     }, 0);
   }
@@ -563,7 +563,7 @@ export class TodoAppComponent implements OnInit {
 
   addNewCategory(): void {
     this.isAddNewCate = !this.isAddNewCate;
-    console.log(this.isAddNewCate);
+    // console.log(this.isAddNewCate);
   }
 
   limitWords(title: string, limit: number = 5): string {

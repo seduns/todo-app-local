@@ -106,17 +106,17 @@ export class HomepageComponent implements OnInit {
 
       this.usage = this.formatedBytes(todosSize);
 
-      console.log(`localStorage usage: ${todosSize} bytes`);
+      // console.log(`localStorage usage: ${todosSize} bytes`);
       if (todosSize >= maxBytes) { 
-        console.log('localStorage is full');
+        // console.log('localStorage is full');
       } else if (todosSize >= maxBytes * 0.9) { 
-          console.log('localStorage is almost full!');
+          // console.log('localStorage is almost full!');
       }
 
       this.simulateUsageIncrease(calculatedPercent, todosSize);
 
     } catch (e) {
-      console.error('Error checking localStorage usage:', e); 
+      // console.error('Error checking localStorage usage:', e); 
     }
   }
   }
@@ -138,7 +138,7 @@ export class HomepageComponent implements OnInit {
       this.todos = []; // Clear the local todos array as well
       this.allTodos = []; // Clear the local todos array as well
       this.totalTask = 0;
-      console.log('All localStorage data cleared.');
+      // console.log('All localStorage data cleared.');
       this.loadTodo();
       this.checkLocalStorageUsage();
     }
@@ -258,7 +258,7 @@ export class HomepageComponent implements OnInit {
             }
       });
 
-      console.log('Total submit by level:', this.levelCounts);
+      // console.log('Total submit by level:', this.levelCounts);
     }, 1);
 
   }
@@ -277,7 +277,7 @@ export class HomepageComponent implements OnInit {
             }
       });
 
-      console.log('Total submit by categories:', this.categoryCounts);
+      // console.log('Total submit by categories:', this.categoryCounts);
     }, 1);
 
     this.createChart();
@@ -308,7 +308,7 @@ export class HomepageComponent implements OnInit {
       localStorage.setItem('todos', JSON.stringify(this.todos));
     
     this.loadTodo();
-    console.log('Update', this.todos);
+    // console.log('Update', this.todos);
   }
 
 
@@ -372,7 +372,7 @@ export class HomepageComponent implements OnInit {
    event.stopPropagation(); 
    // Toggle the selected index or close if the same index is clicked
    this.selectedNavIndex = this.selectedNavIndex === index ? null : index;
-   console.log(this.selectedNavIndex); 
+  //  console.log(this.selectedNavIndex); 
  }
  
  @HostListener('document:click', ['$event'])
@@ -386,7 +386,7 @@ export class HomepageComponent implements OnInit {
   if (typeof window !== 'undefined') {  // Ensure localStorage is available.
     localStorage.setItem('todos', JSON.stringify(this.todos));  // Update localStorage.
   }
-  console.log('Todo deleted');
+  // console.log('Todo deleted');
   this.checkLocalStorageUsage();
   
 

@@ -24,15 +24,15 @@ export class BoardComponent implements OnInit, AfterViewInit {
  faBar = faBars;
 
 onNewStateChange(): void { 
-  console.log('State: ', this.selectedStateNew);
+  // console.log('State: ', this.selectedStateNew);
 }
 
 onNewLevelChange(): void { 
-  console.log('Level: ', this.selectedLevelNew);
+  // console.log('Level: ', this.selectedLevelNew);
 }
 
 onNewCategoriesChange(): void { 
-  console.log('Categories: ', this.selectedCategoriesNew);
+  // console.log('Categories: ', this.selectedCategoriesNew);
 }
 
 @ViewChild('scrollContainer') scrollContainer!: ElementRef
@@ -49,7 +49,7 @@ private scrollListener!: () => void;
     if (scrollContainer) { 
       // ✅ Add event listener to close dropdown on scroll inside tbody
       this.scrollListener = this.renderer.listen(scrollContainer, 'scroll', () => {
-        console.log('Scroll detected inside tbody, closing dropdown');
+        // console.log('Scroll detected inside tbody, closing dropdown');
         this.selectedNavIndex = null;
       });
     } 
@@ -69,9 +69,9 @@ private scrollListener!: () => void;
         this.todos = JSON.parse(storedTodo);
         this.allTodos = [...this.todos];
   
-        console.log("Stored Todos:", this.todos);
+        // console.log("Stored Todos:", this.todos);
         this.todos.forEach(todo => {
-            console.log("Stored Date:", todo.submissionDate);
+            // console.log("Stored Date:", todo.submissionDate);
         });
       }
     }
@@ -95,7 +95,7 @@ private scrollListener!: () => void;
     if (event && event.target instanceof HTMLInputElement) {
         return;  // Do nothing if a radio button was clicked
     } 
-    console.log('Selected todo id: ' + todo.todoId);
+    // console.log('Selected todo id: ' + todo.todoId);
     this.selectedId = todo.todoId;  
     this.selectedIndex = index;
     this.selectedTitle = todo.title;
@@ -141,15 +141,15 @@ private scrollListener!: () => void;
         this.isEditTodo = false;
         
       } else {
-        console.error('Todo with ID ' + this.selectedId + ' not found.');
+        // console.error('Todo with ID ' + this.selectedId + ' not found.');
         alert('Error: Unable to find the todo to update.');
     }
 
     } else {
       alert('Complete all the fields');
-      console.log('New title: ' + this.selectedTitle);
-      console.log('New description:  ' + this.selectedDescription);
-      console.log('New state: ' + this.selectedStateNew);
+      // console.log('New title: ' + this.selectedTitle);
+      // console.log('New description:  ' + this.selectedDescription);
+      // console.log('New state: ' + this.selectedStateNew);
       
     } 
   }
@@ -162,7 +162,7 @@ private scrollListener!: () => void;
       event.stopPropagation(); 
       // Toggle the dropdown only for the clicked card
       this.selectedNavIndex = this.selectedNavIndex === index ? null : index;
-      console.log('Selected Index:', this.selectedNavIndex);
+      // console.log('Selected Index:', this.selectedNavIndex);
   }
 
   
@@ -197,7 +197,7 @@ private scrollListener!: () => void;
         // Reload the todos and close the dropdown
         this.loadTodo();
         this.selectedNavIndex = null;
-        console.log('Update', this.todos);
+        // console.log('Update', this.todos);
     }
   }
 
@@ -252,7 +252,7 @@ private scrollListener!: () => void;
     
 
     dragEnd(event: DragEvent) { 
-      console.log("Drag ended:", this.draggedTodo);
+      // console.log("Drag ended:", this.draggedTodo);
       this.resetDragStyle(event);
     }
     
@@ -288,7 +288,7 @@ private scrollListener!: () => void;
     // Update localStorage with the new list
     localStorage.setItem('todos', JSON.stringify(this.allTodos));
 
-    console.log('Todo deleted:', todoId);
+    // console.log('Todo deleted:', todoId);
 
     // Reload full todo list and apply filters again
     this.loadTodo();
@@ -349,10 +349,10 @@ private scrollListener!: () => void;
   @HostListener('window:resize', ['$event'])
   onResize() {
     const zoomLevel = window.innerWidth / window.outerWidth;
-    console.log('Zoom Level:', zoomLevel); // Debugging output
+    // console.log('Zoom Level:', zoomLevel); // Debugging output
   
     if (zoomLevel < 0.38) {  // Close when zooming in past 175%
-      console.log('Zoomed In, Closing Card');
+      // console.log('Zoomed In, Closing Card');
       this.showTodo = false;
     }
   }
