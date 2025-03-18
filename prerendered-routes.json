@@ -1,9 +1,0 @@
-{
-  "routes": {
-    "/todo-app-local": {},
-    "/todo-app-local/board": {},
-    "/todo-app-local/home": {},
-    "/todo-app-local/note": {},
-    "/todo-app-local/todo": {}
-  }
-}
