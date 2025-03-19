@@ -31,6 +31,19 @@
     
 }
 
+.con-form-link { 
+    position: absolute;
+    background-color: white;
+    padding: 10px;
+    border-radius: 5px;
+    right: 0;
+    margin: 10px;
+
+    a { 
+        text-decoration: none;
+    }
+}
+
 .minimize-nav .side-nav {
     width: 60px; /* Minimized width */
 
